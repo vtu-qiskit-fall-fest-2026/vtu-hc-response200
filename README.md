@@ -307,6 +307,6 @@ Released under the [MIT License](LICENSE). See `LICENSE` for details.
 **Response200** · Team ID `VTU-QFF-HC-0137` · Tier `Online`
 · Built with ⚛️ Qiskit for the VTU-QFF Hackathon
 
-[⬆ Back to Top](#Response200)
+[⬆ Back to Top](#response200)
 
 </div>
