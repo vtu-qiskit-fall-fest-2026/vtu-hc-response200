@@ -180,3 +180,45 @@ def test_app_serves_without_key():
     if (ROOT / "web" / "dist" / "index.html").exists():
         r = client.get("/")
         assert r.status_code == 200 and "<div id=\"root\">" in r.text
+
+
+# ----------------------------------------------------------------- claims about moves
+
+LABELS = [j["label"] for j in DATA["instance"]["jobs"]]
+
+
+def test_move_check_drops_invented_moves():
+    mv = llm.moves(DATA, "flexible", 1.0)  # at carbon only, video rendering does not move
+    assert llm.ground("Video rendering moved from Site B night to Site A day.", [0, 1], [mv], LABELS) == ""
+    assert llm.ground("Video rendering stays where it was submitted.", [0, 1], [mv], LABELS)
+
+
+def test_move_check_drops_wrong_destination():
+    mv = llm.moves(DATA, "flexible", 0.5)  # ML model training goes to Site B day
+    assert llm.ground("ML model training moved to Site A night.", [0, 1], [mv], LABELS) == ""
+    assert llm.ground("ML model training: A night → B day, cleaner grid.", [0, 1], [mv], LABELS)
+
+
+def test_example_questions_never_call_the_model(monkeypatch):
+    monkeypatch.setattr(llm, "config", lambda: {"key": FAKE_KEY, "base": "http://x", "model": "m"})
+    called = []
+    monkeypatch.setattr(llm, "_chat", lambda *a, **k: called.append(1) or None)
+    r = client.post("/api/ask", json={"preset": "flexible", "w": 1.0, "question": llm.EXAMPLES[0]}).json()
+    assert called == [] and r["source"] == "template"
+
+
+def test_saved_cache_passes_every_check():
+    p = ROOT / "results" / "llm_cache.json"
+    if not p.exists():
+        pytest.skip("no cache")
+    c = json.loads(p.read_text())
+    for key, v in c.get("explain", {}).items():
+        preset, w = key.split(":")
+        f = llm.facts(DATA, preset, float(w))
+        for line in v["lines"]:
+            assert llm.ground(line, llm.allowed_numbers(f), [llm.moves(DATA, preset, float(w))], LABELS) == line, (key, line)
+    for key, v in c.get("ask", {}).items():
+        pw, _ = key.split("|")
+        preset, w = pw.split(":")
+        f = llm.facts(DATA, preset, float(w))
+        assert llm.ground(v["text"], llm.allowed_numbers(f)) == v["text"], key

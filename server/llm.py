@@ -229,12 +229,46 @@ def _ok(n: float, allowed: list[float]) -> bool:
 _BANNED = re.compile(r"\b(should|recommend|instead run|you could move)\b", re.I)
 
 
-def ground(text: str, allowed: list[float]) -> str:
-    """Keep only sentences whose numbers all match the data and that make no
+_PLACE = re.compile(r"(?:Site\s*)?\b([AB])\b[\s,]*(day|night)", re.I)
+_STAYS = re.compile(r"did not move|didn't move|does not move|doesn't move|not moved|stays|stayed|remains|remained", re.I)
+_MOVES = re.compile(r"\bmov(?:e|ed|es|ing)\b|→|->|shift", re.I)
+
+
+def moves_consistent(sent: str, move_sets: list[list[dict]], job_labels: list[str]) -> bool:
+    """A sentence that says a job moved (or stayed) must agree with at least one
+    of the given move lists; a stated destination must be that job's real one."""
+    for label in job_labels:
+        names = {label.lower(), label.split()[0].lower()}
+        if not any(re.search(rf"\b{re.escape(n)}\b", sent.lower()) for n in names):
+            continue
+        stays, moved = bool(_STAYS.search(sent)), bool(_MOVES.search(sent))
+        if not (stays or moved):
+            continue
+        places = {(a.upper(), b.lower()) for a, b in _PLACE.findall(sent)}
+        ok = False
+        for mv in move_sets:
+            m = next((x for x in mv if x["job"] == label), None)
+            if stays and m is None:
+                ok = True
+            elif moved and not stays and m is not None:
+                site, slot = m["to"].split(" ")[-2], m["to"].split(" ")[-1]
+                ok = not places or (site, slot) in places
+            if ok:
+                break
+        if not ok:
+            return False
+    return True
+
+
+def ground(text: str, allowed: list[float], move_sets: list[list[dict]] | None = None, job_labels: list[str] | None = None) -> str:
+    """Keep only sentences whose numbers all match the data, whose claims about
+    moved jobs match the schedule (when move_sets is given), and that make no
     schedule suggestions or advantage claims."""
     keep = []
     for sent in re.split(r"(?<=[.!?])\s+", text.strip()):
         if not sent:
+            continue
+        if move_sets is not None and not moves_consistent(sent, move_sets, job_labels or []):
             continue
         if not all(_ok(n, allowed) for n in numbers(sent)):
             continue
@@ -358,7 +392,8 @@ def generate_explain(cfg: dict, data: dict, preset: str, w: float, interactive: 
     if not out or not isinstance(out.get("lines"), list):
         return None
     allowed = allowed_numbers(f)
-    lines = [ground(str(x), allowed) for x in out["lines"][:3]]
+    labels = [j["label"] for j in data["instance"]["jobs"]]
+    lines = [ground(str(x), allowed, [mv], labels) for x in out["lines"][:3]]
     lines = [x for x in lines if x]
     return lines or None
 
@@ -368,7 +403,8 @@ def explain(data: dict, preset: str, w: float) -> dict:
     cached = load_cache().get("explain", {}).get(key)
     if cached:
         allowed = allowed_numbers(facts(data, preset, w))
-        lines = [x for x in (ground(t, allowed) for t in cached["lines"]) if x]
+        labels = [j["label"] for j in data["instance"]["jobs"]]
+        lines = [x for x in (ground(t, allowed, [moves(data, preset, w)], labels) for t in cached["lines"]) if x]
         if lines or not moves(data, preset, w):
             return {"lines": lines, "source": "cached"}
     cfg = config()
@@ -429,7 +465,9 @@ def generate_answer(cfg: dict, data: dict, preset: str, w: float, question: str,
     out = _json(_chat(cfg, RULES, user, ASK_SCHEMA, timeout=10.0, interactive=interactive))
     if not out or not isinstance(out.get("answer"), str):
         return None
-    text = ground(out["answer"], allowed_numbers(f))
+    labels = [j["label"] for j in data["instance"]["jobs"]]
+    sets = [moves(data, preset, w), moves(data, preset, 0.0), moves(data, preset, 1.0)]
+    text = ground(out["answer"], allowed_numbers(f), sets, labels)
     if not text:
         return None
     focus = out.get("focus") if out.get("focus") in FOCUS else None
@@ -449,8 +487,9 @@ def ask(data: dict, preset: str, w: float, question: str) -> dict:
         text = ground(cached["text"], allowed_numbers(facts(data, preset, w)))
         if text:
             return reply({"text": text, "focus": cached.get("focus")}, "cached")
+    example = _norm(question) in {_norm(q) for q in EXAMPLES}
     cfg = config()
-    if cfg:
+    if cfg and not example:  # example questions: reviewed cache or hand-written template only
         memo = _LIVE.get(f"ask:{key}") or generate_answer(cfg, data, preset, w, question)
         if memo:
             _LIVE[f"ask:{key}"] = memo

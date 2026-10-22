@@ -146,4 +146,8 @@ Forecast error is modelled as a uniform independent error on each slot's grid ca
   - Saved answers are generated with `openai/gpt-oss-120b`; live answers keep the faster 20b model.
 - **Review rule:** we read every cached entry before committing it, and drop any entry that is wrong (it then falls back to the hand-written template, labelled TEMPLATE). We never hand-edit model text and still label it AI.
 - **Story captions** stay hand-written (`web/src/lib/story.ts`); the generated ones were less accurate.
+- **Second review (gpt-oss-120b cache):** 48 entries were generated and 3 were dropped: a video move invented at carbon-only, a carbon reason at the water-only setting, and the mixed-preset 61% quoted for the rigid preset. The dropped keys are listed inside `results/llm_cache.json`.
+- **Two more guards:**
+  - The five example questions never call the live model; they use the reviewed cache or the hand-written template. When we tested a dropped key, the live model had invented a move again.
+  - A move check drops any sentence claiming a job moved, stayed or went somewhere that disagrees with the computed schedule. It applies to live why-lines and live answers, and a test re-checks every cached entry.
 
