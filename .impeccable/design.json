@@ -1,48 +1,371 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-22T12:10:00+05:30",
+  "generatedAt": "2026-10-22T13:33:09+00:00",
   "title": "Design System: GreenQ",
   "extensions": {
     "colorMeta": {
-      "enamel": { "role": "primary", "displayName": "Gauge Enamel", "canonical": "oklch(94.9% 0.008 177)", "tonalRamp": ["#080c0b", "#202524", "#3c4140", "#595f5d", "#797f7d", "#9aa09e", "#bfc6c4", "#e9f0ee"] },
-      "hot": { "role": "primary", "displayName": "Hot White", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#0b0b0b", "#242424", "#404040", "#5d5d5d", "#7d7d7d", "#9e9e9e", "#c4c4c4", "#ffffff"] },
-      "carbon": { "role": "secondary", "displayName": "Carbon Teal", "canonical": "oklch(78.5% 0.133 182)", "tonalRamp": ["#00170f", "#003529", "#005445", "#007463", "#009683", "#00b8a4", "#40e0ca", "#76fff5"] },
-      "carbon-e-mark": { "role": "secondary", "displayName": "Deep Teal E-Mark", "canonical": "oklch(51.1% 0.086 186)", "tonalRamp": ["#001411", "#00302b", "#004e47", "#006d65", "#338e85", "#58b0a7", "#7fd7cd", "#aafff7"] },
-      "water": { "role": "secondary", "displayName": "Water Blue", "canonical": "oklch(69.7% 0.160 258)", "tonalRamp": ["#01004c", "#00146e", "#003891", "#1759b5", "#3a7bda", "#5c9eff", "#81c5ff", "#aaf0ff"] },
-      "water-e-mark": { "role": "secondary", "displayName": "Deep Blue E-Mark", "canonical": "oklch(48.8% 0.217 264)", "tonalRamp": ["#140066", "#07008a", "#0222af", "#1b4bd5", "#3970fc", "#5894ff", "#7cbcff", "#b8ecff"] },
-      "amber": { "role": "tertiary", "displayName": "Baseline Amber", "canonical": "oklch(77.6% 0.148 69)", "tonalRamp": ["#2b0000", "#4c0200", "#6e2800", "#904800", "#b46900", "#d88b14", "#ffb14b", "#ffdc78"] },
-      "ground": { "role": "neutral", "displayName": "Wet Concrete", "canonical": "oklch(16.7% 0.002 197)", "tonalRamp": ["#0a0b0b", "#0e0f0f", "#121414", "#171918", "#1d201f", "#5c5e5e", "#9d9f9f", "#edefef"] },
-      "concrete": { "role": "neutral", "displayName": "Poured Concrete", "canonical": "oklch(21.1% 0.004 165)", "tonalRamp": ["#0a0c0b", "#222523", "#3e403f", "#5c5e5d", "#7b7e7d", "#9c9f9e", "#c2c5c3", "#ecefee"] },
-      "text-2": { "role": "neutral", "displayName": "Readable Grey", "canonical": "oklch(77.5% 0.010 172)", "tonalRamp": ["#070d0b", "#1f2623", "#3b413f", "#585f5d", "#787f7c", "#99a09e", "#bec6c3", "#e8f1ee"] }
+      "carbon": {
+        "role": "primary",
+        "displayName": "Carbon Emerald",
+        "canonical": "#059669",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "carbon-soft": {
+        "role": "primary",
+        "displayName": "Carbon Wash",
+        "canonical": "#d1fae5",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "carbon-ink": {
+        "role": "primary",
+        "displayName": "Carbon Deep Ink",
+        "canonical": "#065f46",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "water": {
+        "role": "secondary",
+        "displayName": "Water Blue",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      },
+      "water-soft": {
+        "role": "secondary",
+        "displayName": "Water Wash",
+        "canonical": "#dbeafe",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      },
+      "overload": {
+        "role": "tertiary",
+        "displayName": "Overload Rose",
+        "canonical": "#e11d48",
+        "tonalRamp": [
+          "#4c0519",
+          "#881337",
+          "#9f1239",
+          "#be123c",
+          "#e11d48",
+          "#fb7185",
+          "#fecdd3",
+          "#fff1f2"
+        ]
+      },
+      "overload-soft": {
+        "role": "tertiary",
+        "displayName": "Overload Wash",
+        "canonical": "#fff1f2",
+        "tonalRamp": [
+          "#4c0519",
+          "#881337",
+          "#9f1239",
+          "#be123c",
+          "#e11d48",
+          "#fb7185",
+          "#fecdd3",
+          "#fff1f2"
+        ]
+      },
+      "illustrative-ink": {
+        "role": "tertiary",
+        "displayName": "Illustrative Amber Ink",
+        "canonical": "#92400e",
+        "tonalRamp": [
+          "#451a03",
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#fbbf24",
+          "#fde68a",
+          "#fffbeb"
+        ]
+      },
+      "illustrative-soft": {
+        "role": "tertiary",
+        "displayName": "Illustrative Amber Wash",
+        "canonical": "#fffbeb",
+        "tonalRamp": [
+          "#451a03",
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#fbbf24",
+          "#fde68a",
+          "#fffbeb"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Near-Black Ink",
+        "canonical": "#0b0b0f",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Soft Grey Well",
+        "canonical": "#f5f6f8",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Quiet Grey Text",
+        "canonical": "#6b6f7a",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e7e8ec",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Focus Ink",
+        "canonical": "#18181b",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      },
+      "slate-neutral": {
+        "role": "neutral",
+        "displayName": "Slate Line",
+        "canonical": "#94a3b8",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#27272a",
+          "#3f3f46",
+          "#6b6f7a",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e7e8ec",
+          "#f5f6f8"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headline only, uppercase enamel, max 12ch." },
-      "headline": { "displayName": "Headline", "purpose": "Section titles, uppercase enamel." },
-      "title": { "displayName": "Title", "purpose": "Sub-panel, board and footer column titles, uppercase." },
-      "numeral": { "displayName": "Stencil Numeral", "purpose": "Measured numbers: savings readouts, gauge marks, level values, step counters; also the wordmark." },
-      "body": { "displayName": "Body", "purpose": "Reading text with tabular numerals." },
-      "lede": { "displayName": "Lede", "purpose": "One-paragraph read under each section title, text-2, max 62ch." },
-      "label": { "displayName": "Label", "purpose": "Uppercase 700 tracked labels: readout labels, segments, slider ends, table headers, badges." },
-      "mono": { "displayName": "Mono", "purpose": "Job IDs, backend names, file paths and the cost equation only." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only; 42px below sm, 62px from sm; two-tone."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section openers; 36px below sm, 44px from sm; two-tone."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Widget and card headings."
+      },
+      "metric": {
+        "displayName": "Metric",
+        "purpose": "Big tabular numbers (40/32/28/24px by context) with small grey units."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Step-card text and FAQ answers, a few lines at most."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Captions, chips, legends, axis text."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "IBM job IDs and backend names only."
+      }
     },
     "shadows": [
-      { "name": "bay-recess", "value": "inset 0 10px 18px -12px rgba(0,0,0,0.8)", "purpose": "Every sluice bay; containers are cut into concrete." },
-      { "name": "plate-rest", "value": "0 4px 10px rgba(0,0,0,0.45)", "purpose": "Enamel job plates at rest on a bay." },
-      { "name": "plate-moved", "value": "0 0 0 2px #ffffff, 0 8px 22px rgba(0,0,0,0.6)", "purpose": "The job plate that changed bay." },
-      { "name": "thumb-lift", "value": "0 6px 18px rgba(0,0,0,0.55), 0 0 0 1px #ffffff", "purpose": "Priority slider thumb." },
-      { "name": "thumb-focus", "value": "0 0 0 4px #0e0f0f, 0 0 0 7px #ffffff", "purpose": "Keyboard focus on the slider thumb." }
+      {
+        "name": "nav-float",
+        "value": "0 4px 20px -10px rgba(15,23,42,0.25)",
+        "purpose": "Sticky translucent nav bar."
+      },
+      {
+        "name": "showcase-float",
+        "value": "0 24px 60px -28px rgba(15,23,42,0.35)",
+        "purpose": "Hero miniature."
+      },
+      {
+        "name": "app-frame",
+        "value": "0 30px 80px -30px rgba(15,23,42,0.35)",
+        "purpose": "Planner window frame."
+      },
+      {
+        "name": "mini-card",
+        "value": "0 10px 30px -12px rgba(15,23,42,0.25)",
+        "purpose": "White cards inside how-it-works wells."
+      },
+      {
+        "name": "carbon-glow",
+        "value": "0 8px 24px -10px rgba(5,150,105,0.7)",
+        "purpose": "Primary CTA only."
+      },
+      {
+        "name": "widget-rest",
+        "value": "0px 1px 2px 0px rgba(0,0,0,0.12), 0px 0px 0px 0px rgba(0,0,0,0)",
+        "purpose": "Draggable widget at rest."
+      },
+      {
+        "name": "widget-lifted",
+        "value": "0px 28px 60px -16px rgba(0,0,0,0.45), 0px 10px 24px -8px rgba(0,0,0,0.3)",
+        "purpose": "Widget while held or dragged."
+      },
+      {
+        "name": "slider-thumb",
+        "value": "0 2px 8px rgba(0,0,0,.18)",
+        "purpose": "Priority slider thumb."
+      }
     ],
     "motion": [
-      { "name": "ease-expo-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All CSS transitions and the gauge drawdown." },
-      { "name": "duration-ui", "value": "0.25s", "purpose": "Buttons and segmented control state changes." },
-      { "name": "duration-bay", "value": "0.4s", "purpose": "Bay background/border change on overload." },
-      { "name": "drawdown-first", "value": "2.2s, 0.6s delay", "purpose": "Gauge level first draws down from business as usual to GreenQ." },
-      { "name": "drawdown-update", "value": "0.9s", "purpose": "Gauge level on priority change." },
-      { "name": "plate-spring", "value": "spring(stiffness 140, damping 22, mass 0.9)", "purpose": "Job plates sliding between sluice bays (shared layout)." }
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Count-ups (1.1s), curve draw-in (1.4s), hero entrance and FAQ expand (0.3–0.6s)."
+      },
+      {
+        "name": "spring-job-slide",
+        "value": "spring, visualDuration 0.7s, bounce 0.18",
+        "purpose": "Job blocks moving between site/slot lanes (shared layout)."
+      },
+      {
+        "name": "spring-bars",
+        "value": "spring, visualDuration 0.5s, bounce 0",
+        "purpose": "Savings bars and histogram heights following the slider."
+      },
+      {
+        "name": "spring-marker",
+        "value": "spring, visualDuration 0.4s, bounce 0.2",
+        "purpose": "Current point on the trade-off curve."
+      },
+      {
+        "name": "mini-scene-loop",
+        "value": "2600ms interval",
+        "purpose": "Hero miniature swaps business as usual and GreenQ; off under reduced motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce -> duration 0 / final state",
+        "purpose": "Every animation resolves instantly; smooth scroll disabled."
+      }
     ],
     "breakpoints": [
-      { "name": "stack", "value": "1100px" },
-      { "name": "phone", "value": "760px" }
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "planner-one-column",
+        "value": "900px (max-width)"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
     ]
   },
   "components": [
@@ -50,101 +373,134 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Enamel action, one per view; hovers to hot white.",
-      "html": "<button class=\"ds-btn-primary\">See where the jobs go <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 4v15m0 0-6-6m6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; font: 600 1.05rem/1 \"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif; padding: 1rem 1.4rem; border-radius: 4px; border: 1px solid transparent; background: #e9f0ee; color: #0e0f0f; cursor: pointer; transition: background-color 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: #ffffff; transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }"
+      "description": "The single emerald call to action ('Open the planner'); one per view.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Open the planner <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;background:var(--carbon,#059669);color:#fff;padding:12px 20px;border-radius:16px;font-size:15px;font-weight:500;text-decoration:none;box-shadow:0 8px 24px -10px rgba(5,150,105,.7);transition:transform .2s}.ds-btn-primary:hover{transform:translateY(-1px)}.ds-btn-primary:focus-visible{outline:2px solid var(--ring,#18181b);outline-offset:2px}"
     },
     {
-      "name": "Ghost Button",
+      "name": "Dark Button",
       "kind": "button",
-      "refersTo": "button-ghost",
-      "description": "Secondary actions such as replay or running the simulator.",
-      "html": "<button class=\"ds-btn-ghost\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12a8 8 0 1 0 2.4-5.7M4 4v4.6h4.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> Replay</button>",
-      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 0.6rem; font: 600 0.95rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; padding: 0.75rem 1.1rem; border-radius: 4px; background: transparent; color: #e6eae8; border: 1px solid rgba(228,232,230,0.28); cursor: pointer; transition: border-color 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-btn-ghost:hover { border-color: #e9f0ee; } .ds-btn-ghost:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }"
+      "refersTo": "button-dark",
+      "description": "Near-black compact button in the nav ('Play story').",
+      "html": "<button class=\"ds-btn-dark\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polygon points=\"6 3 20 12 6 21 6 3\"/></svg>Play story</button>",
+      "css": ".ds-btn-dark{display:inline-flex;align-items:center;gap:8px;font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;background:var(--foreground,#0b0b0f);color:#fff;border:0;padding:8px 14px;border-radius:16px;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}.ds-btn-dark:hover{opacity:.85}.ds-btn-dark:focus-visible{outline:2px solid var(--ring,#18181b);outline-offset:2px}"
+    },
+    {
+      "name": "Soft Button",
+      "kind": "button",
+      "refersTo": "button-soft",
+      "description": "Grey-well secondary button ('Play the 20-second story').",
+      "html": "<button class=\"ds-btn-soft\">Play the 20-second story</button>",
+      "css": ".ds-btn-soft{font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;background:var(--muted,#f5f6f8);color:var(--foreground,#0b0b0f);border:0;padding:12px 20px;border-radius:16px;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s}.ds-btn-soft:hover{background:rgba(11,11,15,.1)}.ds-btn-soft:focus-visible{outline:2px solid var(--ring,#18181b);outline-offset:2px}"
     },
     {
       "name": "Segmented Control",
+      "kind": "custom",
+      "refersTo": "segmented-tab",
+      "description": "Round grey track; the selected option is white with a small shadow.",
+      "html": "<div class=\"ds-seg\" role=\"tablist\"><button class=\"ds-seg-opt\" role=\"tab\" aria-selected=\"false\">Business as usual</button><button class=\"ds-seg-opt is-on\" role=\"tab\" aria-selected=\"true\">GreenQ</button></div>",
+      "css": ".ds-seg{display:inline-flex;background:var(--muted,#f5f6f8);border-radius:9999px;padding:4px}.ds-seg-opt{font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;border:0;background:transparent;color:var(--muted-foreground,#6b6f7a);padding:6px 16px;border-radius:9999px;font-size:14px;font-weight:600;cursor:pointer;transition:color .2s,background .2s}.ds-seg-opt:hover{color:var(--foreground,#0b0b0f)}.ds-seg-opt.is-on{background:#fff;color:var(--foreground,#0b0b0f);box-shadow:0 1px 2px rgba(0,0,0,.08)}.ds-seg-opt:focus-visible{outline:2px solid var(--ring,#18181b);outline-offset:2px}"
+    },
+    {
+      "name": "Provenance Chips",
       "kind": "chip",
-      "refersTo": "segmented-button",
-      "description": "Picks the priority setting in the proof section; active segment is enamel.",
-      "html": "<div class=\"ds-seg\"><button class=\"ds-seg-btn\">Water only</button><button class=\"ds-seg-btn is-on\">Balanced</button><button class=\"ds-seg-btn\">Carbon only</button></div>",
-      "css": ".ds-seg { display: inline-flex; border: 1px solid rgba(228,232,230,0.28); border-radius: 4px; overflow: hidden; background: #0e0f0f; } .ds-seg-btn { font: 700 1rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.85rem 1.3rem; background: transparent; color: #b0b8b5; border: 0; border-right: 1px solid rgba(228,232,230,0.28); cursor: pointer; transition: background-color 0.25s cubic-bezier(0.16,1,0.3,1), color 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-seg-btn:last-child { border-right: 0; } .ds-seg-btn:hover { color: #e9f0ee; } .ds-seg-btn.is-on { background: #e9f0ee; color: #0e0f0f; } .ds-seg-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: -3px; }"
+      "refersTo": "chip-ibm",
+      "description": "IBM hardware (solid dark), illustrative (amber), overloaded (rose).",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-chip-ibm\"><span class=\"ds-dot\"></span>Run on real IBM hardware</span><span class=\"ds-chip-ill\">Illustrative</span><span class=\"ds-chip-over\">Overloaded</span></div>",
+      "css": ".ds-chips{display:flex;gap:8px;align-items:center;font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;}.ds-chip-ibm{display:inline-flex;align-items:center;gap:6px;background:var(--foreground,#0b0b0f);color:#fff;border-radius:9999px;padding:4px 10px;font-size:12px;font-weight:600}.ds-dot{width:6px;height:6px;border-radius:9999px;background:#34d399}.ds-chip-ill{background:#fffbeb;color:#92400e;box-shadow:inset 0 0 0 1px #fde68a;border-radius:6px;padding:2px 6px;font-size:10px;font-weight:600;letter-spacing:.025em;text-transform:uppercase}.ds-chip-over{background:#fff1f2;color:#be123c;border-radius:6px;padding:2px 6px;font-size:11px;font-weight:600}"
     },
     {
-      "name": "Board with Sluice Bays",
+      "name": "Metric Tiles",
       "kind": "card",
-      "refersTo": "board",
-      "description": "A schedule board: recessed concrete bays holding enamel job plates; overload in amber.",
-      "html": "<div class=\"ds-board\"><h3 class=\"ds-board-title\">GreenQ</h3><div class=\"ds-bays\"><div class=\"ds-bay\"><div class=\"ds-job\"><span class=\"ds-job-name\">Model training</span><span class=\"ds-job-kwh\">120 kWh</span></div></div><div class=\"ds-bay ds-bay-over\"><div class=\"ds-job\"><span class=\"ds-job-name\">Batch render</span><span class=\"ds-job-kwh\">90 kWh</span></div><p class=\"ds-bay-warn\">Over capacity</p></div></div></div>",
-      "css": ".ds-board { background: #121414; border: 1px solid rgba(228,232,230,0.14); border-radius: 4px; padding: 1.2rem; color: #e6eae8; font-family: \"Atkinson Hyperlegible Next\", system-ui, sans-serif; } .ds-board-title { margin: 0 0 0.5rem; font: 700 1.7rem/1.05 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform: uppercase; letter-spacing: 0.02em; color: #e9f0ee; } .ds-bays { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .ds-bay { min-height: 8.5rem; padding: 0.7rem; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(to bottom, rgba(228,232,230,0.04), transparent 30%), #171918; border: 1px solid rgba(228,232,230,0.14); border-radius: 2px; box-shadow: inset 0 10px 18px -12px rgba(0,0,0,0.8); transition: border-color 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-bay-over { border-color: #f2a33a; background: repeating-linear-gradient(135deg, rgba(242,163,58,0.12) 0 8px, transparent 8px 18px), #171918; } .ds-bay-warn { margin: 0.4rem 0 0; color: #f2a33a; font-size: 0.82rem; font-weight: 700; } .ds-job { display: grid; grid-template-columns: 1fr auto; column-gap: 0.6rem; align-items: baseline; width: 80%; padding: 0.45rem 0.6rem; background: #e9f0ee; color: #0e0f0f; border-radius: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.45); } .ds-job:hover { background: #ffffff; box-shadow: 0 0 0 2px #ffffff, 0 8px 22px rgba(0,0,0,0.6); } .ds-job-name { font-weight: 700; font-size: 0.98rem; } .ds-job-kwh { font-size: 0.8rem; font-weight: 600; opacity: 0.75; }"
+      "refersTo": "metric-tile-carbon",
+      "description": "Carbon and water savings tiles: icon + colour + big tabular number.",
+      "html": "<div class=\"ds-tiles\"><div class=\"ds-tile ds-c\"><p class=\"ds-tl\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\"/><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\"/></svg> CO₂ saved</p><p class=\"ds-tn\">530<span>kg · 14%</span></p></div><div class=\"ds-tile ds-w\"><p class=\"ds-tl\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z\"/></svg> Water saved</p><p class=\"ds-tn\">1,798<span>L · 14%</span></p></div></div>",
+      "css": ".ds-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;}.ds-tile{border-radius:16px;padding:16px}.ds-c{background:rgba(209,250,229,.6)}.ds-w{background:rgba(219,234,254,.6)}.ds-tl{display:flex;align-items:center;gap:6px;margin:0;font-size:13px;font-weight:600}.ds-c .ds-tl{color:var(--carbon,#059669)}.ds-w .ds-tl{color:var(--water,#2563eb)}.ds-tn{margin:4px 0 0;font-size:32px;line-height:1;font-weight:600;letter-spacing:-.025em;font-variant-numeric:tabular-nums}.ds-c .ds-tn{color:#065f46}.ds-w .ds-tn{color:#1e40af}.ds-tn span{margin-left:4px;font-size:14px;font-weight:500;color:var(--muted-foreground,#6b6f7a)}"
     },
     {
-      "name": "Savings Readout",
-      "kind": "custom",
-      "description": "Bare stencil numeral under a 6px quantity-coloured rule; never a tile.",
-      "html": "<div class=\"ds-readout\"><span class=\"ds-readout-label\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><circle cx=\"12\" cy=\"12\" r=\"3.2\" fill=\"currentColor\"/></svg>CO₂ saved</span><span class=\"ds-readout-num\">530<small>kg</small></span><span class=\"ds-readout-pct\">14% less than business as usual</span></div>",
-      "css": ".ds-readout { display: flex; flex-direction: column; gap: 0.35rem; padding-top: 1rem; border-top: 6px solid currentColor; color: #2dd4bf; max-width: 26rem; } .ds-readout-label { display: inline-flex; align-items: center; gap: 0.5rem; font: 700 1.05rem/1.2 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; } .ds-readout-num { font-family: \"Big Shoulders Stencil Display\", \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-weight: 800; font-size: 5rem; line-height: 0.95; letter-spacing: 0.01em; } .ds-readout-num small { font-family: \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-size: 0.36em; font-weight: 700; margin-left: 0.35rem; letter-spacing: 0.04em; text-transform: uppercase; } .ds-readout-pct { color: #e6eae8; font: 400 1.05rem/1.5 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; }"
+      "name": "Widget Card",
+      "kind": "card",
+      "refersTo": "widget-card",
+      "description": "White planner widget on the grey well: 22px corners, hairline ring, near-flat at rest.",
+      "html": "<div class=\"ds-well\"><section class=\"ds-widget\"><h3>Savings vs business as usual</h3><p>One heading, one big number, one grey line.</p></section></div>",
+      "css": ".ds-well{background:rgba(245,246,248,.6);padding:16px;border-radius:28px}.ds-widget{font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;background:#fff;color:var(--foreground,#0b0b0f);border-radius:22px;padding:20px;box-shadow:inset 0 0 0 1px var(--border,#e7e8ec),0 1px 2px rgba(0,0,0,.12);transition:box-shadow .3s}.ds-widget:hover{box-shadow:inset 0 0 0 1px var(--border,#e7e8ec),0 28px 60px -16px rgba(0,0,0,.25)}.ds-widget h3{margin:0;font-size:20px;font-weight:600;letter-spacing:-.025em}.ds-widget p{margin:8px 0 0;font-size:13px;color:var(--muted-foreground,#6b6f7a)}"
     },
     {
-      "name": "State Grammar Legend",
-      "kind": "custom",
-      "description": "Solid enamel = real IBM hardware; hatched = simulator; dashed = baseline (amber business as usual, neutral random).",
-      "html": "<div class=\"ds-legend\"><span><i class=\"ds-sw ds-sw-solid\"></i>Real IBM hardware</span><span><i class=\"ds-sw ds-sw-hatch\"></i>Simulator</span><span><i class=\"ds-dash ds-dash-amber\"></i>Business as usual</span><span><i class=\"ds-dash ds-dash-neutral\"></i>Random guessing</span></div>",
-      "css": ".ds-legend { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; color: #b0b8b5; font: 400 0.92rem/1.4 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; } .ds-legend span { display: inline-flex; align-items: center; gap: 0.5rem; } .ds-sw { display: inline-block; width: 12px; height: 20px; border-radius: 1px; } .ds-sw-solid { background: #e9f0ee; } .ds-sw-hatch { border: 1.5px solid #e9f0ee; background: repeating-linear-gradient(45deg, #e9f0ee 0 1.5px, transparent 1.5px 4.5px); } .ds-dash { display: inline-block; width: 22px; height: 0; border-top: 3px dashed; } .ds-dash-amber { border-color: #f2a33a; } .ds-dash-neutral { border-color: #b0b8b5; }"
+      "name": "Floating Nav",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Sticky translucent pill nav with hairline border and soft float.",
+      "html": "<nav class=\"ds-nav\"><strong>GreenQ</strong><span class=\"ds-links\"><a href=\"#\">Planner</a><a href=\"#\">Quantum proof</a><a href=\"#\">How it works</a><a href=\"#\">Questions</a></span></nav>",
+      "css": ".ds-nav{font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border:1px solid var(--border,#e7e8ec);border-radius:16px;padding:10px 16px;box-shadow:0 4px 20px -10px rgba(15,23,42,.25)}.ds-nav strong{font-size:17px;font-weight:600;letter-spacing:-.025em}.ds-links{display:flex;gap:28px;font-size:14px}.ds-links a{color:var(--muted-foreground,#6b6f7a);text-decoration:none;transition:color .2s}.ds-links a:hover{color:var(--foreground,#0b0b0f)}.ds-links a:focus-visible{outline:2px solid var(--ring,#18181b);outline-offset:2px;border-radius:6px}"
     },
     {
       "name": "Priority Slider",
       "kind": "input",
-      "description": "Horizontal staff from water-deep to carbon-deep; solid enamel hardware stops are badged, hatched stops are simulator; hot-white blade thumb.",
-      "html": "<div class=\"ds-prio\"><div class=\"ds-prio-staff\"></div><span class=\"ds-tick\" style=\"left:4%\"></span><span class=\"ds-tick ds-tick-hw\" style=\"left:50%\"><b class=\"ds-badge\">Real IBM hardware</b></span><span class=\"ds-tick\" style=\"left:96%\"></span><input class=\"ds-range\" type=\"range\" min=\"0\" max=\"10\" value=\"5\" aria-label=\"Priority\"></div>",
-      "css": ".ds-prio { position: relative; height: 112px; } .ds-prio-staff { position: absolute; left: 0; right: 0; top: 54px; height: 44px; background: linear-gradient(to right, #1c3f80, #1d201f 50%, #0d5c54); border: 1px solid rgba(228,232,230,0.28); border-radius: 2px; } .ds-tick { position: absolute; bottom: 14px; width: 6px; height: 18px; transform: translateX(-50%); border: 1px solid rgba(233,240,238,0.55); background: repeating-linear-gradient(45deg, rgba(233,240,238,0.55) 0 1.5px, transparent 1.5px 4px); } .ds-tick-hw { width: 10px; height: 44px; background: #e9f0ee; border-color: #e9f0ee; } .ds-badge { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); white-space: nowrap; font: 700 0.8rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: #0e0f0f; background: #e9f0ee; padding: 0.42rem 0.6rem; border-radius: 2px; } .ds-range { position: absolute; left: 0; right: 0; top: 44px; width: 100%; height: 64px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; } .ds-range::-webkit-slider-runnable-track { height: 64px; background: transparent; } .ds-range::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 64px; border-radius: 3px; background: #ffffff; border: 3px solid #0e0f0f; box-shadow: 0 6px 18px rgba(0,0,0,0.55), 0 0 0 1px #ffffff; transition: transform 0.2s cubic-bezier(0.16,1,0.3,1); } .ds-range:active::-webkit-slider-thumb { transform: scaleY(1.06); } .ds-range:focus-visible { outline: none; } .ds-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px #0e0f0f, 0 0 0 7px #ffffff; }"
-    },
-    {
-      "name": "Staff Gauge",
-      "kind": "custom",
-      "description": "Signature reservoir staff: deep-tone E-ladder on white enamel, amber dashed business-as-usual mark, hatched saved span, quantity-coloured level, and the mandatory 'not from zero' caption.",
-      "html": "<figure class=\"ds-gauge\"><svg viewBox=\"0 0 230 400\" width=\"115\" height=\"200\" aria-hidden=\"true\"><defs><pattern id=\"ds-h\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"10\" stroke=\"#2dd4bf\" stroke-width=\"3\" stroke-opacity=\"0.55\"/></pattern></defs><rect x=\"18\" y=\"20\" width=\"194\" height=\"360\" fill=\"rgba(0,0,0,0.32)\" stroke=\"rgba(228,232,230,0.14)\"/><rect x=\"92\" y=\"28\" width=\"66\" height=\"344\" fill=\"#e9f0ee\"/><g fill=\"#0f766e\"><rect x=\"97\" y=\"60\" width=\"7\" height=\"40\"/><rect x=\"97\" y=\"60\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"76\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"92\" width=\"28\" height=\"8\"/><rect x=\"146\" y=\"160\" width=\"7\" height=\"40\"/><rect x=\"125\" y=\"160\" width=\"28\" height=\"8\"/><rect x=\"125\" y=\"176\" width=\"28\" height=\"8\"/><rect x=\"125\" y=\"192\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"260\" width=\"7\" height=\"40\"/><rect x=\"97\" y=\"260\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"276\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"292\" width=\"28\" height=\"8\"/></g><rect x=\"18\" y=\"110\" width=\"194\" height=\"130\" fill=\"url(#ds-h)\"/><line x1=\"10\" x2=\"220\" y1=\"110\" y2=\"110\" stroke=\"#f2a33a\" stroke-width=\"3\" stroke-dasharray=\"12 8\"/><line x1=\"10\" x2=\"220\" y1=\"240\" y2=\"240\" stroke=\"#2dd4bf\" stroke-width=\"4\"/></svg><figcaption>kg CO₂ · scale 3,000–3,800 kg, not from zero</figcaption></figure>",
-      "css": ".ds-gauge { margin: 0; display: inline-flex; flex-direction: column; align-items: center; gap: 0.4rem; background: #0e0f0f; padding: 1rem; } .ds-gauge figcaption { color: #b0b8b5; font: 400 0.95rem/1.4 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; }"
+      "refersTo": "",
+      "description": "Water-to-carbon range: blue to slate to emerald track, white thumb.",
+      "html": "<div class=\"ds-prio\"><div class=\"ds-ends\"><span class=\"ds-wt\">Save water</span><span class=\"ds-ct\">Cut carbon</span></div><input class=\"ds-range\" type=\"range\" min=\"0\" max=\"20\" value=\"10\" aria-label=\"Priority between saving water and cutting carbon\"></div>",
+      "css": ".ds-prio{font-family:'Inter Variable',ui-sans-serif,system-ui,sans-serif;}.ds-ends{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:8px}.ds-wt{color:var(--water,#2563eb)}.ds-ct{color:var(--carbon,#059669)}.ds-range{appearance:none;-webkit-appearance:none;background:transparent;width:100%;height:36px;cursor:pointer}.ds-range::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--water,#2563eb),#94a3b8 50%,var(--carbon,#059669))}.ds-range::-moz-range-track{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--water,#2563eb),#94a3b8 50%,var(--carbon,#059669))}.ds-range::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-9px;width:28px;height:28px;border-radius:999px;background:#fff;border:1px solid var(--border,#e7e8ec);box-shadow:0 2px 8px rgba(0,0,0,.18)}.ds-range::-moz-range-thumb{width:28px;height:28px;border-radius:999px;background:#fff;border:1px solid var(--border,#e7e8ec);box-shadow:0 2px 8px rgba(0,0,0,.18)}.ds-range:focus-visible{outline:none}.ds-range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ring,#18181b)}"
     }
   ],
   "narrative": {
-    "northStar": "Night at the Dam",
-    "overview": "GreenQ's numbers are read off painted staff gauges, the way an engineer reads a reservoir level by torchlight: a wet-concrete near-black ground, white enamel plates with alternating E-marks, stencilled numerals, and a level line that draws down from a business-as-usual mark to the optimised mark. The point of the world is that savings are *measured*, not claimed; every quantity sits on a scale with a stated window and a stated source.\n\nDensity is presentation-grade: built to be read on a 1080p recording or a projector, so type is large, contrast is high, and each section carries one fast read. Colour is semantic, never decorative. Two enamel tones each own exactly one quantity (teal for carbon, blue for water), amber owns only the baseline and overload, and white enamel carries the evidence state. The ground is plain: no grid, no texture, no glow. Depth comes from the recessed sluice bays and the enamel plates sitting on them, not from cards floating in space.\n\nThe world refuses the dark KPI-tile dashboard with charts in cards. Readouts are bare numerals under a thick coloured rule; charts are gauges, levels and ledgers.",
+    "northStar": "The Clean Ledger",
+    "overview": "GreenQ is a white page with almost nothing on it except the evidence. A white ground, soft grey wells, one quiet sans-serif, and two meaning colours that never swap roles: emerald for carbon, blue for water. The style is light, simple and premium, inspired by the Waymark template's calm SaaS landing rhythm (recreated, never copied): a centred two-tone headline, a floating miniature of the product, then the product itself framed like an app window.\n\nDensity is low on purpose. Each surface carries one heading, one or two big numbers, and a single line of grey explanation. The page is mostly watched rather than operated, so motion carries meaning: job blocks slide between sites, savings count up, the trade-off curve draws itself in. Nothing moves for decoration, and reduced-motion preferences turn every animation into an instant state change.\n\nHonesty is a visual job here. Every number on screen is read from `results/ui_data.json`; illustrative inputs wear an amber ILLUSTRATIVE tag; real IBM hardware results wear dark, solid chips labelled \"IBM\", so a viewer can tell measured, simulated and illustrative apart at a glance.",
     "keyCharacteristics": [
-      "Neutral wet-concrete near-black ground; panels are flat tonal steps, hairline-ruled.",
-      "White enamel as the material of record: staff plates, job plates, hardware marks, primary action.",
-      "Condensed uppercase display and stencil numerals against a hyperlegible reading sans.",
-      "One state grammar for evidence: solid, hatched, dashed.",
-      "Single-meaning colour: teal = carbon, blue = water, amber = business as usual / overload.",
-      "Exponential ease-out motion; settled state is always readable; reduced motion respected."
+      "White ground, soft grey (#f5f6f8) wells, hairline borders; no dark mode.",
+      "Two meaning colours, each paired with one icon: emerald + leaf = carbon, blue + droplet = water.",
+      "Two-tone headlines: a black statement line, then a 45%-opacity grey follow-up line.",
+      "Large rounded containers (16–28px) with soft, wide, low-opacity shadows.",
+      "Big tabular numbers, short grey captions, very little text.",
+      "Motion only where it explains something."
     ],
     "rules": [
-      { "name": "The One Meaning Rule", "body": "Teal is only ever carbon and blue is only ever water. Neither colour is used for brand, emphasis, links or state.", "section": "colors" },
-      { "name": "The Amber Is the Old Way Rule", "body": "Amber is reserved for business-as-usual and overload marks. It never marks a success, a highlight, or another baseline: random guessing is a neutral dashed `text-2` stroke, not amber.", "section": "colors" },
-      { "name": "The Deep E Rule", "body": "E-marks on the white enamel staff use the deep tones (`carbon-e-mark`, `water-e-mark`), never the bright `carbon`/`water`, so the ladder reads at a distance.", "section": "colors" },
-      { "name": "The Plain Ground Rule", "body": "The ground is neutral wet-concrete near-black with no decorative grid, noise, texture or gradient wash.", "section": "colors" },
-      { "name": "The Stencil Is for Measurements Rule", "body": "The stencil face sets numbers that were measured or computed (savings, gauge marks, percentages, step counts), plus the wordmark. Words in headings use the non-stencil display cut.", "section": "typography" },
-      { "name": "The Mono Is Evidence Rule", "body": "Mono appears only on identifiers a juror could look up: job IDs, backend names, file paths, the cost equation.", "section": "typography" },
-      { "name": "The Recess, Not Float Rule", "body": "Containers are cut into the concrete (inset shadow, hairline), never lifted as glowing cards. Lift is reserved for enamel objects that move.", "section": "elevation" },
-      { "name": "The State Grammar Rule", "body": "One encoding everywhere: **solid enamel** = real IBM hardware; **hatched** (45° enamel hatch with an enamel outline) = simulator or no hardware run; **dashed** = baseline (amber dash for business as usual, neutral `text-2` dash for random guessing). Every chart, slider tick, swatch and legend uses this grammar, and each view carries a legend for it.", "section": "shapes" },
-      { "name": "The Not From Zero Rule", "body": "The gauge window does not start at zero, so every gauge caption states its window and the words \"not from zero\" (e.g. \"scale 3,000–3,800 kg, not from zero\"). No gauge ships without it.", "section": "components" }
+      {
+        "name": "The One Meaning Rule",
+        "body": "Emerald means carbon, blue means water, and each always travels with its icon (leaf, droplet). Neither colour is ever used as generic \"success\" or \"link\" colour on a data surface; if a figure is not CO₂ or litres, it is not green or blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Provenances Rule",
+        "body": "Real IBM hardware is near-black and solid with the word \"IBM\"; the noiseless simulator is a lighter, translucent emerald; random guessing is a dashed grey outline with no fill. Illustrative inputs carry the amber tag. A viewer must be able to tell measured from simulated from illustrative without reading a legend twice.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Invented Number Rule",
+        "body": "Every figure rendered comes from `results/ui_data.json`. Colour and type may emphasise a number; they never stand in for one.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Tone Headline Rule",
+        "body": "Section and hero headlines are two short sentences: the first in ink, the second as a block line in ink at 45% opacity. The grey line completes the thought; it is never a tagline floating above it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every changing number uses tabular numerals so count-ups and slider sweeps do not jitter.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline Plus Haze Rule",
+        "body": "Every raised surface pairs a 1px border-colour ring with a soft, wide shadow. No heavy, hard or offset shadows.",
+        "section": "elevation"
+      }
     ],
     "dos": [
-      "**Do** encode evidence with the State Grammar: solid enamel for real IBM hardware, hatched for simulator, dashed for baselines, with a legend in each view.",
-      "**Do** keep teal for carbon and blue for water, and use the deep tones (`carbon-e-mark`, `water-e-mark`) for E-marks on the white staff.",
-      "**Do** caption every gauge with its window and \"not from zero\".",
-      "**Do** set measured numbers in the stencil face and identifiers in mono.",
-      "**Do** open blocks with thick rules (6px or 3px) rather than boxing them.",
-      "**Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for transitions, with a readable settled state and a reduced-motion path.",
-      "**Do** keep one hot-white accent per moment: focus, the thumb, or the plate that just moved."
+      "**Do** keep the ground white and the wells soft grey (#f5f6f8); let 1px hairlines and soft shadows separate surfaces.",
+      "**Do** pair carbon with emerald and the leaf icon, and water with blue and the droplet icon, every time.",
+      "**Do** show real IBM hardware as solid near-black with the word \"IBM\", the simulator as lighter translucent emerald, and random guessing as a dashed outline.",
+      "**Do** tag every illustrative input with the amber ILLUSTRATIVE chip.",
+      "**Do** read every number from `results/ui_data.json` and set it in tabular numerals.",
+      "**Do** write headlines as two short sentences, the second in 45% ink.",
+      "**Do** reserve motion for meaning (job blocks sliding, count-ups, curve draw-in) and make every animation instant under prefers-reduced-motion."
     ],
     "donts": [
-      "**Don't** use amber for anything but business-as-usual and overload; random guessing is a neutral dashed `text-2` stroke.",
-      "**Don't** add a decorative grid, noise, texture or gradient wash to the ground.",
-      "**Don't** build dark KPI tiles or charts in cards; readouts are bare numerals under a rule, charts are gauges, levels and ledgers.",
-      "**Don't** use teal or blue for brand, links, emphasis or state.",
-      "**Don't** start a gauge at zero silently or drop its caption.",
-      "**Don't** use glyph or emoji icons; icons are authored 24px SVG strokes at one weight."
+      "**Don't** use emerald or blue for anything that is not carbon or water.",
+      "**Don't** show an invented number, or an illustrative one without its tag.",
+      "**Don't** add decorative motion, parallax or looping ornament beyond the hero miniature's schedule swap.",
+      "**Don't** introduce a dark theme, heavy or hard offset shadows, or sharp corners.",
+      "**Don't** add paragraphs where a number and a single grey line will do.",
+      "**Don't** copy Waymark's assets, copy or exact layouts; recreate the calm, not the page."
     ]
   }
 }

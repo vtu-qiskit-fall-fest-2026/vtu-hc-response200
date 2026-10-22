@@ -1,297 +1,310 @@
 ---
 name: GreenQ
-description: Savings read off painted staff gauges at night at a dam; measured, not claimed.
+description: Quantum-assisted placement of data-centre jobs for less carbon and less water, shown on a light, quiet page.
 colors:
-  ground: "#0e0f0f"
-  ground-2: "#121414"
-  ground-deep: "#0a0b0b"
-  concrete: "#171918"
-  concrete-2: "#1d201f"
-  line: "rgba(228, 232, 230, 0.14)"
-  line-strong: "rgba(228, 232, 230, 0.28)"
-  enamel: "#e9f0ee"
-  enamel-naive: "#cfd8d6"
-  ink-on-enamel: "#0e0f0f"
-  hot: "#ffffff"
-  text: "#e6eae8"
-  text-2: "#b0b8b5"
-  text-3: "#8b9491"
-  carbon: "#2dd4bf"
-  carbon-ink: "#5eead4"
-  carbon-deep: "#0d5c54"
-  carbon-e-mark: "#0f766e"
-  water: "#5b9dff"
-  water-ink: "#8cbcff"
-  water-deep: "#1c3f80"
-  water-e-mark: "#1d4ed8"
-  amber: "#f2a33a"
-  amber-ink: "#1a1206"
+  carbon: "#059669"
+  carbon-soft: "#d1fae5"
+  carbon-ink: "#065f46"
+  water: "#2563eb"
+  water-soft: "#dbeafe"
+  overload: "#e11d48"
+  overload-soft: "#fff1f2"
+  illustrative-ink: "#92400e"
+  illustrative-soft: "#fffbeb"
+  background: "#ffffff"
+  foreground: "#0b0b0f"
+  muted: "#f5f6f8"
+  muted-foreground: "#6b6f7a"
+  border: "#e7e8ec"
+  ring: "#18181b"
+  slate-neutral: "#94a3b8"
 typography:
   display:
-    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
-    fontSize: "clamp(3.4rem, 6.3vw, 6rem)"
-    fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "-0.01em"
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "62px"
+    fontWeight: 600
+    lineHeight: 1.04
+    letterSpacing: "-0.035em"
+    fontFeature: "\"cv11\", \"ss01\""
   headline:
-    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
-    fontSize: "clamp(2.6rem, 4.4vw, 4.6rem)"
-    fontWeight: 800
-    lineHeight: 0.95
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "44px"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.03em"
   title:
-    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
-    fontSize: "1.7rem"
-    fontWeight: 700
-    lineHeight: 1.05
-    letterSpacing: "0.02em"
-  numeral:
-    fontFamily: "Big Shoulders Stencil Display, Big Shoulders Display, Arial Narrow, sans-serif"
-    fontSize: "clamp(3.6rem, 6vw, 6rem)"
-    fontWeight: 800
-    lineHeight: 0.95
-    letterSpacing: "0.01em"
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "20px"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "-0.025em"
+  metric:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "40px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.025em"
+    fontFeature: "\"tnum\""
   body:
-    fontFamily: "Atkinson Hyperlegible Next, Segoe UI, system-ui, sans-serif"
-    fontSize: "1rem"
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: 1.55
-    fontFeature: "\"tnum\" 1"
-  lede:
-    fontFamily: "Atkinson Hyperlegible Next, Segoe UI, system-ui, sans-serif"
-    fontSize: "clamp(1.1rem, 1.3vw, 1.45rem)"
-    fontWeight: 400
-    lineHeight: 1.55
+    lineHeight: 1.625
   label:
-    fontFamily: "Atkinson Hyperlegible Next, Segoe UI, system-ui, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 700
-    letterSpacing: "0.06em"
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 500
+    lineHeight: 1.4
   mono:
     fontFamily: "JetBrains Mono, ui-monospace, Menlo, monospace"
-    fontSize: "0.86em"
-    fontWeight: 500
-    letterSpacing: "0"
+    fontSize: "12.5px"
+    fontWeight: 400
+    lineHeight: 1.4
 rounded:
-  hairline: "1px"
-  sm: "2px"
-  md: "4px"
+  sm: "6px"
+  md: "8px"
+  lg: "12px"
+  xl: "16px"
+  widget: "22px"
+  2xl: "24px"
+  frame: "28px"
+  full: "9999px"
 spacing:
-  page: "clamp(1rem, 4.2vw, 5rem)"
-  gap: "clamp(1rem, 2vw, 2.25rem)"
-  section-y: "clamp(3rem, 6vw, 6.5rem)"
-  bay-gap: "8px"
+  xs: "4px"
+  sm: "8px"
+  md: "12px"
+  lg: "20px"
+  xl: "24px"
+  section: "96px"
+  container: "1150px"
 components:
   button-primary:
-    backgroundColor: "{colors.enamel}"
-    textColor: "{colors.ink-on-enamel}"
-    typography: "{typography.body}"
-    rounded: "{rounded.md}"
-    padding: "1rem 1.4rem"
-  button-primary-hover:
-    backgroundColor: "{colors.hot}"
-    textColor: "{colors.ink-on-enamel}"
-  button-ghost:
-    backgroundColor: "transparent"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-    padding: "0.75rem 1.1rem"
-  segmented-button:
-    backgroundColor: "transparent"
-    textColor: "{colors.text-2}"
+    backgroundColor: "{colors.carbon}"
+    textColor: "{colors.background}"
+    rounded: "{rounded.xl}"
+    padding: "12px 20px"
     typography: "{typography.label}"
-    padding: "0.85rem 1.3rem"
-  segmented-button-on:
-    backgroundColor: "{colors.enamel}"
-    textColor: "{colors.ink-on-enamel}"
-  board:
-    backgroundColor: "{colors.ground-2}"
-    rounded: "{rounded.md}"
-    padding: "clamp(1rem, 1.6vw, 1.6rem)"
-  sluice-bay:
-    backgroundColor: "{colors.concrete}"
+  button-dark:
+    backgroundColor: "{colors.foreground}"
+    textColor: "{colors.background}"
+    rounded: "{rounded.xl}"
+    padding: "8px 14px"
+  button-soft:
+    backgroundColor: "{colors.muted}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.xl}"
+    padding: "12px 20px"
+  segmented-tab:
+    backgroundColor: "{colors.muted}"
+    textColor: "{colors.muted-foreground}"
+    rounded: "{rounded.full}"
+    padding: "6px 16px"
+  segmented-tab-active:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.full}"
+  chip-ibm:
+    backgroundColor: "{colors.foreground}"
+    textColor: "{colors.background}"
+    rounded: "{rounded.full}"
+    padding: "4px 10px"
+  chip-illustrative:
+    backgroundColor: "{colors.illustrative-soft}"
+    textColor: "{colors.illustrative-ink}"
     rounded: "{rounded.sm}"
-    padding: "0.7rem"
-  job-plate:
-    backgroundColor: "{colors.enamel}"
-    textColor: "{colors.ink-on-enamel}"
+    padding: "2px 6px"
+  chip-overload:
+    backgroundColor: "{colors.overload-soft}"
+    textColor: "{colors.overload}"
     rounded: "{rounded.sm}"
-    padding: "0.45rem 0.6rem"
-  job-plate-naive:
-    backgroundColor: "{colors.enamel-naive}"
-    textColor: "{colors.ink-on-enamel}"
-  job-plate-moved:
-    backgroundColor: "{colors.hot}"
-    textColor: "{colors.ink-on-enamel}"
-  hardware-badge:
-    backgroundColor: "{colors.enamel}"
-    textColor: "{colors.ink-on-enamel}"
-    rounded: "{rounded.sm}"
-    padding: "0.42rem 0.6rem"
-  baseline-tag:
-    backgroundColor: "{colors.amber}"
-    textColor: "{colors.amber-ink}"
-    rounded: "{rounded.sm}"
+    padding: "2px 6px"
+  metric-tile-carbon:
+    backgroundColor: "{colors.carbon-soft}"
+    textColor: "{colors.carbon-ink}"
+    rounded: "{rounded.xl}"
+    padding: "16px"
+  metric-tile-water:
+    backgroundColor: "{colors.water-soft}"
+    textColor: "{colors.water}"
+    rounded: "{rounded.xl}"
+    padding: "16px"
+  widget-card:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.widget}"
+    padding: "20px"
+  section-card:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.2xl}"
+    padding: "24px"
+  nav-bar:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.muted-foreground}"
+    rounded: "{rounded.xl}"
+    padding: "10px 16px"
 ---
 
 # Design System: GreenQ
 
 ## Overview
 
-**Creative North Star: "Night at the Dam"**
+**Creative North Star: "The Clean Ledger"**
 
-GreenQ's numbers are read off painted staff gauges, the way an engineer reads a reservoir level by torchlight: a wet-concrete near-black ground, white enamel plates with alternating E-marks, stencilled numerals, and a level line that draws down from a business-as-usual mark to the optimised mark. The point of the world is that savings are *measured*, not claimed; every quantity sits on a scale with a stated window and a stated source.
+GreenQ is a white page with almost nothing on it except the evidence. A white ground, soft grey wells, one quiet sans-serif, and two meaning colours that never swap roles: emerald for carbon, blue for water. The style is light, simple and premium, inspired by the Waymark template's calm SaaS landing rhythm (recreated, never copied): a centred two-tone headline, a floating miniature of the product, then the product itself framed like an app window.
 
-Density is presentation-grade: built to be read on a 1080p recording or a projector, so type is large, contrast is high, and each section carries one fast read. Colour is semantic, never decorative. Two enamel tones each own exactly one quantity (teal for carbon, blue for water), amber owns only the baseline and overload, and white enamel carries the evidence state. The ground is plain: no grid, no texture, no glow. Depth comes from the recessed sluice bays and the enamel plates sitting on them, not from cards floating in space.
+Density is low on purpose. Each surface carries one heading, one or two big numbers, and a single line of grey explanation. The page is mostly watched rather than operated, so motion carries meaning: job blocks slide between sites, savings count up, the trade-off curve draws itself in. Nothing moves for decoration, and reduced-motion preferences turn every animation into an instant state change.
 
-The world refuses the dark KPI-tile dashboard with charts in cards. Readouts are bare numerals under a thick coloured rule; charts are gauges, levels and ledgers.
+Honesty is a visual job here. Every number on screen is read from `results/ui_data.json`; illustrative inputs wear an amber ILLUSTRATIVE tag; real IBM hardware results wear dark, solid chips labelled "IBM", so a viewer can tell measured, simulated and illustrative apart at a glance.
 
 **Key Characteristics:**
-- Neutral wet-concrete near-black ground; panels are flat tonal steps, hairline-ruled.
-- White enamel as the material of record: staff plates, job plates, hardware marks, primary action.
-- Condensed uppercase display and stencil numerals against a hyperlegible reading sans.
-- One state grammar for evidence: solid, hatched, dashed.
-- Single-meaning colour: teal = carbon, blue = water, amber = business as usual / overload.
-- Exponential ease-out motion; settled state is always readable; reduced motion respected.
+- White ground, soft grey (#f5f6f8) wells, hairline borders; no dark mode.
+- Two meaning colours, each paired with one icon: emerald + leaf = carbon, blue + droplet = water.
+- Two-tone headlines: a black statement line, then a 45%-opacity grey follow-up line.
+- Large rounded containers (16–28px) with soft, wide, low-opacity shadows.
+- Big tabular numbers, short grey captions, very little text.
+- Motion only where it explains something.
 
 ## Colors
 
-A near-neutral night palette where three hues each carry exactly one meaning and white enamel carries the proof.
+A near-monochrome light palette with two strictly semantic accents and two signal colours.
 
 ### Primary
-- **Gauge Enamel** (`enamel`): the material of record. Staff-gauge plates, job plates, the hardware swatch and level fills, section and display headings, the primary button, the active segment. On it, text is always `ink-on-enamel`.
-- **Hot White** (`hot`): the one hot accent at a time. Focus rings (3px outline, 3px offset), the slider thumb, the job plate that just moved, primary-button hover.
+- **Carbon Emerald** (carbon): carbon dioxide and only carbon. CO₂ figures, the leaf icon, the "Cut carbon" end of the priority slider, the cost layer of the circuit, the grid-carbon intensity bar, the trade-off curve's current-point marker. Its pale wash (carbon-soft) backs CO₂ metric tiles and the "best 10%" decile; its deep ink (carbon-ink) sets large CO₂ numbers.
 
 ### Secondary
-- **Carbon Teal** (`carbon`): carbon only. Readout rules, gauge level line and well tint, carbon key marks, the "when" glyph in How It Works. `carbon-ink` is its lighter text tone for labels and titles on the ground; `carbon-deep` is the carbon end of the priority staff; `carbon-e-mark` is the deep teal for E-marks painted on the white staff, where the bright teal would wash out.
-- **Water Blue** (`water`): water only, with the same family: `water-ink` for text, `water-deep` for the water end of the priority staff, `water-e-mark` for E-marks on the white staff.
+- **Water Blue** (water): water and only water. Litre figures, the droplet icon, the "Save water" end of the slider, the circuit's mixer column. Its pale wash (water-soft) backs water metric tiles.
 
 ### Tertiary
-- **Baseline Amber** (`amber`): business-as-usual and overload marks only. The dashed baseline line on gauges, the BUSINESS AS USUAL tag (text in `amber-ink`), the naive board heading, overloaded bay border, warning hatch and warning text.
+- **Overload Rose** (overload / overload-soft): a lane or site holding more than one job. Rose ring on the lane, "Overloaded" chip, the "Site A overloaded at night" pill in the hero miniature.
+- **Illustrative Amber** (illustrative-ink / illustrative-soft): the ILLUSTRATIVE tag and the word "illustrative" in captions. It marks invented-for-demonstration inputs and nothing else.
 
 ### Neutral
-- **Wet Concrete** (`ground`): page ground. `ground-2` lifts boards and the ledger one step; `ground-deep` is the footer.
-- **Poured Concrete** (`concrete`, `concrete-2`): sluice bays, cells in How It Works art, scrollbar thumb, the neutral centre of the priority staff.
-- **Seam Lines** (`line`, `line-strong`): hairline borders, section dividers, table rules, gridlines. `line-strong` for interactive outlines and axis baselines.
-- **Readable Greys** (`text`, `text-2`, `text-3`): body, secondary copy and captions, fine print and axis labels. `text-2` is also the stroke for the random-guessing baseline.
-- **Faded Enamel** (`enamel-naive`): job plates on the business-as-usual board, one step duller than the GreenQ board.
+- **Paper White** (background): page ground and every card surface.
+- **Near-Black Ink** (foreground): headings, body numbers, dark buttons, and the IBM-hardware identity (chips, histogram bars, rings on the curve, measurement gates).
+- **Soft Grey Well** (muted): segmented-control tracks, inner panels, list rows, the dashboard backdrop, FAQ band (often at 60–70% opacity).
+- **Quiet Grey Text** (muted-foreground): captions, axis labels, secondary nav links.
+- **Hairline** (border): 1px rings around every card and lane.
+- **Focus Ink** (ring): the 2px focus outline.
+- **Slate Line** (slate-neutral): neutral strokes in the building illustrations, the dashed trade-off curve, the slider's midpoint.
 
 ### Named Rules
-**The One Meaning Rule.** Teal is only ever carbon and blue is only ever water. Neither colour is used for brand, emphasis, links or state.
+**The One Meaning Rule.** Emerald means carbon, blue means water, and each always travels with its icon (leaf, droplet). Neither colour is ever used as generic "success" or "link" colour on a data surface; if a figure is not CO₂ or litres, it is not green or blue.
 
-**The Amber Is the Old Way Rule.** Amber is reserved for business-as-usual and overload marks. It never marks a success, a highlight, or another baseline: random guessing is a neutral dashed `text-2` stroke, not amber.
+**The Three Provenances Rule.** Real IBM hardware is near-black and solid with the word "IBM"; the noiseless simulator is a lighter, translucent emerald; random guessing is a dashed grey outline with no fill. Illustrative inputs carry the amber tag. A viewer must be able to tell measured from simulated from illustrative without reading a legend twice.
 
-**The Deep E Rule.** E-marks on the white enamel staff use the deep tones (`carbon-e-mark`, `water-e-mark`), never the bright `carbon`/`water`, so the ladder reads at a distance.
-
-**The Plain Ground Rule.** The ground is neutral wet-concrete near-black with no decorative grid, noise, texture or gradient wash.
+**The No Invented Number Rule.** Every figure rendered comes from `results/ui_data.json`. Colour and type may emphasise a number; they never stand in for one.
 
 ## Typography
 
-**Display Font:** Big Shoulders Display (with Arial Narrow)
-**Numeral Font:** Big Shoulders Stencil Display (with Big Shoulders Display, Arial Narrow)
-**Body Font:** Atkinson Hyperlegible Next (with Segoe UI, system-ui)
-**Label/Mono Font:** JetBrains Mono, for job IDs, backend names, file paths and the cost equation only
+**Display Font:** Inter Variable (with ui-sans-serif, system-ui)
+**Body Font:** Inter Variable
+**Label/Mono Font:** JetBrains Mono, used only for IBM job IDs and backend names
 
-All four are self-hosted via @fontsource. Root size scales `clamp(16px, 0.5vw + 8.6px, 20px)` so the whole ramp grows on a projector. Body sets tabular numerals globally.
-
-**Character:** Painted-infrastructure condensed caps doing the shouting, a sans designed for low-vision legibility doing the explaining.
+**Character:** One neutral grotesk set tight and semibold at large sizes, with stylistic sets cv11 and ss01 for a cleaner single-storey feel. Mono appears only where the text is a literal identifier someone might copy.
 
 ### Hierarchy
-- **Display** (800, clamp(3.4rem, 6.3vw, 6rem), 0.92, uppercase, max 12ch): the hero headline only, in enamel.
-- **Numeral** (stencil 800, clamp(3.6rem, 6vw, 6rem), 0.95): headline savings readouts, coloured by quantity, with the unit in Display at 0.36em uppercase. The same face at smaller sizes paints gauge numerals (700), the saved-amount plate (800), level-bar values and step counters.
-- **Headline** (800, clamp(2.6rem, 4.4vw, 4.6rem), 0.95, uppercase): section titles, in enamel.
-- **Title** (700, 1.7rem, 1.05, uppercase, 0.02em): sub-panel titles, board titles, footer column heads (1.35rem).
-- **Lede** (400, clamp(1.1rem, 1.3vw, 1.45rem), `text-2`, max 62ch): the one-paragraph read under each section title; key figures in bold enamel.
-- **Body** (400, 1rem, 1.55): explanations, list items, captions.
-- **Label** (700, ~1rem, 0.06em, uppercase): readout labels, segmented buttons, slider end labels, table headers (0.78rem, `text-3`), hardware badges (0.8rem, 0.08em).
+- **Display** (600, 42px → 62px from sm, line-height 1.04, -0.035em): the hero headline only, centred, balanced wrapping.
+- **Headline** (600, 36px → 44px, -0.03em): section openers ("How it works.", "The quantum part, shown.", "Honest answers").
+- **Title** (600, 20px, tracking-tight): widget and card headings; 21px on how-it-works step cards.
+- **Metric** (600, 40px, line-height 1, tabular numerals): savings and priority readouts; 32px in metric tiles, 28px in scene tickers, 24px in proof facts. Units sit beside the number at 13–14px, 500, grey.
+- **Body** (400, 15px, relaxed 1.625): step-card text and FAQ answers, kept to a few lines.
+- **Label** (500–600, 12–13px): captions, chips, legend items, axis text (10–11px inside SVG).
+- **Mono** (400, 12–12.5px): job IDs and backend name.
 
 ### Named Rules
-**The Stencil Is for Measurements Rule.** The stencil face sets numbers that were measured or computed (savings, gauge marks, percentages, step counts), plus the wordmark. Words in headings use the non-stencil display cut.
+**The Two-Tone Headline Rule.** Section and hero headlines are two short sentences: the first in ink, the second as a block line in ink at 45% opacity. The grey line completes the thought; it is never a tagline floating above it.
 
-**The Mono Is Evidence Rule.** Mono appears only on identifiers a juror could look up: job IDs, backend names, file paths, the cost equation.
+**The Tabular Rule.** Every changing number uses tabular numerals so count-ups and slider sweeps do not jitter.
 
 ## Layout
 
-Full-bleed sections with a fluid page gutter (`spacing.page`), separated by a single `line` hairline, vertical padding `spacing.section-y`. Grids use `minmax(0, …fr)` columns and the shared `spacing.gap`.
+A single centred column with a 1150px max container and 16px side padding; narrative sections use 96px vertical padding, with headings held to 640–720px and the FAQ to 760px. The hero is centred text over a 760px floating miniature.
 
-- **First viewport:** a two-column hero at `min-height: 100svh`, roughly 59/41 (1.18fr / 0.82fr). Left column stacks wordmark and team line, headline, lede, two savings readouts side by side, then the primary action and evidence status. Right column holds the two staff gauges at `min(76svh, 860px)` tall.
-- **Sections:** a head (Headline + Lede, max 70rem; on the boards section the head goes side by side) then content. Boards are a 2-up pair; proof is 1.15fr / 0.85fr; How It Works is four equal steps each topped by a 6px enamel rule; footer is three columns over a team line.
-- **Rhythm:** heavy top rules (6px for readouts and steps, 3px for honest-note items) start blocks instead of boxes. Bay grids use a tight 8px gap.
-- **Breakpoints:** at 1100px the hero stacks (gauges below copy, 64svh), proof stacks, steps go 2-up, footer 2-up. At 760px everything goes single-column, gauges 52svh, the gauge tag shortens to AS USUAL, slider badges shorten, secondary bay metadata hides, segmented control stretches full width.
+The planner is a framed app window (28px corners, grey title bar with three dots) holding a draggable widget grid: 2 columns with 420px cells and 14px gaps on desktop, collapsing to 1 column at 900px and below. Priority and scene widgets span full width; savings and runs sit side by side beneath. Inside widgets, padding is 20px and gaps are 12–20px.
+
+How it works is a three-column grid on md and up (one column on mobile), each step a 240px tinted well (emerald-50, amber-50, blue-50) holding a white mini-card. The footer is two columns (1.2fr / 1fr). A soft two-colour radial glow (emerald left, blue right) sits behind the planner band; it is the only background gradient.
 
 ## Elevation & Depth
 
-Mostly flat, with depth borrowed from concrete and enamel rather than floating cards. Surfaces step tonally (`ground` → `ground-2` → `concrete`) and are edged with hairlines. Sluice bays are *recessed* (an inner top shadow plus a faint top sheen); enamel job plates sit *on* them with a short drop shadow. Only the moved plate and the slider thumb lift further.
+Depth is soft and ambient: wide, negative-spread shadows tinted slate (rgba(15,23,42,…)) at low opacity, combined with a 1px hairline ring on every surface. Larger and more important containers float higher. Widgets rest almost flat and lift dramatically only while being dragged.
 
 ### Shadow Vocabulary
-- **Bay recess** (`box-shadow: inset 0 10px 18px -12px rgba(0,0,0,0.8)`): every sluice bay.
-- **Plate rest** (`box-shadow: 0 4px 10px rgba(0,0,0,0.45)`): job plates at rest.
-- **Plate moved** (`box-shadow: 0 0 0 2px #fff, 0 8px 22px rgba(0,0,0,0.6)`): the job plate that changed bay.
-- **Thumb lift** (`box-shadow: 0 6px 18px rgba(0,0,0,0.55), 0 0 0 1px #fff`): the priority slider thumb; on focus it becomes a double ring (`0 0 0 4px` ground, `0 0 0 7px` hot).
+- **Nav float** (`box-shadow: 0 4px 20px -10px rgba(15,23,42,0.25)`): the sticky, translucent (85% white, backdrop blur) nav bar.
+- **Showcase float** (`box-shadow: 0 24px 60px -28px rgba(15,23,42,0.35)`): the hero miniature.
+- **App frame** (`box-shadow: 0 30px 80px -30px rgba(15,23,42,0.35)`): the planner window.
+- **Mini-card** (`box-shadow: 0 10px 30px -12px rgba(15,23,42,0.25)`): white cards inside step wells.
+- **Carbon glow** (`box-shadow: 0 8px 24px -10px rgba(5,150,105,0.7)`): the primary CTA only.
+- **Widget rest / lifted** (`0 1px 2px rgba(0,0,0,0.12)` / `0 28px 60px -16px rgba(0,0,0,0.45), 0 10px 24px -8px rgba(0,0,0,0.3)`): draggable widgets, interpolated while held.
+- **Active segment** (Tailwind shadow-sm): the selected tab in a segmented control.
 
 ### Named Rules
-**The Recess, Not Float Rule.** Containers are cut into the concrete (inset shadow, hairline), never lifted as glowing cards. Lift is reserved for enamel objects that move.
+**The Hairline Plus Haze Rule.** Every raised surface pairs a 1px border-colour ring with a soft, wide shadow. No heavy, hard or offset shadows.
 
 ## Shapes
 
-Engineering-plate geometry: near-square corners throughout. Panels, buttons and the ledger take 4px; bays, plates, badges and tags 2px; bars and swatches 1px. Thick straight rules (6px, 3px) open blocks instead of enclosing them. Recurring silhouettes are the tall staff plate with an alternating E-ladder, the 45° hatch, and the dashed baseline line.
+Generous, consistent rounding that grows with container size: 6px for chips and tags, 8px for job blocks and bars, 12px for lanes and list rows, 16px for buttons, tiles and inner panels, 22px for widgets, 24px for section cards and step wells, 28px for the app frame. Segmented controls, status pills and dots are fully round. Corners never mix sharp and round on one surface.
 
-### Named Rules
-**The State Grammar Rule.** One encoding everywhere: **solid enamel** = real IBM hardware; **hatched** (45° enamel hatch with an enamel outline) = simulator or no hardware run; **dashed** = baseline (amber dash for business as usual, neutral `text-2` dash for random guessing). Every chart, slider tick, swatch and legend uses this grammar, and each view carries a legend for it.
+The only illustrations are two small line-drawn buildings (an evaporative cooling tower with a plume, an air-cooled chiller block with fans) in slate strokes on pale slate fills, with a single blue droplet. Job blocks are solid rounded bars whose width is proportional to the job's energy.
 
 ## Components
 
 ### Buttons
-Painted, plain, confident.
-- **Shape:** gently squared (4px).
-- **Primary:** enamel fill, near-black ink, Body 600 at 1.05rem, `1rem 1.4rem`, optional trailing 20px stroke icon.
-- **Hover / Focus:** hover goes to hot white and nudges down 1px (0.25s, expo-out). Focus is the global 3px hot-white outline at 3px offset.
-- **Ghost:** transparent with a `line-strong` border, 0.95rem; hover turns the border enamel. Used for secondary actions such as replay and simulator runs.
-- **Disabled/busy:** 0.6 opacity, progress cursor.
+Soft, rounded and quiet; one emphasis per view.
+- **Shape:** gently rounded (16px).
+- **Primary:** carbon emerald fill, white 15px medium text, 12px × 20px, carbon glow; lifts 1px on hover. Used once, for "Open the planner".
+- **Dark:** near-black fill, white 14px text, 8px × 14px; hover drops to 85% opacity. The nav's "Play story".
+- **Soft:** grey well fill, ink text; hover darkens the well. The hero's "Play the 20-second story".
+- **Icon buttons:** 6px padding, 8px radius, grey icon turning ink on a white hover fill (copy job ID).
+- **Focus:** 2px ink outline, 2px offset, globally.
 
-### Segmented Control
-- **Style:** a 4px-radius `line-strong` outline split by hairlines; uppercase Label type in `text-2`.
-- **State:** the active segment fills enamel with near-black ink; hover lifts text to enamel. Goes full width on phones.
+### Chips
+- **IBM hardware:** near-black pill, white 12px semibold text, a small emerald status dot ("Run on real IBM hardware"); under the slider, tiny 10px bold "IBM" tags on hardware stops.
+- **Illustrative:** amber-50 fill, amber-800 10px semibold uppercase text with a hairline amber ring, 6px radius.
+- **Overloaded:** rose-50 fill, rose-700 11px semibold text, 6px radius.
+- **Neutral info:** grey well pill with grey text ("Best of all 256, by exhaustive check").
 
 ### Cards / Containers
-- **Board:** `ground-2`, hairline border, 4px radius, fluid padding. Title colour signals the side: amber on business as usual, enamel on GreenQ.
-- **Sluice bay:** `concrete` with a faint top sheen, hairline border, 2px radius, Bay recess shadow. **Overload:** amber border plus a 135° amber warning hatch at 12% and an amber note.
-- **Ledger:** `ground-2` table panel, hairline border, 4px radius, uppercase `text-3` headers, right-aligned numerals, horizontal scroll under 62rem.
+- **Corner Style:** 22px (widgets), 24px (section cards), 16px (inner tiles).
+- **Background:** white cards on a grey well; inner tiles in grey well or the carbon/water soft washes.
+- **Shadow Strategy:** see Elevation; widgets rest nearly flat.
+- **Border:** 1px hairline ring always.
+- **Internal Padding:** 20px widgets, 24px section cards, 16px tiles.
 
 ### Inputs / Fields
-- **Priority slider:** a horizontal staff, 44px tall, gradient `water-deep` → `concrete-2` → `carbon-deep`, 2px radius. Stops are ticks: hardware stops are tall solid enamel (10×44px) with an enamel HARDWARE badge above; simulator stops are short hatched ticks; the selected simulator stop fills `text`. The thumb is a 30×64px hot-white blade with a 3px near-black border and Thumb lift shadow, scaling 1.06 vertically while dragged.
+- **Priority slider:** a 10px round track running blue → slate → emerald (water on the left, carbon on the right), a 28px white thumb with a hairline border and soft shadow. Ticks mark every setting; hardware settings get taller ink ticks and an "IBM" tag.
+- **Focus:** the thumb gains a white-then-ink double ring.
 
 ### Navigation
-None. The page is a single linear story; the primary action scrolls to the boards.
+A floating, sticky pill bar (16px radius, 12px from the top) of 85% white with backdrop blur and a hairline border. Logo left, four 14px grey links centred (hidden below lg), a ghost "Code" link and the dark "Play story" button right. Links turn ink on hover.
 
-### Staff Gauge (signature)
-A tall SVG river staff: a dark stilling well, a white enamel plate with an alternating E-ladder in the deep quantity tone, stencil numerals on alternating sides with a ground-coloured halo, an amber dashed business-as-usual line and tag, and the quantity-coloured level line. The span between the two marks is hatched in the quantity colour and labelled with the saved amount on a dark plate outlined in that colour. On load the level draws down from the baseline (2.2s, 0.6s delay, `cubic-bezier(0.16, 1, 0.3, 1)`); later changes take 0.9s; reduced motion jumps to the settled value. The caption carries title, legend keys and the scale.
+### Segmented Control
+A grey, fully round track with 4px padding; options are round, 14px semibold. The selected option is white with ink text and a small shadow; others are grey and turn ink on hover. Used for Business as usual / GreenQ and for the proof's priority setting.
 
-**The Not From Zero Rule.** The gauge window does not start at zero, so every gauge caption states its window and the words "not from zero" (e.g. "scale 3,000–3,800 kg, not from zero"). No gauge ships without it.
+### Two Data Centres Scene (signature)
+Two grey site panels, each with its building illustration, PUE and water figures, and an ILLUSTRATIVE tag, holding a white day lane (amber sun) and night lane (indigo moon). Coloured job blocks sit in lanes and slide between them with a spring when the schedule changes; moved blocks get a small white "moved" badge. Below, carbon and water tickers count from business-as-usual to the current value.
 
-### Savings Readout
-A 6px rule in the quantity colour, an uppercase label with its authored icon (molecule ring for carbon, drop for water, so the two differ by shape as well as colour), a stencil numeral with a display-cut unit, and a plain-text comparison line in `text`.
+### Quantum Proof
+A white circuit card drawn in SVG: grey wires, ink H gates and measurement boxes, emerald Rz/ZZ gates over a pale emerald cost band, blue Rx gates over a pale blue mixer band. Beside a histogram of ten deciles (best tenth tinted pale emerald), three series follow the Three Provenances Rule, with grey well fact tiles holding one big number and one sentence each.
 
-### Job Plate
-An enamel plate with the job name (700), energy in kWh and an optional "from" line; width scales with job size (minimum 66%). It slides between bays with a spring (stiffness 140, damping 22) via shared layout; no motion under reduced motion.
-
-### Evidence Levels
-Horizontal bars on a quartered gridline track, labels in a 34% column, stencil values trailing the bar. Fills follow the State Grammar Rule.
+### FAQ
+One white rounded card with hairline dividers; 16px medium questions with a rotating chevron; answers expand by height and opacity.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** encode evidence with the State Grammar: solid enamel for real IBM hardware, hatched for simulator, dashed for baselines, with a legend in each view.
-- **Do** keep teal for carbon and blue for water, and use the deep tones (`carbon-e-mark`, `water-e-mark`) for E-marks on the white staff.
-- **Do** caption every gauge with its window and "not from zero".
-- **Do** set measured numbers in the stencil face and identifiers in mono.
-- **Do** open blocks with thick rules (6px or 3px) rather than boxing them.
-- **Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for transitions, with a readable settled state and a reduced-motion path.
-- **Do** keep one hot-white accent per moment: focus, the thumb, or the plate that just moved.
+- **Do** keep the ground white and the wells soft grey (#f5f6f8); let 1px hairlines and soft shadows separate surfaces.
+- **Do** pair carbon with emerald and the leaf icon, and water with blue and the droplet icon, every time.
+- **Do** show real IBM hardware as solid near-black with the word "IBM", the simulator as lighter translucent emerald, and random guessing as a dashed outline.
+- **Do** tag every illustrative input with the amber ILLUSTRATIVE chip.
+- **Do** read every number from `results/ui_data.json` and set it in tabular numerals.
+- **Do** write headlines as two short sentences, the second in 45% ink.
+- **Do** reserve motion for meaning (job blocks sliding, count-ups, curve draw-in) and make every animation instant under prefers-reduced-motion.
 
 ### Don't:
-- **Don't** use amber for anything but business-as-usual and overload; random guessing is a neutral dashed `text-2` stroke.
-- **Don't** add a decorative grid, noise, texture or gradient wash to the ground.
-- **Don't** build dark KPI tiles or charts in cards; readouts are bare numerals under a rule, charts are gauges, levels and ledgers.
-- **Don't** use teal or blue for brand, links, emphasis or state.
-- **Don't** start a gauge at zero silently or drop its caption.
-- **Don't** use glyph or emoji icons; icons are authored 24px SVG strokes at one weight.
+- **Don't** use emerald or blue for anything that is not carbon or water.
+- **Don't** show an invented number, or an illustrative one without its tag.
+- **Don't** add decorative motion, parallax or looping ornament beyond the hero miniature's schedule swap.
+- **Don't** introduce a dark theme, heavy or hard offset shadows, or sharp corners.
+- **Don't** add paragraphs where a number and a single grey line will do.
+- **Don't** copy Waymark's assets, copy or exact layouts; recreate the calm, not the page.
