@@ -1,0 +1,10 @@
+[project]
+name = "greenq"
+version = "0.1.0"
+description = "Quantum (QAOA) scheduler that places flexible data-centre jobs to cut carbon and water."
+requires-python = ">=3.12"
+license = "MIT"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

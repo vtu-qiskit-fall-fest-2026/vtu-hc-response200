@@ -1,21 +1,24 @@
-# Core quantum SDK
-qiskit>=1.0,<2.0
-qiskit-ibm-runtime>=0.30
+# Verified together on Python 3.12 in a clean venv (2026-10-22).
+# Qiskit 2.x is what IBM's current Runtime docs use; the template's qiskit<2.0 pin was dropped.
 
-# Local simulator
-qiskit-aer>=0.15
+# Quantum
+qiskit==2.6.0
+qiskit-ibm-runtime==0.50.0
+qiskit-aer==0.18.0
 
-# Optional add-ons -- remove the ones you do not use
-qiskit-algorithms>=0.3
-qiskit-optimization>=0.6
-qiskit-nature>=0.7
+# Numerics and plotting
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.0.6
+matplotlib==3.11.2
+pylatexenc==2.11        # needed by Qiskit's circuit drawer
 
-# Numerics, data and plotting
-numpy>=1.26
-scipy>=1.11
-pandas>=2.1
-matplotlib>=3.8
-scikit-learn>=1.4
+# Demo app
+streamlit==1.66.1
+plotly==7.1.0
 
-# Testing
-pytest>=8.0
+# Config (reads the IBM token from .env)
+python-dotenv==1.2.4
+
+# Tests
+pytest==9.1.1
