@@ -16,6 +16,7 @@ pylatexenc==2.11        # needed by Qiskit's circuit drawer
 # Demo: React UI served by FastAPI (Node.js 20+ needed once, to build web/)
 fastapi==0.159.1
 uvicorn==0.54.0
+httpx==0.28.1          # LLM calls (server/llm.py); also used by the FastAPI TestClient
 
 # Fallback demo app (Streamlit)
 streamlit==1.66.1
@@ -26,4 +27,3 @@ python-dotenv==1.2.4
 
 # Tests
 pytest==9.1.1
-httpx==0.28.1          # FastAPI TestClient

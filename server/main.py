@@ -3,10 +3,15 @@
 * GET  /api/health     -> {"ok": true, "frontend_built": bool}
 * GET  /api/data       -> results/ui_data.json (everything the UI shows; saved results only)
 * POST /api/simulate   -> optional: retrain + sample QAOA on the local simulator for one weight
+* POST /api/custom     -> the presenter's own jobs, solved live (brute force + QAOA simulator)
+* POST /api/explain    -> "why this schedule" lines        (server/llm.py: live model, cache or template)
+* POST /api/ask        -> short grounded answer to a question
+* POST /api/parse-jobs -> plain-English jobs -> validated job table
+* GET  /api/narration  -> pre-generated story captions
 * /                    -> the built React app (web/dist)
 
-Nothing here talks to IBM. The UI works from /api/data alone; /api/simulate is
-an optional extra and the UI must not depend on it.
+Nothing here talks to IBM. The UI works from /api/data alone; every other
+endpoint is an extra with a quiet fallback. The LLM key stays on the server.
 """
 from __future__ import annotations
 
@@ -22,6 +27,8 @@ from fastapi.staticfiles import StaticFiles
 from typing import Literal
 
 from pydantic import BaseModel, Field
+
+from server import llm
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "results" / "ui_data.json"
@@ -171,6 +178,46 @@ def _custom(req: CustomRequest) -> dict:
 @app.post("/api/custom")
 def custom(req: CustomRequest) -> dict:
     return _QISKIT.submit(_custom, req).result(timeout=60)
+
+
+# ----------------------------------------------------------------- language model (explains, never decides)
+
+class ExplainRequest(BaseModel):
+    preset: Literal["flexible", "mixed", "rigid"] = "flexible"
+    w: float = Field(0.5, ge=0.0, le=1.0)
+
+
+class AskRequest(ExplainRequest):
+    question: str = Field(..., min_length=1, max_length=300)
+
+
+class ParseRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=800)
+
+
+@app.post("/api/explain")
+def explain(req: ExplainRequest) -> dict:
+    return llm.explain(load_data(), req.preset, req.w)
+
+
+@app.post("/api/ask")
+def ask(req: AskRequest) -> dict:
+    return llm.ask(load_data(), req.preset, req.w, req.question)
+
+
+@app.post("/api/parse-jobs")
+def parse_jobs(req: ParseRequest) -> dict:
+    return llm.parse_jobs(req.text, lambda j: CustomJob(**j).model_dump())
+
+
+@app.get("/api/narration")
+def narration() -> dict:
+    return llm.narration()
+
+
+@app.get("/api/llm-status")
+def llm_status() -> dict:
+    return llm.public_status()
 
 
 if (DIST / "index.html").exists():
