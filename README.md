@@ -2,7 +2,7 @@
 
 # Response200
 
-**VTU-QFF-HC-0137** &nbsp;|&nbsp; Tier: **Online**
+**VTU-QFF-HC-0137** &nbsp;|&nbsp; Tier: **Online** &nbsp;|&nbsp; **Track 6: Quantum Applications for Climate Change & Sustainability**
 
 </div>
 
@@ -15,6 +15,7 @@
 | **Team** | Response200 |
 | **Team ID** | VTU-QFF-HC-0137 |
 | **Tier** | Online |
+| **Track** | Track 6: Quantum Applications for Climate Change & Sustainability |
 | **Repository** | [vtu-hc-response200](https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-response200.git) |
 | **Organisation** | [vtu-qiskit-fall-fest-2026](https://github.com/vtu-qiskit-fall-fest-2026) |
 | **Event** | VTU-QFF Hackathon — VTU-Qiskit Fall Fest 2026 |
@@ -41,20 +42,10 @@
 
 ## 👥 Team Members (GitHub IDs)
 
-> Members are added to this repository as **collaborators** and must accept the
-> GitHub invitation before they can push. Add your GitHub username below.
-
 | # | Name | GitHub Username | Role |
 | :-- | :--- | :--- | :--- |
-| 1 | _Add your name_ | _your-github-username_ | _Team Lead_ |
-| 2 | _Add your name_ | _your-github-username_ | _Developer_ |
-| 3 | _Add your name_ | _your-github-username_ | _Developer_ |
-
-<!--
-Optional: add a plain list instead of the table above.
-- @username1
-- @username2
--->
+| 1 | Jagpreet Singh | [jagpreetsingh02](https://github.com/jagpreetsingh02) | Team Lead |
+| 2 | Ramandeep Singh | [Raman-2915](https://github.com/Raman-2915) | Developer |
 
 ---
 
