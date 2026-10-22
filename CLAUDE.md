@@ -11,7 +11,7 @@ Read this whole file before doing anything. It tells you what we are building, t
   - **Code freeze: Thu Oct 23, 3:00 PM.** No commits after this. Our own target is to stop pushing code by **2:00 PM**.
   - **Solution PPT due: Oct 23, 6:00 PM** on quc.vtu.ac.in (the user submits it).
   - Shortlist of the Top 50 is picked from the **PPT and the repo**. The video and live demo matter for the final round.
-- The user is a 2nd-year BTech CSE student with strong web and AI/ML skills and **no quantum background**. Teammates may be in the same position.
+- The user is a 2nd-year BTech CSE student with no quantum background who relies on Claude Code to write and debug the implementation. Do not assume they can fix code themselves. Explain what you did and why in plain language, give exact commands to run, and keep every step simple and recoverable.
 
 ## 2. The problem (outcome, not design)
 
