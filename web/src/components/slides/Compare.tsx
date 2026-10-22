@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Droplet, Leaf } from "lucide-react";
 import { useApp } from "@/lib/data";
@@ -71,7 +71,12 @@ function RulesPanel() {
 }
 
 export function CompareScreen() {
-  const [tab, setTab] = useState<Tab>("methods");
+  const { flash } = useApp();
+  const [tab, setTab] = useState<Tab>(() => (TABS.some((t) => t.value === flash) ? (flash as Tab) : "methods"));
+  // "Show me" from the Ask screen opens the right tab.
+  useEffect(() => {
+    if (flash && TABS.some((t) => t.value === flash)) setTab(flash as Tab);
+  }, [flash]);
   const reduced = prefersReducedMotion();
   const panel: Record<Tab, () => React.ReactNode> = {
     methods: MethodsPanel, scaling: ScalingPanel, rules: RulesPanel, cities: CitiesPanel, forecasts: ForecastPanel,

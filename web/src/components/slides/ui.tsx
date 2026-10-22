@@ -66,7 +66,7 @@ export function Info({ children, side = "bottom" }: { children: ReactNode; side?
           initial={{ opacity: 0, y: side === "bottom" ? -4 : 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.16 }}
-          className={`absolute left-1/2 z-50 w-[300px] -translate-x-1/2 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-snug font-normal tracking-normal text-white normal-case shadow-xl ${side === "bottom" ? "top-8" : "bottom-8"}`}
+          className={`absolute left-1/2 z-50 w-[380px] -translate-x-1/2 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-snug font-normal tracking-normal text-white normal-case shadow-xl ${side === "bottom" ? "top-8" : "bottom-8"}`}
         >
           {children}
         </motion.span>
