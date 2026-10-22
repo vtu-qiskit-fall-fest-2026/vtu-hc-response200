@@ -184,6 +184,22 @@ Raw results with backend, job ID, timestamps, transpiled-circuit stats and all c
 
 </details>
 
+### Compared with classical methods (fair baselines)
+
+Same objective, same instance, balanced setting (`python scripts/run_baselines.py` → `results/baselines.json`; water-only and carbon-only give the same picture):
+
+| Method | Gap to true best | CO₂ | Water | Time |
+|---|---|---|---|---|
+| Business as usual | +16.6% | 3,726 kg | 12,687 L | — |
+| Greedy | 0% (true best) | 3,196 kg | 10,889 L | 0.03 ms |
+| Simulated annealing | 0% (true best) | 3,196 kg | 10,889 L | 17 ms |
+| Random sampling (4,000) | 0% (true best) | 3,196 kg | 10,889 L | 23 ms |
+| QAOA, simulator | 0% (true best) | 3,196 kg | 10,889 L | 424 ms |
+| QAOA, IBM ibm_marrakesh | 0% (true best) | 3,196 kg | 10,889 L | 3 s QPU (queue not counted) |
+| True best (brute force) | 0% (true best) | 3,196 kg | 10,889 L | 1 ms |
+
+**Plain reading:** on this 4-job instance every method reaches the true best, and the classical methods are much faster. Even 4,000 random guesses find it. Gaps are measured on the blended objective. We don't claim the quantum computer wins; the claim is a correct formulation, validated end to end on real hardware, as a path to larger problems. Runtimes are medians on the demo laptop.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -299,7 +315,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 
 ## ⚠️ Limitations (honest)
 
-- **No quantum advantage is claimed.** 256 schedules are solved instantly by brute force, which is how we grade the quantum result. Our claim is a correct, compact formulation, validated end to end on real hardware with measured accuracy.
+- **No quantum advantage is claimed.** 256 schedules are solved instantly by brute force, which is how we grade the quantum result. Greedy, simulated annealing and even random sampling also reach the true best at this size, and they are faster (see Results). Our claim is a correct, compact formulation, validated end to end on real hardware with measured accuracy.
 - **Small instance.** 4 jobs, 2 sites, 2 slots (8 qubits). Circuit depth grows with the number of job pairs, and hardware noise limits the size today.
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.

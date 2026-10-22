@@ -65,3 +65,11 @@ The user found the dark staff-gauge UI heavy and hard to understand, and asked f
 - **Not copied:** Waymark's look was recreated in our own code, not copied (hackathon rules forbid copied solutions); it is credited as inspiration.
 - **Unchanged:** the quantum core, API and data. Honesty lines were kept: hardware stops marked, mitigation "no consistent gain", illustrative data labelled, no advantage claim. Hero copy says "emits less CO₂ and uses less water", not "less energy", because the air-cooled site can use more electricity.
 - **Supersedes:** D13 (staff gauge).
+
+### D15. Fair baselines: greedy, simulated annealing, random sampling (Oct 22)
+Brute force as the only comparison isn't enough for a jury, so `greenq/classical.py` adds three competitors on the exact same objective:
+- **Greedy:** largest job first, each taking the cheapest option given the jobs already placed.
+- **Simulated annealing:** single-job moves, 3 seeded restarts.
+- **Random sampling:** the best of 4,000 random schedules, the same shot budget QAOA gets. This was added deliberately, to show that "found the optimum" isn't evidence at this size.
+
+Result on the 4-job instance, all three weights: every method reaches the true best. Greedy takes 0.03 ms, annealing about 17 ms, random sampling about 23 ms, QAOA on the simulator about 0.4 s (train + sample), and IBM hardware 3 s of QPU per job (queue not counted). The UI's "Is it better than simple methods?" section states this plainly. Larger instances are compared in the scaling study.

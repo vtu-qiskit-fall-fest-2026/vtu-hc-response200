@@ -88,6 +88,9 @@ No. With 256 schedules a laptop checks them all in a millisecond, which is how w
 **With 4,000 shots, wouldn't random guessing also find the best of 256 schedules?**
 Usually, yes, and we say so. That's why we don't use "it found the optimum" as evidence. We use how the distribution shifts toward good schedules (approximation ratio, P(optimal)) compared with random. That is the signal that grows in importance when the search space is too big to sample at random.
 
+**Is QAOA better than a simple greedy rule?**
+Not on this instance. We tested it: greedy, simulated annealing and even 4,000 random guesses all find the true best, and much faster (greedy takes 0.03 ms). That's shown on the page ("Is it better than simple methods?"). The point of the project is a correct, compact quantum formulation that runs end to end on real hardware, so it can be tried on larger problems as hardware improves. It's not a speed-up today.
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 

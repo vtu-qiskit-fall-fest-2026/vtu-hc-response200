@@ -173,6 +173,29 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 10b: Compared with simple methods
+**On slide**
+- Same objective, same 256 schedules (balanced setting):
+
+| Method | Gap to true best | CO₂ | Water | Time |
+|---|---|---|---|---|
+| Business as usual | +16.6% | 3,726 kg | 12,687 L | — |
+| Greedy | 0% (true best) | 3,196 kg | 10,889 L | 0.03 ms |
+| Simulated annealing | 0% (true best) | 3,196 kg | 10,889 L | 17 ms |
+| Random sampling (4,000) | 0% (true best) | 3,196 kg | 10,889 L | 23 ms |
+| QAOA, simulator | 0% (true best) | 3,196 kg | 10,889 L | 424 ms |
+| QAOA, IBM ibm_marrakesh | 0% (true best) | 3,196 kg | 10,889 L | 3 s QPU (queue not counted) |
+| True best (brute force) | 0% (true best) | 3,196 kg | 10,889 L | 1 ms |
+
+- **Every method reaches the true best here, and the classical ones are faster.** Even 4,000 random guesses find it.
+- Our claim: a validated quantum formulation and a path to scale, **not** an advantage.
+
+**Visual:** the "Is it better than simple methods?" table from the demo.
+
+**Say:** "We compared against greedy, simulated annealing and plain random guessing on the same objective. At four jobs they all find the best schedule, faster than the quantum computer. We show that on purpose: it's the honest baseline for our claim."
+
+---
+
 ## Slide 11: Data honesty and limitations
 **On slide**
 - **Cited:** grid carbon 0.710 kg/kWh (CEA v21.0, FY 2024-25); fossil-only 0.961 (CEA); coal plant water 2.60 L/kWh (Macknick et al. 2012, NREL)

@@ -35,6 +35,9 @@ For: whoever records the YouTube demo. The viewers are the hackathon jury, so it
 
 **Say:** "We ran six jobs on IBM hardware, eighteen seconds of quantum time, and every result is saved in our repository with its job ID."
 
+### 3:00-3:10 · Compared with simple methods (scroll to "Is it better than simple methods?")
+**Say:** "We also compared against greedy, simulated annealing and random guessing. At this size they all find the best schedule, faster. We say that openly."
+
 ### 3:10-3:40 · Honest close (scroll to How it works, Honest answers, footer)
 **Say:** "To be clear: at this size a laptop checks all 256 schedules instantly, and we use it as our referee. We claim no quantum advantage. The grid carbon and power-plant water figures are cited; the sites and jobs are illustrative. What we show is a correct, compact quantum formulation of a real sustainability problem, tested on real IBM hardware. That's GreenQ, by Team Response200."
 
@@ -42,4 +45,4 @@ For: whoever records the YouTube demo. The viewers are the hackathon jury, so it
 
 **Checklist:** every number spoken matches the screen (530 kg, ~1,800 L, 8 vs 16 qubits, 10%, 18–23%, 6 jobs, 18 s) · 3–4 minutes at 1080p · YouTube link added to README and PPT slide 12.
 
-_Note: if later features add new panels (for example "Methods compared" or "How it scales"), this script is updated to match what ships._
+_Note: this script follows what ships; sections are added as features land._
