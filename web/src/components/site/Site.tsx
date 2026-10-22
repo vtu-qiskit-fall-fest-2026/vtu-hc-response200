@@ -41,6 +41,7 @@ export function Nav() {
     ["#dashboard", "Planner"],
     ["#proof", "Quantum proof"],
     ["#methods", "Vs. classical"],
+    ["#scaling", "Scaling"],
     ["#how", "How it works"],
     ["#faq", "Questions"],
   ];

@@ -1,0 +1,364 @@
+{
+ "weight": 0.5,
+ "sites": 2,
+ "slots": 2,
+ "backend_layout": "fake_marrakesh",
+ "note": "Jobs beyond the 4 demo jobs are illustrative (seeded). Runtimes are on the demo laptop.",
+ "sizes": [
+  {
+   "jobs": 4,
+   "qubits": 8,
+   "schedules": 256,
+   "hamiltonian_terms": 31,
+   "two_qubit_gates": 114,
+   "depth": 247,
+   "two_qubit_depth": 76,
+   "transpile_seconds": 0.2,
+   "qaoa_ideal": {
+    "approx_ratio": 0.841,
+    "p_optimal": 0.01527,
+    "share_best10": 0.3354,
+    "train_ms": 201.7,
+    "grid": 40,
+    "gamma": 0.32110434207623145,
+    "beta": 2.87701476412391
+   },
+   "random": {
+    "approx_ratio": 0.7427,
+    "p_optimal": 0.003906,
+    "share_best10": 0.1016
+   },
+   "exhaustive_ms": 0.09,
+   "qaoa_noisy": {
+    "approx_ratio": 0.832,
+    "share_best10": 0.295,
+    "p_optimal": 0.01225,
+    "found_optimum": true,
+    "seconds": 6.2
+   },
+   "classical": {
+    "greedy": {
+     "gap_pct": -0.0,
+     "ms": 0.065
+    },
+    "annealing": {
+     "gap_pct": -0.0,
+     "ms": 58.5
+    },
+    "random_4000": {
+     "gap_pct": -0.0,
+     "ms": 42.8
+    }
+   },
+   "seconds_total": 6.7
+  },
+  {
+   "jobs": 5,
+   "qubits": 10,
+   "schedules": 1024,
+   "hamiltonian_terms": 46,
+   "two_qubit_gates": 188,
+   "depth": 336,
+   "two_qubit_depth": 106,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.8737,
+    "p_optimal": 0.00382,
+    "share_best10": 0.3793,
+    "train_ms": 372.9,
+    "grid": 40,
+    "gamma": 0.3126928039439669,
+    "beta": 2.8813129740458936
+   },
+   "random": {
+    "approx_ratio": 0.7883,
+    "p_optimal": 0.000977,
+    "share_best10": 0.0996
+   },
+   "exhaustive_ms": 0.13,
+   "qaoa_noisy": {
+    "approx_ratio": 0.8625,
+    "share_best10": 0.3033,
+    "p_optimal": 0.00425,
+    "found_optimum": true,
+    "seconds": 7.6
+   },
+   "classical": {
+    "greedy": {
+     "gap_pct": 0.081,
+     "ms": 0.074
+    },
+    "annealing": {
+     "gap_pct": -0.0,
+     "ms": 76.0
+    },
+    "random_4000": {
+     "gap_pct": -0.0,
+     "ms": 44.0
+    }
+   },
+   "seconds_total": 8.1
+  },
+  {
+   "jobs": 6,
+   "qubits": 12,
+   "schedules": 4096,
+   "hamiltonian_terms": 64,
+   "two_qubit_gates": 280,
+   "depth": 432,
+   "two_qubit_depth": 136,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.893,
+    "p_optimal": 0.00109,
+    "share_best10": 0.3573,
+    "train_ms": 895.8,
+    "grid": 40,
+    "gamma": 0.3064502447832121,
+    "beta": 2.9083194244367077
+   },
+   "random": {
+    "approx_ratio": 0.825,
+    "p_optimal": 0.000244,
+    "share_best10": 0.1001
+   },
+   "exhaustive_ms": 0.33,
+   "qaoa_noisy": {
+    "approx_ratio": 0.8847,
+    "share_best10": 0.2772,
+    "p_optimal": 0.001,
+    "found_optimum": true,
+    "seconds": 34.8
+   },
+   "classical": {
+    "greedy": {
+     "gap_pct": 1.415,
+     "ms": 0.072
+    },
+    "annealing": {
+     "gap_pct": -0.0,
+     "ms": 85.5
+    },
+    "random_4000": {
+     "gap_pct": 0.028,
+     "ms": 79.8
+    }
+   },
+   "seconds_total": 35.9
+  },
+  {
+   "jobs": 7,
+   "qubits": 14,
+   "schedules": 16384,
+   "hamiltonian_terms": 85,
+   "two_qubit_gates": 411,
+   "depth": 692,
+   "two_qubit_depth": 225,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.9024,
+    "p_optimal": 0.00036,
+    "share_best10": 0.365,
+    "train_ms": 3950.7,
+    "grid": 40,
+    "gamma": 0.2939716611270095,
+    "beta": 2.925822532000683
+   },
+   "random": {
+    "approx_ratio": 0.8386,
+    "p_optimal": 6.1e-05,
+    "share_best10": 0.1
+   },
+   "exhaustive_ms": 0.98,
+   "qaoa_noisy": {
+    "approx_ratio": 0.8908,
+    "share_best10": 0.2587,
+    "p_optimal": 0.0,
+    "found_optimum": false,
+    "seconds": 173.1
+   },
+   "classical": {
+    "greedy": {
+     "gap_pct": 2.143,
+     "ms": 0.066
+    },
+    "annealing": {
+     "gap_pct": 0.0,
+     "ms": 71.4
+    },
+    "random_4000": {
+     "gap_pct": 0.085,
+     "ms": 39.3
+    }
+   },
+   "seconds_total": 823.0
+  },
+  {
+   "jobs": 8,
+   "qubits": 16,
+   "schedules": 65536,
+   "hamiltonian_terms": 109,
+   "two_qubit_gates": 518,
+   "depth": 619,
+   "two_qubit_depth": 196,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.9059,
+    "p_optimal": 0.00035,
+    "share_best10": 0.3739,
+    "train_ms": 7992.3,
+    "grid": 24,
+    "gamma": 0.294917114476824,
+    "beta": 2.9317079185916284
+   },
+   "random": {
+    "approx_ratio": 0.8495,
+    "p_optimal": 4.6e-05,
+    "share_best10": 0.1
+   },
+   "exhaustive_ms": 3.37,
+   "qaoa_noisy": {
+    "approx_ratio": 0.8945,
+    "share_best10": 0.2655,
+    "p_optimal": 0.00025,
+    "found_optimum": true,
+    "seconds": 178.9
+   },
+   "classical": {
+    "greedy": {
+     "gap_pct": 2.408,
+     "ms": 0.088
+    },
+    "annealing": {
+     "gap_pct": 0.147,
+     "ms": 81.4
+    },
+    "random_4000": {
+     "gap_pct": 0.319,
+     "ms": 42.2
+    }
+   },
+   "seconds_total": 187.2
+  },
+  {
+   "jobs": 9,
+   "qubits": 18,
+   "schedules": 262144,
+   "hamiltonian_terms": 136,
+   "two_qubit_gates": 664,
+   "depth": 708,
+   "two_qubit_depth": 226,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.911,
+    "p_optimal": 3e-05,
+    "share_best10": 0.4186,
+    "train_ms": 35720.8,
+    "grid": 24,
+    "gamma": 0.2802881975251628,
+    "beta": 2.9419016354169374
+   },
+   "random": {
+    "approx_ratio": 0.8603,
+    "p_optimal": 4e-06,
+    "share_best10": 0.1
+   },
+   "exhaustive_ms": 16.28,
+   "classical": {
+    "greedy": {
+     "gap_pct": 3.033,
+     "ms": 0.087
+    },
+    "annealing": {
+     "gap_pct": 0.267,
+     "ms": 92.7
+    },
+    "random_4000": {
+     "gap_pct": 0.435,
+     "ms": 49.9
+    }
+   },
+   "seconds_total": 36.0
+  },
+  {
+   "jobs": 10,
+   "qubits": 20,
+   "schedules": 1048576,
+   "hamiltonian_terms": 166,
+   "two_qubit_gates": 828,
+   "depth": 809,
+   "two_qubit_depth": 256,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.9231,
+    "p_optimal": 1e-05,
+    "share_best10": 0.4267,
+    "train_ms": 174387.9,
+    "grid": 24,
+    "gamma": 0.2521640665318772,
+    "beta": 2.9517421229440965
+   },
+   "random": {
+    "approx_ratio": 0.877,
+    "p_optimal": 1e-06,
+    "share_best10": 0.1
+   },
+   "exhaustive_ms": 94.27,
+   "classical": {
+    "greedy": {
+     "gap_pct": 3.036,
+     "ms": 0.102
+    },
+    "annealing": {
+     "gap_pct": 0.131,
+     "ms": 107.1
+    },
+    "random_4000": {
+     "gap_pct": 0.167,
+     "ms": 54.5
+    }
+   },
+   "seconds_total": 188.6
+  },
+  {
+   "jobs": 11,
+   "qubits": 22,
+   "schedules": 4194304,
+   "hamiltonian_terms": 199,
+   "two_qubit_gates": 1010,
+   "depth": 896,
+   "two_qubit_depth": 286,
+   "transpile_seconds": 0.1,
+   "qaoa_ideal": {
+    "approx_ratio": 0.9309,
+    "p_optimal": 0.0,
+    "share_best10": 0.4358,
+    "train_ms": 423328.6,
+    "grid": 14,
+    "gamma": 0.23023730032200007,
+    "beta": 2.9628116200537766
+   },
+   "random": {
+    "approx_ratio": 0.8883,
+    "p_optimal": 0.0,
+    "share_best10": 0.1
+   },
+   "exhaustive_ms": 515.23,
+   "classical": {
+    "greedy": {
+     "gap_pct": 2.63,
+     "ms": 0.12
+    },
+    "annealing": {
+     "gap_pct": 0.068,
+     "ms": 121.4
+    },
+    "random_4000": {
+     "gap_pct": 0.139,
+     "ms": 64.6
+    }
+   },
+   "seconds_total": 425.8
+  }
+ ]
+}

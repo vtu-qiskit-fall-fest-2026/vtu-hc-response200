@@ -4,6 +4,7 @@ import { useStory } from "@/lib/story";
 import { Dashboard } from "@/components/dashboard/Dashboard";
 import { QuantumProof } from "@/components/proof/Proof";
 import { MethodsCompared } from "@/components/proof/Methods";
+import { HowItScales } from "@/components/proof/Scaling";
 import { DashboardBand, Faq, Footer, Hero, HowItWorks, Nav } from "@/components/site/Site";
 import type { FlexPreset, UiData } from "@/types";
 
@@ -57,6 +58,7 @@ function Page({ data }: { data: UiData }) {
         </DashboardBand>
         <QuantumProof />
         <MethodsCompared />
+        <HowItScales />
         <HowItWorks />
         <Faq />
       </main>

@@ -236,6 +236,12 @@ def main() -> None:
         "methods": json.loads((ROOT / "results" / "baselines.json").read_text())
         if (ROOT / "results" / "baselines.json").exists() else None,
         "flex": flex_section(hw_runs),
+        # Feature 4: regional water stress presets (scripts/run_cities.py)
+        "cities": json.loads((ROOT / "results" / "cities.json").read_text())
+        if (ROOT / "results" / "cities.json").exists() else None,
+        # Feature 3: scaling study (scripts/run_scaling.py)
+        "scaling": json.loads((ROOT / "results" / "scaling.json").read_text())
+        if (ROOT / "results" / "scaling.json").exists() else None,
         "totals": {
             "hardware_jobs": sum(1 for r in hw_runs if r.get("status") == "DONE"),
             "quantum_seconds": sum(r.get("quantum_seconds") or 0 for r in hw_runs if r.get("status") == "DONE"),

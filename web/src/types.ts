@@ -83,6 +83,8 @@ export interface UiData {
     curve: { flexible_share: number; subsets: number; co2_saved_pct: number; water_saved_pct: number }[];
     note: string;
   };
+  scaling: Scaling | null;
+  cities: Cities | null;
   methods: {
     instance: string;
     runtimes: string;
@@ -140,3 +142,36 @@ export interface FlexPreset {
   sweep: SweepStop[];
   qaoa?: { ideal: RuleStats; noisy?: RuleStats; hardware?: RuleStats & { backend: string; job_id: string; quantum_seconds: number | null } };
 }
+
+export interface ScalingRow {
+  jobs: number;
+  qubits: number;
+  schedules: number;
+  hamiltonian_terms: number;
+  two_qubit_gates: number;
+  depth: number;
+  qaoa_ideal: { approx_ratio: number; p_optimal: number; share_best10: number; train_ms: number };
+  qaoa_noisy?: { approx_ratio: number; share_best10: number; p_optimal: number; found_optimum: boolean };
+  random: { approx_ratio: number; p_optimal: number; share_best10: number };
+  exhaustive_ms: number;
+  classical: { greedy: { gap_pct: number; ms: number }; annealing: { gap_pct: number; ms: number }; random_4000: { gap_pct: number; ms: number } };
+}
+
+export interface Scaling {
+  weight: number;
+  backend_layout: string;
+  note: string;
+  sizes: ScalingRow[];
+}
+
+export interface CitySite { city: string; state: string; score: number; label: string; multiplier: number }
+export interface CityPreset {
+  key: string;
+  label: string;
+  sites: { evap: CitySite; air: CitySite };
+  grid_multiplier: number;
+  naive: { kg_co2: number; weighted_litres: number; litres: number };
+  sweep: { w: number; schedule: number[]; kg_co2: number; weighted_litres: number; litres: number; same_as_unweighted: boolean }[];
+  qaoa_sim_balanced: { share_best10: number; approx_ratio: number; found_optimum: boolean; optimum_hits: number };
+}
+export interface Cities { source: string; mapping: string; india: { score: number; label: string }; presets: CityPreset[] }
