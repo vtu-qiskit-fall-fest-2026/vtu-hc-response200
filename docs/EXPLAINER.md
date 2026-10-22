@@ -99,3 +99,17 @@ The search space grows as 4^jobs. Qubits grow linearly (2 per job), but circuit 
 
 **Where is the quantum part, exactly?**
 The circuit in `greenq/qaoa.py`, built with Qiskit's `QAOAAnsatz` from our own Hamiltonian, transpiled for the real device and run with `SamplerV2` on IBM hardware. Job IDs are in `results/hardware/`.
+
+## 9. The demo UI (what each part shows, and what to say)
+Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results, so no internet or IBM account is needed.
+
+| Part | What it shows | One line to say |
+|---|---|---|
+| Headline + two gauges | kg CO₂ and litres saved against business as usual. The gauge level drops from the amber mark (business as usual) to the GreenQ mark. | "Same jobs, smarter placement: 530 kg of CO₂ and about 1,800 litres of water saved in this example." |
+| Where each job runs | Two boards (sites × day/night). Left is business as usual, right is GreenQ; jobs slide into their new bays. Amber hatching = an overloaded bay. | "Business as usual piles two big jobs onto one site at night; GreenQ spreads them to cleaner, drier slots." |
+| Priority slider | Water ↔ carbon. The three solid stops marked "Real IBM hardware" ran on ibm_marrakesh. Hatched stops show the best schedule found by checking all 256. | "Move it and the best schedule changes; the three marked stops were run on a real quantum computer." |
+| Is the quantum part real? | Share of shots in the best 10% of schedules (random 10%, hardware 18-23%, ideal simulator 28-34%), where all shots landed, the job ledger with IDs, and four honest notes. | "Twice as good as random guessing on real hardware; noise costs part of the gain; error mitigation didn't help consistently." |
+| How it works | Four steps: 2 qubits per job → cost Hamiltonian → QAOA interference → hardware + brute-force check. | Read the four headings. |
+| Footer | No quantum advantage claimed; what's cited vs illustrative; sources; team. | "A laptop is faster at this size, and we use it as the referee." |
+
+**Solid vs hatched vs dashed:** solid white = real IBM hardware, hatched = simulator (or no hardware run), dashed amber = random guessing or business as usual. If asked "is this real hardware?", point at the solid marks and the job IDs.

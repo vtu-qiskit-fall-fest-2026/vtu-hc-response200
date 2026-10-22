@@ -39,3 +39,21 @@ Streamlit runs each rerun on a new thread. Qiskit 2.6's Rust extension (mimalloc
 
 ### D11. Headline metric for non-experts: share of shots in the best 10% (Oct 22)
 "Approximation ratio" is hard to explain in a minute. "The quantum computer put 19-21% of its shots in the best 10% of schedules; random guessing puts 10%" is easy, and is computed from the same counts.
+
+### D12. New demo UI: React + Vite, served by FastAPI, reading one saved file (Oct 22)
+The user asked for a presentation-ready UI for a 1080p video and a projector. Architecture:
+- `scripts/export_ui_data.py` turns the saved results into one file, `results/ui_data.json`.
+- FastAPI serves that file at `/api/data` and the built React app at `/`.
+- `python -m server` builds the UI on first run (needs Node 20+) and starts everything with one command.
+
+The quantum core (`greenq/`) is unchanged. The UI never computes or fetches anything quantum, so it works offline. An optional `/api/simulate` button retrains and samples on the local simulator; its Qiskit calls run on one persistent thread (see D10). The built `web/dist` and `node_modules` are gitignored; the Streamlit app stays as a fallback.
+
+### D13. Visual direction "Staff Gauge" (Oct 22)
+Chosen by the user from a design round: savings are read off painted river staff gauges (as at Indian dams and in CWC reservoir bulletins).
+- **Gauges:** a level "draws down" from the amber business-as-usual mark to the GreenQ mark. The gauge window doesn't start at zero, and the caption says so.
+- **Board:** sites × slots are concrete bays, with job blocks sized by energy.
+- **Slider:** drawn as a gauge staff. Solid stops = real IBM hardware, hatched = no hardware run. The same solid/hatched/outline grammar marks hardware, simulator and random in the proof panel, so the distinction never relies on colour alone.
+- **Colour roles:** teal is reserved for carbon, blue for water, amber for business as usual and overload.
+- **Fonts:** self-hosted (Big Shoulders stencil for numerals, Atkinson Hyperlegible Next for reading on projectors), so it works offline.
+
+Rejected: a generic dark KPI dashboard (the brief asked to avoid it), a railway departure board (familiar, and its amber identity fights the fixed teal/blue), and a nixie counter and jacquard loom (less clear in one minute).

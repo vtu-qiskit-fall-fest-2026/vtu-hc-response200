@@ -66,7 +66,7 @@
 
 ## 💡 Proposed Solution
 
-**Solution:** GreenQ assigns every flexible job a (site, time slot) so the blended carbon + water footprint is as low as possible. It formulates the schedule as a cost Hamiltonian and solves it with **QAOA built in Qiskit**, on a simulator and on **real IBM Quantum hardware**. A Streamlit demo shows the business-as-usual schedule next to GreenQ's, with kg CO₂ and litres of water saved and a slider that trades carbon against water.
+**Solution:** GreenQ assigns every flexible job a (site, time slot) so the blended carbon + water footprint is as low as possible. It formulates the schedule as a cost Hamiltonian and solves it with **QAOA built in Qiskit**, on a simulator and on **real IBM Quantum hardware**. A web demo (React + FastAPI) shows the business-as-usual schedule next to GreenQ's, with kg CO₂ and litres of water saved, and a slider that trades carbon against water, with the three positions that ran on real IBM hardware marked.
 
 **Key idea:** a **binary "where + when" encoding**, 2 qubits per job. Every measured bitstring is a valid schedule. It needs half the qubits of the textbook one-hot QUBO, about half the two-qubit gates on IBM hardware, and no penalty tuning.
 
@@ -90,7 +90,8 @@ flowchart LR
     G --> I["Noisy simulator<br/>(FakeMarrakesh)"]
     G --> J["IBM hardware<br/>ibm_marrakesh"]
     H & I & J --> K["Decode + score<br/>vs brute-force optimum"]
-    K --> L["Streamlit demo<br/>(reads saved results)"]
+    K --> X["results/ui_data.json<br/>(export of saved results)"]
+    X --> L["Web demo: React UI<br/>served by FastAPI"]
 ```
 
 1. **Input:** 4 flexible jobs × 2 sites (A = evaporative cooling, B = air-cooled chillers) × 2 slots (day, night). Grid carbon and power-plant water figures are cited; site and job figures are **illustrative** (see [greenq/data.py](greenq/data.py)).
@@ -180,8 +181,10 @@ Raw results with backend, job ID, timestamps, transpiled-circuit stats and all c
 | Hardware access | qiskit-ibm-runtime 0.50 (`SamplerV2`, job mode, IBM Quantum Open Plan) |
 | Simulation | Exact statevector (training), Qiskit Aer 0.18 via fake IBM backends (noise) |
 | Optimisation | CVaR objective, SciPy COBYLA |
-| Demo | Streamlit, Plotly |
-| Tests | pytest (includes a headless Streamlit app test) |
+| Demo UI | React 19 + Vite 8 (TypeScript), Motion for animation, self-hosted fonts (Big Shoulders, Atkinson Hyperlegible Next, JetBrains Mono) |
+| Demo server | FastAPI + Uvicorn (serves the built UI and `/api/data`) |
+| Fallback demo | Streamlit + Plotly (`app/streamlit_app.py`) |
+| Tests | pytest: model, Hamiltonian, QAOA, API, and a headless Streamlit app test |
 
 ---
 
@@ -203,8 +206,12 @@ vtu-hc-response200/
 │   └── ibm.py                # IBM Quantum connection (token from .env)
 ├── scripts/
 │   ├── run_sim.py            # train + simulate  -> results/sim/
-│   └── run_hardware.py       # run on IBM hardware -> results/hardware/
-├── app/streamlit_app.py      # demo UI
+│   ├── run_hardware.py       # run on IBM hardware -> results/hardware/
+│   ├── summarize_results.py  # results tables from saved counts
+│   └── export_ui_data.py     # saved results -> results/ui_data.json for the UI
+├── server/                   # FastAPI: /api/data, optional /api/simulate, serves web/dist
+├── web/                      # React + Vite demo UI (source; built into web/dist)
+├── app/streamlit_app.py      # fallback demo (Streamlit)
 ├── results/                  # saved simulator and hardware results (JSON)
 ├── tests/                    # pytest suite
 └── docs/                     # EXPLAINER, DECISIONS, PPT content, screenshots
@@ -217,6 +224,7 @@ vtu-hc-response200/
 ### Prerequisites
 
 - Python **3.12** (tested on 3.12.13; macOS arm64)
+- [Node.js](https://nodejs.org) **20 or newer** (tested on 24.16), needed once to build the web UI
 - [Git](https://git-scm.com/downloads)
 - *Optional, only for new hardware runs:* an [IBM Quantum Platform](https://quantum.cloud.ibm.com/) API key
 
@@ -237,18 +245,25 @@ pip install -r requirements.txt
 pytest -q
 ```
 
-### 3. Launch the demo
+### 3. Launch the demo (one command)
 
 ```bash
-streamlit run app/streamlit_app.py
+python -m server
 ```
 
-The demo reads the saved hardware results in `results/hardware/`, so it works offline and never waits for a quantum queue.
+Then open **http://127.0.0.1:8000**. The first run builds the web UI automatically (`npm ci` + `npm run build` in `web/`, about a minute); later runs start in seconds. Use `python -m server --rebuild` after changing anything in `web/src`.
+
+The demo reads only saved results (`results/ui_data.json`, exported from `results/hardware/` and `results/sim/`), so it works offline and never waits for a quantum queue. The optional "Re-run this setting on the local simulator" button calls the local Qiskit simulator through the server; nothing depends on it.
+
+**Fallback (no Node.js):** `streamlit run app/streamlit_app.py` starts the earlier Streamlit version of the demo.
+
+**Frontend development:** run `python -m server` in one terminal and `cd web && npm run dev` in another (Vite proxies `/api` to the server).
 
 ### 4. Re-run the quantum pipeline (optional)
 
 ```bash
 python scripts/run_sim.py --w 0.5 --reps 1        # train + ideal and noisy simulation
+python scripts/export_ui_data.py                   # refresh the data the web UI shows
 ```
 
 For real hardware, create a `.env` file in the project folder (it is gitignored) containing:
@@ -281,7 +296,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 
 ## 🙏 Credits & References
 
-**Libraries:** [Qiskit](https://github.com/Qiskit/qiskit), [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), [Qiskit IBM Runtime](https://github.com/Qiskit/qiskit-ibm-runtime), [NumPy](https://numpy.org), [SciPy](https://scipy.org), [pandas](https://pandas.pydata.org), [Matplotlib](https://matplotlib.org), [pylatexenc](https://github.com/phfaist/pylatexenc), [Streamlit](https://streamlit.io), [Plotly](https://plotly.com/python/), [python-dotenv](https://github.com/theskumar/python-dotenv), [pytest](https://pytest.org).
+**Libraries:** [Qiskit](https://github.com/Qiskit/qiskit), [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), [Qiskit IBM Runtime](https://github.com/Qiskit/qiskit-ibm-runtime), [NumPy](https://numpy.org), [SciPy](https://scipy.org), [pandas](https://pandas.pydata.org), [Matplotlib](https://matplotlib.org), [pylatexenc](https://github.com/phfaist/pylatexenc), [FastAPI](https://fastapi.tiangolo.com), [Uvicorn](https://www.uvicorn.org), [React](https://react.dev), [Vite](https://vite.dev), [Motion](https://motion.dev), [Fontsource](https://fontsource.org) (Big Shoulders by Patric King, Atkinson Hyperlegible Next by the Braille Institute, JetBrains Mono; all SIL Open Font License), [Streamlit](https://streamlit.io), [Plotly](https://plotly.com/python/), [python-dotenv](https://github.com/theskumar/python-dotenv), [pytest](https://pytest.org).
 **Hardware:** IBM Quantum Platform (Open Plan), device `ibm_marrakesh`.
 
 **Data sources**
