@@ -1,13 +1,13 @@
-import { useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, Atom, Check, ChevronDown, CircleCheck, Cloud, CodeXml, Cpu, Droplets, ShieldCheck } from "lucide-react";
-import type { UiData } from "@/types";
-import { hardwareShareRange, mitigationDeltas } from "@/lib/data";
-import { n0, pct } from "@/format";
+import { useEffect, useState, type ReactNode } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { ArrowRight, Atom, Check, ChevronDown, CircleCheck, CodeXml, Cpu, Droplet, Leaf, Moon, Pause, Play, Sun } from "lucide-react";
+import { hardwareShareRange, mitigationDeltas, signed3, useApp } from "@/lib/data";
+import { n0, pct, prefersReducedMotion } from "@/format";
+import { ChillerBuilding, CoolingTower, Illustrative, JobBlock } from "@/components/dashboard/Scene";
 
 const REPO = "https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-response200";
 
-/* ------------------------------------------------------------------ brand */
+/* ------------------------------------------------------------------ brand + nav */
 
 export function Logo() {
   return (
@@ -22,24 +22,42 @@ export function Logo() {
   );
 }
 
+export function PlayButton({ big = false }: { big?: boolean }) {
+  const { playing, togglePlay } = useApp();
+  return (
+    <button
+      data-story-control
+      onClick={togglePlay}
+      className={`flex items-center gap-2 rounded-2xl font-medium transition-colors ${big ? "bg-muted px-5 py-3 text-[15px] hover:bg-foreground/10" : "bg-foreground px-3.5 py-2 text-[14px] text-white hover:opacity-85"}`}
+    >
+      {playing ? <Pause className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
+      {playing ? "Pause story" : big ? "Play the 20-second story" : "Play story"}
+    </button>
+  );
+}
+
 export function Nav() {
   const links = [
-    ["#dashboard", "Dashboard"],
+    ["#dashboard", "Planner"],
+    ["#proof", "Quantum proof"],
     ["#how", "How it works"],
     ["#faq", "Questions"],
   ];
   return (
     <header className="sticky top-3 z-50 px-4">
-      <nav className="mx-auto flex max-w-[1150px] items-center justify-between rounded-2xl border border-border bg-white/85 px-4 py-2.5 shadow-[0_4px_20px_-10px_rgba(15,23,42,0.25)] backdrop-blur-md">
+      <nav className="mx-auto flex max-w-[1150px] items-center justify-between gap-3 rounded-2xl border border-border bg-white/85 px-4 py-2.5 shadow-[0_4px_20px_-10px_rgba(15,23,42,0.25)] backdrop-blur-md">
         <a href="#top" aria-label="GreenQ home"><Logo /></a>
-        <div className="hidden items-center gap-7 text-[14px] text-muted-foreground md:flex">
+        <div className="hidden items-center gap-7 text-[14px] text-muted-foreground lg:flex">
           {links.map(([href, label]) => (
             <a key={href} href={href} className="transition-colors hover:text-foreground">{label}</a>
           ))}
         </div>
-        <a href={REPO} className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-2 text-[14px] font-medium text-white transition-opacity hover:opacity-85">
-          <CodeXml className="size-4" aria-hidden="true" /> Code
-        </a>
+        <div className="flex items-center gap-2">
+          <a href={REPO} className="hidden items-center gap-1.5 rounded-xl px-3 py-2 text-[14px] text-muted-foreground hover:text-foreground sm:flex">
+            <CodeXml className="size-4" aria-hidden="true" /> Code
+          </a>
+          <PlayButton />
+        </div>
       </nav>
     </header>
   );
@@ -47,32 +65,76 @@ export function Nav() {
 
 /* ------------------------------------------------------------------ hero */
 
-export function Hero({ data }: { data: UiData }) {
+function MiniScene() {
+  const { data } = useApp();
+  const best = data.sweep.find((s) => s.w === 0.5)!.best.schedule;
+  const [greenq, setGreenq] = useState(prefersReducedMotion());
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const t = window.setInterval(() => setGreenq((g) => !g), 2600);
+    return () => window.clearInterval(t);
+  }, []);
+  const sched = greenq ? best : data.naive.schedule;
+  const { sites, slots, options, jobs } = data.instance;
+  return (
+    <div className="mx-auto mt-12 w-full max-w-[760px] rounded-3xl bg-white p-4 text-left shadow-[0_24px_60px_-28px_rgba(15,23,42,0.35)] ring-1 ring-border" aria-label="Animation: jobs move from business as usual to the GreenQ schedule">
+      <div className="mb-3 flex items-center justify-between text-[13px]">
+        <span className="font-semibold">{greenq ? "GreenQ schedule" : "Business as usual"}</span>
+        <span className={`rounded-full px-2.5 py-0.5 text-[12px] font-semibold ${greenq ? "bg-carbon-soft text-emerald-800" : "bg-rose-50 text-rose-700"}`}>
+          {greenq ? "spread out, cleaner slots" : "Site A overloaded at night"}
+        </span>
+      </div>
+      <LayoutGroup id="mini">
+        <div className="grid grid-cols-2 gap-3">
+          {sites.map((s) => (
+            <div key={s.key} className="rounded-2xl bg-muted/70 p-2.5">
+              <div className="mb-2 flex items-center gap-2">
+                {s.cooling === "evaporative" ? <CoolingTower className="h-8 w-11" /> : <ChillerBuilding className="h-8 w-11" />}
+                <span className="text-[12px] font-semibold">{s.label.split(" (")[0]}</span>
+              </div>
+              {slots.map((t) => {
+                const k = options.find((o) => o.site === s.key && o.slot === t.key)!.index;
+                const here = jobs.map((_, j) => j).filter((j) => sched[j] === k);
+                return (
+                  <div key={t.key} className={`mb-1.5 flex h-9 items-center gap-1 rounded-lg bg-white px-1.5 ring-1 last:mb-0 ${here.length > 1 ? "ring-rose-300" : "ring-border"}`}>
+                    {t.key === "day" ? <Sun className="size-3 shrink-0 text-amber-500" aria-hidden="true" /> : <Moon className="size-3 shrink-0 text-indigo-500" aria-hidden="true" />}
+                    {here.map((j) => <JobBlock key={jobs[j].key} data={data} j={j} moved={false} compact layoutPrefix="mini" />)}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </LayoutGroup>
+    </div>
+  );
+}
+
+export function Hero() {
+  const { data } = useApp();
   const mid = data.sweep.find((s) => s.w === 0.5)!;
   return (
-    <section id="top" className="px-4 pt-20 pb-14 text-center sm:pt-24">
+    <section id="top" className="px-4 pt-16 pb-12 text-center sm:pt-20">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="mx-auto max-w-[1040px]">
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-3.5 py-1.5 text-[13px] text-foreground">
           <Atom className="size-3.5 text-carbon" aria-hidden="true" /> Built with Qiskit · Run on a real IBM quantum computer
         </span>
-        <h1 className="mt-7 text-[44px] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[64px]">
+        <h1 className="mt-6 text-[42px] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[62px]">
           Same jobs, smarter placement.
           <span className="block text-foreground/45">Less carbon. Less water.</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-[560px] text-[17px] leading-relaxed text-muted-foreground">
-          GreenQ chooses where and when data-centre jobs run, so the same work emits less CO₂ and uses less water.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a href="#dashboard" className="flex items-center gap-2 rounded-2xl bg-carbon px-5 py-3 text-[15px] font-medium text-white shadow-[0_8px_24px_-10px_rgba(5,150,105,0.7)] transition-transform hover:-translate-y-px">
-            See the result <ArrowRight className="size-4" aria-hidden="true" />
-          </a>
-          <a href="#how" className="rounded-2xl bg-muted px-5 py-3 text-[15px] font-medium text-foreground transition-colors hover:bg-foreground/10">How it works</a>
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <span className="flex items-center gap-2 text-[22px] font-semibold text-carbon"><Leaf className="size-6" aria-hidden="true" /> −{n0(mid.saved_kg_co2)} kg CO₂</span>
+          <span className="flex items-center gap-2 text-[22px] font-semibold text-water"><Droplet className="size-6" aria-hidden="true" /> −{n0(mid.saved_litres)} L water</span>
         </div>
-        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-muted-foreground">
-          <li className="flex items-center gap-1.5"><Cloud className="size-4 text-carbon" aria-hidden="true" /> {n0(mid.saved_kg_co2)} kg CO₂ saved</li>
-          <li className="flex items-center gap-1.5"><Droplets className="size-4 text-water" aria-hidden="true" /> {n0(mid.saved_litres)} L water saved</li>
-          <li className="flex items-center gap-1.5"><ShieldCheck className="size-4" aria-hidden="true" /> Checked against all {data.instance.n_schedules} schedules</li>
-        </ul>
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <a href="#dashboard" className="flex items-center gap-2 rounded-2xl bg-carbon px-5 py-3 text-[15px] font-medium text-white shadow-[0_8px_24px_-10px_rgba(5,150,105,0.7)] transition-transform hover:-translate-y-px">
+            Open the planner <ArrowRight className="size-4" aria-hidden="true" />
+          </a>
+          <PlayButton big />
+        </div>
+        <MiniScene />
+        <p className="mt-3 text-[12px] text-muted-foreground">Four illustrative jobs, two sites, day and night. Checked against all {data.instance.n_schedules} possible schedules.</p>
       </motion.div>
     </section>
   );
@@ -82,9 +144,8 @@ export function Hero({ data }: { data: UiData }) {
 
 export function DashboardBand({ children }: { children: ReactNode }) {
   return (
-    <section id="dashboard" className="relative scroll-mt-24 px-4 pb-24">
-      {/* soft carbon-to-water wash behind the app window */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-24 bottom-0 bg-[radial-gradient(60%_55%_at_15%_60%,rgba(16,185,129,0.22),transparent_70%),radial-gradient(60%_55%_at_85%_60%,rgba(37,99,235,0.2),transparent_70%)]" />
+    <section id="dashboard" className="relative scroll-mt-20 px-4 pb-16">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-24 bottom-0 bg-[radial-gradient(60%_55%_at_15%_40%,rgba(16,185,129,0.18),transparent_70%),radial-gradient(60%_55%_at_85%_40%,rgba(37,99,235,0.16),transparent_70%)]" />
       <div className="relative mx-auto max-w-[1150px]">{children}</div>
     </section>
   );
@@ -95,7 +156,7 @@ export function DashboardBand({ children }: { children: ReactNode }) {
 function StepCard({ tint, label, title, text, children }: { tint: string; label: string; title: string; text: string; children: ReactNode }) {
   return (
     <div>
-      <div className={`flex h-[250px] items-center justify-center rounded-3xl p-6 ${tint}`}>{children}</div>
+      <div className={`flex h-[240px] items-center justify-center rounded-3xl p-6 ${tint}`}>{children}</div>
       <p className="mt-5 text-[13px] font-medium text-muted-foreground">{label}</p>
       <h3 className="mt-1 text-[21px] font-semibold tracking-tight">{title}</h3>
       <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{text}</p>
@@ -103,40 +164,39 @@ function StepCard({ tint, label, title, text, children }: { tint: string; label:
   );
 }
 
-const MiniCard = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
-  <div className={`w-full max-w-[290px] rounded-2xl bg-white p-4 text-left shadow-[0_10px_30px_-12px_rgba(15,23,42,0.25)] ring-1 ring-border ${className}`}>{children}</div>
+const MiniCard = ({ children }: { children: ReactNode }) => (
+  <div className="w-full max-w-[290px] rounded-2xl bg-white p-4 text-left shadow-[0_10px_30px_-12px_rgba(15,23,42,0.25)] ring-1 ring-border">{children}</div>
 );
 
-export function HowItWorks({ data }: { data: UiData }) {
+export function HowItWorks() {
+  const { data } = useApp();
   const raw = data.proof[1].hardware.find((h) => h.mitigation === "none")!;
+  const best = data.sweep[10].best;
   return (
     <section id="how" className="scroll-mt-24 px-4 py-24">
       <div className="mx-auto max-w-[1150px]">
-        <div className="mx-auto max-w-[640px] text-center">
-          <h2 className="text-[36px] leading-tight font-semibold tracking-[-0.03em] sm:text-[44px]">
-            From four jobs to a better schedule.
-            <span className="block text-foreground/45">In three steps.</span>
-          </h2>
-        </div>
+        <h2 className="mx-auto max-w-[640px] text-center text-[36px] leading-tight font-semibold tracking-[-0.03em] sm:text-[44px]">
+          How it works.
+          <span className="block text-foreground/45">Three steps.</span>
+        </h2>
         <div className="mt-14 grid gap-8 md:grid-cols-3">
-          <StepCard tint="bg-emerald-50" label="1 · Encode" title="Two qubits per job" text="One qubit picks the site, one picks the time. Every reading is a valid schedule.">
+          <StepCard tint="bg-emerald-50" label="1 · Encode" title={`${data.circuit.n_qubits} qubits, 2 per job`} text={`A where qubit and a when qubit for each job. Every reading is a valid schedule. The textbook method needs ${data.circuit.onehot_qubits} qubits.`}>
             <MiniCard>
               {data.instance.jobs.map((j, i) => {
-                // option index k: bit 1 = where (site A/B), bit 0 = when (day/night)
-                const k = data.sweep[10].best.schedule[i];
+                const k = best.schedule[i]; // bit 1 = where (site), bit 0 = when (slot)
                 return (
                   <div key={j.key} className="flex items-center justify-between border-b border-border py-1.5 text-[12px] last:border-0">
                     <span className="font-medium">{j.label}</span>
                     <span className="flex gap-1">
-                      <span className="rounded bg-muted px-1.5 text-foreground">Site {k >> 1 ? "B" : "A"}</span>
-                      <span className="rounded bg-muted px-1.5 text-foreground">{k & 1 ? "Night" : "Day"}</span>
+                      <span className="rounded bg-muted px-1.5">Site {k >> 1 ? "B" : "A"}</span>
+                      <span className="rounded bg-muted px-1.5">{k & 1 ? "Night" : "Day"}</span>
                     </span>
                   </div>
                 );
               })}
             </MiniCard>
           </StepCard>
-          <StepCard tint="bg-amber-50" label="2 · Run" title="A quantum circuit picks" text={`QAOA, built in Qiskit, makes cheap schedules more likely. We ran it on IBM's ${raw.backend}.`}>
+          <StepCard tint="bg-amber-50" label="2 · Run" title="QAOA on IBM hardware" text={`One circuit layer, ${raw.two_qubit_gates} two-qubit gates on ${raw.backend}. ${data.totals.hardware_jobs} runs, ${data.totals.quantum_seconds} s of quantum time.`}>
             <MiniCard>
               <div className="flex items-center justify-between text-[12px]">
                 <span className="flex items-center gap-1.5 font-medium"><Cpu className="size-3.5" aria-hidden="true" /> {raw.backend}</span>
@@ -150,14 +210,14 @@ export function HowItWorks({ data }: { data: UiData }) {
               <p className="mt-2 text-[11px] text-muted-foreground">Shots per tenth of schedules, cheapest on the left</p>
             </MiniCard>
           </StepCard>
-          <StepCard tint="bg-blue-50" label="3 · Check" title="A laptop is the referee" text={`Every answer is graded against the true best of all ${data.instance.n_schedules} schedules.`}>
+          <StepCard tint="bg-blue-50" label="3 · Check" title="A laptop is the referee" text={`Every answer is graded against the true best of all ${data.instance.n_schedules} schedules. No quantum advantage is claimed.`}>
             <MiniCard>
-              <div className="flex items-center gap-2 text-[13px] font-semibold"><CircleCheck className="size-4 text-carbon" aria-hidden="true" /> Best schedule found</div>
+              <div className="flex items-center gap-2 text-[13px] font-semibold"><CircleCheck className="size-4 text-carbon" aria-hidden="true" /> True best schedule found</div>
               <div className="mt-3 grid grid-cols-2 gap-2 text-[12px]">
-                <div className="rounded-xl bg-muted p-2.5"><p className="text-muted-foreground">CO₂</p><p className="font-semibold text-carbon">{n0(data.sweep[10].best.kg_co2)} kg</p></div>
-                <div className="rounded-xl bg-muted p-2.5"><p className="text-muted-foreground">Water</p><p className="font-semibold text-water">{n0(data.sweep[10].best.litres)} L</p></div>
+                <div className="rounded-xl bg-muted p-2.5"><p className="text-muted-foreground">CO₂</p><p className="font-semibold text-carbon">{n0(best.kg_co2)} kg</p></div>
+                <div className="rounded-xl bg-muted p-2.5"><p className="text-muted-foreground">Water</p><p className="font-semibold text-water">{n0(best.litres)} L</p></div>
               </div>
-              <p className="mt-2 text-[11px] text-muted-foreground">Checked: {data.instance.n_schedules} / {data.instance.n_schedules} schedules</p>
+              <p className="mt-2 text-[11px] text-muted-foreground">Checked {data.instance.n_schedules} / {data.instance.n_schedules} schedules</p>
             </MiniCard>
           </StepCard>
         </div>
@@ -168,14 +228,15 @@ export function HowItWorks({ data }: { data: UiData }) {
 
 /* ------------------------------------------------------------------ FAQ */
 
-export function Faq({ data }: { data: UiData }) {
+export function Faq() {
+  const { data } = useApp();
   const [lo, hi] = hardwareShareRange(data);
-  const d = mitigationDeltas(data).map((x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(3)}`).join(", ");
+  const d = mitigationDeltas(data).map(signed3).join(", ");
   const items: [string, string][] = [
-    ["Is this faster than a normal computer?", `No. A laptop checks all ${data.instance.n_schedules} schedules instantly, and we use it as the referee. We claim no quantum advantage, only a working quantum method, tested on real hardware.`],
-    ["What did the real quantum computer do?", `We ran ${data.totals.hardware_jobs} jobs on IBM's ${data.proof[0].hardware[0].backend} (${data.totals.quantum_seconds} s in total). It put ${pct(lo)}–${pct(hi)} of its shots in the best tenth of schedules. Random guessing puts 10% there.`],
-    ["What are you comparing against?", "“Business as usual”: every job runs at its home site the moment it arrives. That’s what a scheduler does when it ignores carbon and water."],
-    ["Are the numbers real?", "Grid carbon (0.710 kg/kWh, Govt. of India CEA) and power-plant water use (2.6 L/kWh, NREL) are cited. Site, job and day/night figures are illustrative examples."],
+    ["Is this faster than a normal computer?", `No. A laptop checks all ${data.instance.n_schedules} schedules instantly, and we use it as the referee. We claim no quantum advantage: only a working quantum method, tested on real hardware.`],
+    ["What did the real quantum computer do?", `${data.totals.hardware_jobs} jobs on IBM's ${data.proof[0].hardware[0].backend} (${data.totals.quantum_seconds} s in total). It put ${pct(lo)}–${pct(hi)} of its shots in the best tenth of schedules; random guessing puts 10% there.`],
+    ["What are you comparing against?", "“Business as usual”: every job runs at its home site the moment it arrives. That is what a scheduler does when it ignores carbon and water."],
+    ["Are the numbers real?", "Grid carbon (0.710 kg/kWh, Govt. of India CEA) and power-plant water (2.6 L/kWh, NREL) are cited. Sites, jobs and the day/night split are illustrative."],
     ["Did error mitigation help?", `Not consistently. The quality score changed by ${d} across our three settings.`],
   ];
   const [open, setOpen] = useState<number | null>(0);
@@ -207,7 +268,8 @@ export function Faq({ data }: { data: UiData }) {
 
 /* ------------------------------------------------------------------ footer */
 
-export function Footer({ data }: { data: UiData }) {
+export function Footer() {
+  const { data } = useApp();
   return (
     <footer className="px-4 py-14">
       <div className="mx-auto grid max-w-[1150px] gap-10 md:grid-cols-[1.2fr_1fr]">
@@ -219,7 +281,7 @@ export function Footer({ data }: { data: UiData }) {
           <ul className="mt-4 space-y-1.5 text-[13px] text-muted-foreground">
             <li className="flex items-center gap-2"><Check className="size-4 text-carbon" aria-hidden="true" /> Cited: grid carbon and power-plant water</li>
             <li className="flex items-center gap-2"><Check className="size-4 text-carbon" aria-hidden="true" /> Real: {data.totals.hardware_jobs} IBM hardware runs, saved with job IDs</li>
-            <li className="flex items-center gap-2"><Check className="size-4 text-muted-foreground" aria-hidden="true" /> Illustrative: sites, jobs and day/night split</li>
+            <li className="flex items-center gap-2"><Illustrative /> Sites, jobs and the day/night split</li>
           </ul>
         </div>
         <details className="group self-start rounded-2xl bg-muted/60 p-5 text-[13px]">

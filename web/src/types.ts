@@ -38,8 +38,15 @@ export interface HardwareRun extends RunSummary {
   physical_qubits: number[] | null;
 }
 
+export interface Gate {
+  kind: "h" | "rz" | "zz" | "zzzz" | "rx" | "measure";
+  qubits: number[];
+  angle: number | null;
+}
+
 export interface ProofEntry {
   w: number;
+  circuit_gates: Gate[];
   random: { approx_ratio: number; share_best10: number; expected_optimum_hits: number; deciles: number[] };
   hardware: HardwareRun[];
   ideal?: RunSummary;
@@ -55,6 +62,7 @@ export interface UiData {
     jobs: Job[];
     options: Option[];
     congestion_fraction: number;
+    slot_note: string;
     n_schedules: number;
   };
   naive: Footprint;
@@ -67,6 +75,7 @@ export interface UiData {
     onehot_valid_fraction: number;
     onehot_two_qubit_gates_estimate: number;
     reps_on_hardware: number;
+    qubit_meaning: { qubit: number; job: string; bit: "when" | "where" }[];
   };
   totals: { hardware_jobs: number; quantum_seconds: number };
   sources: { cited: { figure: string; value: string; source: string }[]; illustrative: string[]; references: string[] };

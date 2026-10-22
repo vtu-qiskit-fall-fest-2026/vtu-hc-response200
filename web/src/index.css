@@ -62,3 +62,9 @@
 .prio-range::-moz-range-thumb { width: 24px; height: 24px; border-radius: 999px; background: #fff; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
 .prio-range:focus-visible { outline: none; }
 .prio-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring); }
+
+.prio-range--big { height: 36px; }
+.prio-range--big::-webkit-slider-runnable-track { height: 10px; }
+.prio-range--big::-moz-range-track { height: 10px; }
+.prio-range--big::-webkit-slider-thumb { margin-top: -9px; width: 28px; height: 28px; }
+.prio-range--big::-moz-range-thumb { width: 28px; height: 28px; }

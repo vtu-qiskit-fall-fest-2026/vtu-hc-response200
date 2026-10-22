@@ -31,11 +31,16 @@ _QISKIT = ThreadPoolExecutor(max_workers=1, thread_name_prefix="qiskit")
 app = FastAPI(title="GreenQ demo", docs_url="/api/docs", openapi_url="/api/openapi.json")
 
 
-@lru_cache(maxsize=1)
+@lru_cache(maxsize=2)
+def _read(mtime_ns: int) -> dict:
+    return json.loads(DATA_FILE.read_text())
+
+
 def load_data() -> dict:
+    """Saved UI data, re-read automatically when the file changes on disk."""
     if not DATA_FILE.exists():
         raise FileNotFoundError(DATA_FILE)
-    return json.loads(DATA_FILE.read_text())
+    return _read(DATA_FILE.stat().st_mtime_ns)
 
 
 @app.get("/api/health")
