@@ -49,10 +49,15 @@ def summarize(counts: dict, enc: Encoding) -> dict:
     hits = round(m["p_optimal"] * m["shots"])
     best_b = m["best_sampled_bitstring"]
     freq_rank = sorted(counts.values(), reverse=True).index(counts[best_b]) + 1
+    se = stderr_ratio(counts, cost)
+    span = cost.max() - cost.min()
+    random_se = float(cost.std() / np.sqrt(m["shots"]) / span)
     return {
         "shots": m["shots"],
         "approx_ratio": round(m["approx_ratio"], 4),
-        "approx_ratio_se": round(stderr_ratio(counts, cost), 4),
+        "approx_ratio_se": round(se, 4),
+        # how many standard errors above random guessing (same shot count)
+        "z_vs_random": round((m["approx_ratio"] - m["approx_ratio_random"]) / float(np.hypot(se, random_se)), 1),
         "share_best10": round(m["share_best10pct"], 4),
         "optimum_hits": hits,
         "found_optimum": m["found_optimum"],

@@ -151,7 +151,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 - All 6 hardware runs beat random by **14-19 standard errors**
 - Hardware keeps **48-67%** of the ideal simulator's gain (noise costs the rest)
-- Error mitigation: **no consistent benefit** (+0.012, +0.007, −0.006)
+- Error mitigation: **no consistent benefit** (+0.012, +0.008, −0.006)
 
 **Visual:** the decile bar chart (`docs/images/demo_quantum_proof.png`): random flat at 10%, hardware and simulator piled into the cheapest deciles.
 

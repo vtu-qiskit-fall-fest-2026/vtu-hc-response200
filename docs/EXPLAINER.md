@@ -64,7 +64,7 @@ How to read this:
   - Hardware mitigated: yes, in 28/4,000 shots (0.70%), 27th most frequent.
   - Random guessing would hit it about 16 times in 4,000 shots. So "it found the optimum" proves nothing at this size; the distribution shift does.
 - Noise costs us part of the ideal gain: hardware recovers ~55-60% of the ideal improvement over random.
-- Error mitigation (dynamical decoupling + twirling) gave **no consistent benefit**: across our three paired runs the approximation ratio changed by +0.012 (water only), +0.007 (balanced) and −0.006 (carbon only). Dynamical decoupling protects idle qubits, and twirling turns coherent errors into random noise. Neither removes the gate errors that dominate a 114-gate circuit.
+- Error mitigation (dynamical decoupling + twirling) gave **no consistent benefit**: across our three paired runs the approximation ratio changed by +0.012 (water only), +0.008 (balanced) and −0.006 (carbon only). Dynamical decoupling protects idle qubits, and twirling turns coherent errors into random noise. Neither removes the gate errors that dominate a 114-gate circuit.
 - **We ran 6 hardware jobs in total:** 3 priority settings (water only, balanced, carbon only) × (raw, mitigated). All 6 beat random by 14-19 standard errors, and all 6 had the true best schedule as their cheapest shot. Each job used about 3 s of quantum time, 18 s in total. Full tables: README → Results, or `python scripts/summarize_results.py`.
 
 ## 7. Code map

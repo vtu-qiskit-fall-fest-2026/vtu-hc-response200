@@ -159,7 +159,7 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 - **Every one of the 6 hardware runs beats random sampling** on the whole distribution, by 14 to 19 standard errors, and puts 18-23% of its shots in the best 10% of schedules (random: 10%).
 - **Noise costs part of the ideal improvement:** the hardware keeps roughly half to two-thirds (48-67%) of the ideal simulator's gain over random.
-- **Error mitigation (XY4 dynamical decoupling + gate/measurement twirling) gave no consistent benefit:** approximation ratio +0.012 (w = 0), +0.007 (w = 0.5), −0.006 (w = 1).
+- **Error mitigation (XY4 dynamical decoupling + gate/measurement twirling) gave no consistent benefit:** approximation ratio +0.012 (w = 0), +0.008 (w = 0.5), −0.006 (w = 1).
 - Transpiled circuit on `ibm_marrakesh`: 114 two-qubit gates, depth ≈245. Each job used about 3 s of QPU time, **18 s in total**.
 - The binary encoding needs **8 qubits / ~114 two-qubit gates**, against **16 qubits / ~227 gates** for a one-hot QUBO, where only 0.39% of outputs would be valid schedules.
 
