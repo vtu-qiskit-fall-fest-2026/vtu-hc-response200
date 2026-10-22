@@ -22,6 +22,7 @@ from greenq.classical import brute_force, naive   # noqa: E402
 from greenq.encoding import Encoding, onehot_qubits  # noqa: E402
 from greenq.metrics import analyze                # noqa: E402
 from greenq.model import Instance                 # noqa: E402
+from greenq.qaoa import GreenQAOA                 # noqa: E402
 
 OUT = ROOT / "results" / "ui_data.json"
 HARDWARE_WEIGHTS = (0.0, 0.5, 1.0)
@@ -65,6 +66,27 @@ def summarize(counts: dict, enc: Encoding) -> dict:
         "best_sampled_schedule": m["best_sampled_schedule"],
         "deciles": deciles(counts, cost),
     }
+
+
+def circuit_gates(enc: Encoding, gamma: float, beta: float) -> list[dict]:
+    """The p = 1 QAOA circuit as a gate list, read from the real cost operator.
+
+    exp(-i*gamma*c*Z...) is a Z-rotation by angle 2*gamma*c on the listed
+    qubits; the mixer is RX(2*beta) on every qubit.
+    """
+    q = GreenQAOA(enc, reps=1)
+    n = enc.n_qubits
+    gates = [{"kind": "h", "qubits": list(range(n)), "angle": None}]
+    terms = []
+    for label, coeff in zip(q.cost_op.paulis.to_labels(), q.cost_op.coeffs):
+        qubits = [n - 1 - i for i, ch in enumerate(label) if ch == "Z"]
+        kind = {1: "rz", 2: "zz", 4: "zzzz"}[len(qubits)]
+        terms.append({"kind": kind, "qubits": sorted(qubits), "angle": round(2 * gamma * float(coeff.real), 4)})
+    order = {"rz": 0, "zz": 1, "zzzz": 2}
+    gates += sorted(terms, key=lambda g: (order[g["kind"]], g["qubits"]))
+    gates.append({"kind": "rx", "qubits": list(range(n)), "angle": round(2 * beta, 4)})
+    gates.append({"kind": "measure", "qubits": list(range(n)), "angle": None})
+    return gates
 
 
 def footprint_dict(inst: Instance, sched) -> dict:
@@ -115,6 +137,7 @@ def main() -> None:
             s = json.loads(sim_file.read_text())
             entry["ideal"] = summarize(s["ideal"]["counts"], enc)
             entry["qaoa"] = {"gammas": s["qaoa"]["gammas"], "betas": s["qaoa"]["betas"]}
+            entry["circuit_gates"] = circuit_gates(enc, s["qaoa"]["gammas"][0], s["qaoa"]["betas"][0])
             if "noisy" in s:
                 entry["noisy"] = {"backend": s["noisy"]["backend"], **summarize(s["noisy"]["counts"], enc)}
         proof.append(entry)
@@ -134,6 +157,7 @@ def main() -> None:
                          "litres_per_kwh": round(float(inst.unit[k, 1]), 4)}
                         for k, (s, t) in enumerate(inst.options)],
             "congestion_fraction": inst.congestion,
+            "slot_note": "Mean of both slots = CEA all-India average 0.710 kg CO2/kWh (cited); the day/night split is illustrative.",
             "n_schedules": inst.n_options ** inst.n_jobs,
         },
         "naive": footprint_dict(inst, base.schedule),
@@ -146,6 +170,11 @@ def main() -> None:
             "onehot_valid_fraction": round(inst.n_options ** inst.n_jobs / 2 ** onehot_qubits(inst), 6),
             "onehot_two_qubit_gates_estimate": 227,
             "reps_on_hardware": 1,
+            # qubit 2j = job j's "when" bit (day/night), qubit 2j+1 = its "where" bit (site A/B)
+            "qubit_meaning": [
+                {"qubit": 2 * j + b, "job": job.label, "bit": "when" if b == 0 else "where"}
+                for j, job in enumerate(inst.jobs) for b in range(2)
+            ],
         },
         "totals": {
             "hardware_jobs": sum(len(p["hardware"]) for p in proof),

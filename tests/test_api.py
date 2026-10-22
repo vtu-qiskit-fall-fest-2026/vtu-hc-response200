@@ -70,3 +70,40 @@ def test_simulate_runs_on_local_simulator():
 @pytest.mark.parametrize("payload", [{"w": 1.5}, {"w": -0.1}, {"w": 0.5, "shots": 5}])
 def test_simulate_rejects_bad_input(payload):
     assert client.post("/api/simulate", json=payload).status_code == 422
+
+
+def test_exported_circuit_is_the_real_circuit():
+    """Rebuild the circuit from the exported gate list and compare with GreenQAOA."""
+    import numpy as np
+    from qiskit import QuantumCircuit
+    from qiskit.circuit.library import PauliEvolutionGate
+    from qiskit.quantum_info import SparsePauliOp, Statevector
+
+    from greenq.encoding import Encoding
+    from greenq.model import Instance
+    from greenq.qaoa import GreenQAOA
+
+    d = client.get("/api/data").json()
+    assert len(d["circuit"]["qubit_meaning"]) == d["circuit"]["n_qubits"]
+    for p in d["proof"]:
+        gates = p["circuit_gates"]
+        kinds = [g["kind"] for g in gates]
+        assert kinds.count("rz") + kinds.count("zz") + kinds.count("zzzz") == d["circuit"]["hamiltonian_terms"] - 1  # minus identity
+        n = d["circuit"]["n_qubits"]
+        qc = QuantumCircuit(n)
+        for g in gates:
+            if g["kind"] == "h":
+                qc.h(range(n))
+            elif g["kind"] == "rz":
+                qc.rz(g["angle"], g["qubits"][0])
+            elif g["kind"] == "zz":
+                qc.rzz(g["angle"], *g["qubits"])
+            elif g["kind"] == "zzzz":
+                qc.append(PauliEvolutionGate(SparsePauliOp("ZZZZ"), time=g["angle"] / 2), g["qubits"])
+            elif g["kind"] == "rx":
+                for q in range(n):
+                    qc.rx(g["angle"], q)
+        q = GreenQAOA(Encoding(Instance(), p["w"]))
+        expected = q.probabilities(p["qaoa"]["gammas"], p["qaoa"]["betas"])
+        # gate angles are rounded to 4 decimals in the export
+        assert np.allclose(Statevector(qc).probabilities(), expected, atol=2e-3)
