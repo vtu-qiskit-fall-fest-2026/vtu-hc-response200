@@ -9,8 +9,8 @@ const noDrag = { onPointerDown: (e: React.PointerEvent) => e.stopPropagation() }
 /* --------------------------------------------------------------- priority + trade-off */
 
 export function PriorityWidget() {
-  const { data, idx, setIdx, stop, onHardware } = useApp();
-  const last = data.sweep.length - 1;
+  const { data, idx, setIdx, stop, onHardware, sweep, preset, setPreset } = useApp();
+  const last = sweep.length - 1;
   return (
     <section className="grid h-full gap-5 p-5 md:grid-cols-[1.25fr_1fr]">
       <div className="flex min-w-0 flex-col">
@@ -24,6 +24,18 @@ export function PriorityWidget() {
             <span className="rounded-full bg-muted px-2.5 py-1 text-[12px] font-medium text-muted-foreground">Best of all {data.instance.n_schedules}, by exhaustive check</span>
           )}
         </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2" {...noDrag}>
+          <span className="text-[12px] font-medium text-muted-foreground">How flexible are the jobs?</span>
+          <div className="flex rounded-full bg-muted p-0.5" role="tablist" aria-label="Job flexibility">
+            {data.flex.presets.map((p) => (
+              <button key={p.key} role="tab" aria-selected={p.key === preset.key} onClick={() => setPreset(p.key)}
+                className={`rounded-full px-3 py-1 text-[12px] font-semibold transition-colors ${p.key === preset.key ? "bg-white text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+                {p.label}
+              </button>
+            ))}
+          </div>
+          <span className="text-[11px] text-muted-foreground">{preset.allowed_schedules} allowed schedules</span>
+        </div>
         <p className="mt-3 text-[40px] leading-none font-semibold tracking-tight">{priorityLabel(stop.w)}</p>
         <div className="mt-6 grid grid-cols-2 gap-3">
           <div className="rounded-2xl bg-carbon-soft/60 p-4">
@@ -35,6 +47,7 @@ export function PriorityWidget() {
             <p className="mt-1 text-[32px] leading-none font-semibold tracking-tight text-blue-800 tabular-nums">{n0(stop.saved_litres)}<span className="ml-1 text-[14px] font-medium text-muted-foreground">L · {pct(stop.saved_litres / data.naive.litres)}</span></p>
           </div>
         </div>
+        {preset.qaoa && <div className="mt-3"><RuleStatsLine /></div>}
         <div id="prio-slider" className="mt-auto scroll-mt-24 pt-6" {...noDrag}>
           <div className="mb-2 flex justify-between text-[14px] font-semibold">
             <span className="flex items-center gap-1.5 text-water"><Droplet className="size-4" aria-hidden="true" /> Save water</span>
@@ -52,7 +65,7 @@ export function PriorityWidget() {
             aria-valuetext={`${priorityLabel(stop.w)}${stop.hardware ? ", run on real IBM hardware" : ""}`}
           />
           <div className="relative mt-1 h-9" aria-hidden="true">
-            {data.sweep.map((s, i) => (
+            {sweep.map((s, i) => (
               <span key={s.w} className="absolute top-0 flex -translate-x-1/2 flex-col items-center" style={{ left: `calc(14px + (100% - 28px) * ${i / last})` }}>
                 <span className={`w-px ${s.hardware ? "h-2.5 bg-foreground" : "h-1.5 bg-foreground/30"} ${i === idx ? "bg-foreground" : ""}`} />
                 {s.hardware && (
@@ -71,8 +84,8 @@ export function PriorityWidget() {
 }
 
 function TradeOff() {
-  const { data, idx, setIdx } = useApp();
-  const pts = data.sweep.map((s) => ({ x: s.saved_kg_co2, y: s.saved_litres, hw: s.hardware }));
+  const { idx, setIdx, sweep } = useApp();
+  const pts = sweep.map((s) => ({ x: s.saved_kg_co2, y: s.saved_litres, hw: s.hardware }));
   const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
   const [x0, x1] = [Math.min(...xs) - 30, Math.max(...xs) + 30];
   const [y0, y1] = [Math.min(...ys) - 150, Math.max(...ys) + 150];
@@ -128,13 +141,13 @@ export function SavingsWidget() {
     { key: "water", Icon: Droplet, label: "Water", unit: "L", before: data.naive.litres, after: stop.best.litres, fill: "bg-water", text: "text-water" },
   ];
   return (
-    <section className="flex h-full flex-col gap-4 p-5">
+    <section className="flex h-full flex-col gap-3 p-5">
       <h3 className="text-[20px] font-semibold tracking-tight">Savings vs business as usual</h3>
       {rows.map((r) => (
-        <div key={r.key} className="flex flex-1 flex-col justify-center gap-2">
+        <div key={r.key} className="flex flex-col justify-center gap-1.5">
           <div className="flex items-baseline justify-between gap-2">
             <span className={`flex items-center gap-2 text-[15px] font-semibold ${r.text}`}><r.Icon className="size-5" aria-hidden="true" /> {r.label}</span>
-            <span className={`text-[40px] leading-none font-semibold tracking-tight tabular-nums ${r.text}`}>
+            <span className={`text-[34px] leading-none font-semibold tracking-tight tabular-nums ${r.text}`}>
               −{n0(r.before - r.after)}<span className="ml-1 text-[14px] font-medium text-muted-foreground">{r.unit} · {pct((r.before - r.after) / r.before)}</span>
             </span>
           </div>
@@ -144,7 +157,7 @@ export function SavingsWidget() {
           ].map((b) => (
             <div key={b.label} className="grid grid-cols-[132px_1fr] items-center gap-3 text-[13px]">
               <span className="text-muted-foreground">{b.label}</span>
-              <span className="relative h-9 rounded-lg bg-muted">
+              <span className="relative h-7 rounded-lg bg-muted">
                 <motion.span className={`absolute inset-y-0 left-0 rounded-lg ${b.cls}`} animate={{ width: `${(b.v / r.before) * 100}%` }} transition={{ type: "spring", visualDuration: 0.5, bounce: 0 }} />
                 <span className="absolute inset-y-0 right-2 flex items-center font-semibold tabular-nums">{n0(b.v)} {r.unit}</span>
               </span>
@@ -152,7 +165,72 @@ export function SavingsWidget() {
           ))}
         </div>
       ))}
+      <FlexCurve />
     </section>
+  );
+}
+
+/** Feature 2: savings shrink as fewer jobs are flexible (averaged over every subset). */
+function FlexCurve() {
+  const { data } = useApp();
+  const c = data.flex.curve;
+  const W = 300, H = 110, L = 30, B = 22, T = 8, R = 8;
+  const maxY = Math.max(...c.flatMap((p) => [p.co2_saved_pct, p.water_saved_pct]), 1);
+  const sx = (x: number) => L + x * (W - L - R);
+  const sy = (y: number) => T + (1 - y / maxY) * (H - T - B);
+  const line = (k: "co2_saved_pct" | "water_saved_pct") => c.map((p, i) => `${i ? "L" : "M"}${sx(p.flexible_share)},${sy(p[k])}`).join(" ");
+  return (
+    <figure className="mt-auto rounded-2xl bg-muted/60 p-3">
+      <figcaption className="flex items-center justify-between text-[12px] font-medium">
+        <span>Savings vs share of flexible jobs</span>
+        <span className="flex items-center gap-3 text-muted-foreground">
+          <span className="flex items-center gap-1"><span className="h-0.5 w-3 bg-carbon" />CO₂</span>
+          <span className="flex items-center gap-1"><span className="h-0.5 w-3 bg-water" />water</span>
+        </span>
+      </figcaption>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-1 w-full" role="img" aria-label={`Savings fall as fewer jobs are flexible: ${c.map((p) => `${Math.round(p.flexible_share * 100)}% flexible, ${p.co2_saved_pct.toFixed(0)}% CO2 and ${p.water_saved_pct.toFixed(0)}% water saved`).join("; ")}.`}>
+        <line x1={L} x2={W - R} y1={H - B} y2={H - B} stroke="var(--border)" />
+        {c.map((p) => (
+          <text key={p.flexible_share} x={sx(p.flexible_share)} y={H - 6} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+            {Math.round(p.flexible_share * 100)}%
+          </text>
+        ))}
+        <text x={L - 4} y={sy(maxY) + 4} textAnchor="end" className="fill-muted-foreground text-[10px]">{maxY.toFixed(0)}%</text>
+        <text x={L - 4} y={sy(0) + 3} textAnchor="end" className="fill-muted-foreground text-[10px]">0</text>
+        <path d={line("co2_saved_pct")} fill="none" stroke="var(--carbon)" strokeWidth={2.2} />
+        <path d={line("water_saved_pct")} fill="none" stroke="var(--water)" strokeWidth={2.2} strokeDasharray="5 3" />
+        {c.map((p) => (
+          <g key={p.flexible_share}>
+            <circle cx={sx(p.flexible_share)} cy={sy(p.co2_saved_pct)} r={2.8} fill="var(--carbon)" />
+            <circle cx={sx(p.flexible_share)} cy={sy(p.water_saved_pct)} r={2.8} fill="var(--water)" />
+          </g>
+        ))}
+      </svg>
+      <p className="text-[11px] text-muted-foreground">Average over every choice of which jobs are flexible; the rest stay at home, on time. Balanced priority. Illustrative.</p>
+    </figure>
+  );
+}
+
+/** Feature 2: did the quantum runs respect the job rules? */
+function RuleStatsLine() {
+  const { preset } = useApp();
+  const q = preset.qaoa!;
+  const items = [
+    { label: "Random guessing", v: q.ideal.share_obeying_rules_random, cls: "text-muted-foreground" },
+    { label: "Simulator", v: q.ideal.share_obeying_rules, cls: "text-emerald-800" },
+    ...(q.hardware ? [{ label: `IBM ${q.hardware.backend}`, v: q.hardware.share_obeying_rules, cls: "text-foreground" }] : []),
+  ];
+  return (
+    <div className="rounded-2xl bg-white p-3 ring-1 ring-border">
+      <p className="text-[12px] font-medium">Shots that obey every job rule <span className="text-muted-foreground">· balanced priority</span></p>
+      <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1">
+        {items.map((it) => (
+          <span key={it.label} className="text-[12px] text-muted-foreground">
+            {it.label} <b className={`text-[18px] tabular-nums ${it.cls}`}>{pct(it.v)}</b>
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -174,6 +252,20 @@ export function RunsWidget() {
         <span className="font-mono text-[12px] text-muted-foreground">{data.proof[0].hardware[0].backend}</span>
       </div>
       <ul className="flex flex-1 flex-col justify-center gap-1.5" {...noDrag}>
+        {data.flex.presets.filter((p) => p.qaoa?.hardware).map((p) => {
+          const h = p.qaoa!.hardware!;
+          return (
+            <li key={h.job_id} className="grid grid-cols-[1fr_auto] items-center gap-2 rounded-xl bg-muted px-3 py-2 text-[12px]">
+              <span className="min-w-0">
+                <span className="block truncate font-mono text-[12.5px] text-foreground">{h.job_id}</span>
+                <span className="text-muted-foreground">{p.label} rules · balanced · raw · {n0(h.shots)} shots · {h.quantum_seconds} s</span>
+              </span>
+              <button onClick={() => copy(h.job_id)} className="rounded-lg p-1.5 text-muted-foreground hover:bg-white hover:text-foreground" aria-label={`Copy job ID ${h.job_id}`}>
+                {copied === h.job_id ? <Check className="size-4 text-carbon" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+              </button>
+            </li>
+          );
+        })}
         {data.proof.flatMap((p) =>
           p.hardware.map((h) => {
             const active = p.w === proof.w;

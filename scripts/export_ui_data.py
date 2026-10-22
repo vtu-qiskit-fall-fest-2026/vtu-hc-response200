@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT))
 from greenq import data as D                      # noqa: E402
 from greenq.classical import brute_force, naive   # noqa: E402
 from greenq.encoding import Encoding, onehot_qubits  # noqa: E402
-from greenq.metrics import analyze                # noqa: E402
+from greenq.metrics import analyze, analyze_rules  # noqa: E402
 from greenq.model import Instance                 # noqa: E402
 from greenq.qaoa import GreenQAOA                 # noqa: E402
 
@@ -92,6 +92,62 @@ def circuit_gates(enc: Encoding, gamma: float, beta: float) -> list[dict]:
 def footprint_dict(inst: Instance, sched) -> dict:
     co2, water = inst.footprint(tuple(sched))
     return {"schedule": list(sched), "kg_co2": round(float(co2), 2), "litres": round(float(water), 2)}
+
+
+def flex_section(hw_runs: list[dict]) -> dict:
+    """Feature 2: job rules. Precomputed so the UI stays offline."""
+    from itertools import combinations
+    base_inst = Instance()
+    presets = []
+    for key, p in D.FLEX_PRESETS.items():
+        inst = Instance(constraints=p["rules"])
+        nv = naive(inst, 0.5)
+        hw_ws = {r["w_carbon"] for r in hw_runs if r.get("preset", "flexible") == key and r.get("status") == "DONE"}
+        sweep = []
+        for pct in range(0, 101, 5):
+            w = pct / 100
+            best, _ = brute_force(inst, w)
+            sweep.append({"w": w, "best": footprint_dict(inst, best.schedule),
+                          "saved_kg_co2": round(nv.kg_co2 - best.kg_co2, 2),
+                          "saved_litres": round(nv.litres - best.litres, 2),
+                          "hardware": w in hw_ws})
+        n_allowed = 1
+        for a in inst.allowed:
+            n_allowed *= len(a)
+        entry = {"key": key, "label": p["label"],
+                 "rules": {k: sorted(v) for k, v in p["rules"].items()},
+                 "allowed_schedules": n_allowed, "sweep": sweep}
+        sim = ROOT / "results" / "sim" / f"qaoa_w0.5_p1_{key}.json"
+        if key != "flexible" and sim.exists():
+            enc = Encoding(inst, 0.5)
+            s = json.loads(sim.read_text())
+            entry["qaoa"] = {"ideal": analyze_rules(s["ideal"]["counts"], enc)}
+            if "noisy" in s:
+                entry["qaoa"]["noisy"] = analyze_rules(s["noisy"]["counts"], enc)
+            for r in hw_runs:
+                if r.get("preset") == key and r.get("status") == "DONE":
+                    entry["qaoa"]["hardware"] = {"backend": r["backend"], "job_id": r["job_id"],
+                                                 "quantum_seconds": r.get("quantum_seconds"),
+                                                 **analyze_rules(r["counts"], enc)}
+        presets.append(entry)
+    # Savings vs share of flexible jobs: every subset of k flexible jobs, the
+    # others fully rigid (home site + submitted slot); averaged, balanced weight.
+    curve = []
+    keys = [j.key for j in base_inst.jobs]
+    for k in range(len(keys) + 1):
+        co2, water = [], []
+        for flex in combinations(keys, k):
+            rules = {j: {"residency", "priority"} for j in keys if j not in flex}
+            inst = Instance(constraints=rules)
+            b, _ = brute_force(inst, 0.5)
+            nv = naive(inst, 0.5)
+            co2.append(1 - b.kg_co2 / nv.kg_co2)
+            water.append(1 - b.litres / nv.litres)
+        curve.append({"flexible_share": k / len(keys), "subsets": len(co2),
+                      "co2_saved_pct": round(100 * sum(co2) / len(co2), 2),
+                      "water_saved_pct": round(100 * sum(water) / len(water), 2)})
+    return {"presets": presets, "curve": curve,
+            "note": "Rules and presets are illustrative. Rule-breaking schedules are penalised in the Hamiltonian; shares count shots that obey every rule."}
 
 
 def main() -> None:
@@ -179,9 +235,10 @@ def main() -> None:
         # Feature 1: every method on the same objective (scripts/run_baselines.py)
         "methods": json.loads((ROOT / "results" / "baselines.json").read_text())
         if (ROOT / "results" / "baselines.json").exists() else None,
+        "flex": flex_section(hw_runs),
         "totals": {
-            "hardware_jobs": sum(len(p["hardware"]) for p in proof),
-            "quantum_seconds": sum(h.get("quantum_seconds") or 0 for p in proof for h in p["hardware"]),
+            "hardware_jobs": sum(1 for r in hw_runs if r.get("status") == "DONE"),
+            "quantum_seconds": sum(r.get("quantum_seconds") or 0 for r in hw_runs if r.get("status") == "DONE"),
         },
         "sources": {
             "cited": [

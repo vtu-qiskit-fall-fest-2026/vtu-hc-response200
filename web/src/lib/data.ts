@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { ProofEntry, SweepStop, UiData } from "../types";
+import type { FlexPreset, ProofEntry, SweepStop, UiData } from "../types";
 
 /** Loads results/ui_data.json through the FastAPI server. */
 export function useUiData() {
@@ -23,6 +23,9 @@ export interface AppState {
   setIdx: (i: number) => void;
   view: View;
   setView: (v: View) => void;
+  preset: FlexPreset;          // Feature 2: which job rules apply
+  setPreset: (k: FlexPreset["key"]) => void;
+  sweep: SweepStop[];          // best schedule per priority stop, for this preset
   stop: SweepStop;
   proof: ProofEntry; // hardware entry for this stop, or the balanced one
   onHardware: boolean;

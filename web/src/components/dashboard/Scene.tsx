@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { LayoutGroup, animate, motion, useMotionValue, useTransform } from "motion/react";
-import { ArrowDown, ArrowRight, Droplet, Leaf, Moon, Sun } from "lucide-react";
+import { ArrowDown, ArrowRight, Clock, Droplet, Leaf, Lock, Moon, Star, Sun } from "lucide-react";
 import { JOB_STYLE, useApp, whyLines } from "@/lib/data";
 import { n0, prefersReducedMotion } from "@/format";
-import type { UiData } from "@/types";
+import type { Rule, UiData } from "@/types";
 
 const noDrag = { onPointerDown: (e: React.PointerEvent) => e.stopPropagation() };
 
@@ -68,7 +68,13 @@ export function maxLaneLoad(data: UiData) {
   return max;
 }
 
-export function JobBlock({ data, j, moved, compact = false, layoutPrefix }: { data: UiData; j: number; moved: boolean; compact?: boolean; layoutPrefix: string }) {
+export const RULE_ICON: Record<Rule, { Icon: typeof Lock; label: string }> = {
+  residency: { Icon: Lock, label: "data must stay at its home site" },
+  deadline: { Icon: Clock, label: "deadline: must finish in the day slot" },
+  priority: { Icon: Star, label: "critical: runs in the slot it was submitted to" },
+};
+
+export function JobBlock({ data, j, moved, compact = false, layoutPrefix, rules = [] }: { data: UiData; j: number; moved: boolean; compact?: boolean; layoutPrefix: string; rules?: Rule[] }) {
   const job = data.instance.jobs[j];
   const st = JOB_STYLE[j];
   const reduced = prefersReducedMotion();
@@ -82,7 +88,13 @@ export function JobBlock({ data, j, moved, compact = false, layoutPrefix }: { da
     >
       {!compact && (
         <>
-          <span className="truncate text-[13px] leading-tight font-semibold">{st.short}</span>
+          <span className="flex min-w-0 items-center gap-1 text-[13px] leading-tight font-semibold">
+            <span className="truncate">{st.short}</span>
+            {rules.map((r) => {
+              const { Icon, label } = RULE_ICON[r];
+              return <Icon key={r} className="size-3.5 shrink-0" aria-label={label}><title>{label}</title></Icon>;
+            })}
+          </span>
           <span className="truncate text-[11px] opacity-80">{n0(job.it_energy_kwh)} kWh</span>
         </>
       )}
@@ -109,7 +121,7 @@ function CountUp({ to, from }: { to: number; from: number }) {
 /* --------------------------------------------------------------- scene */
 
 export function SceneWidget() {
-  const { data, stop, view, setView } = useApp();
+  const { data, stop, view, setView, preset } = useApp();
   const { sites, slots, jobs, options } = data.instance;
   const schedule = view === "greenq" ? stop.best.schedule : data.naive.schedule;
   const now = view === "greenq" ? stop.best : data.naive;
@@ -187,7 +199,7 @@ export function SceneWidget() {
                     </div>
                     <div className="flex min-h-[58px] flex-1 items-center gap-1">
                       {here.map((j) => (
-                        <JobBlock key={jobs[j].key} data={data} j={j} moved={view === "greenq" && data.naive.schedule[j] !== k} layoutPrefix="scene" />
+                        <JobBlock key={jobs[j].key} data={data} j={j} moved={view === "greenq" && data.naive.schedule[j] !== k} layoutPrefix="scene" rules={preset.rules[jobs[j].key] ?? []} />
                       ))}
                       {here.length === 0 && <span className="text-[12px] text-muted-foreground">free</span>}
                     </div>
@@ -203,6 +215,15 @@ export function SceneWidget() {
         <Ticker icon="carbon" now={now.kg_co2} before={data.naive.kg_co2} delta={dCo2} unit="kg CO₂" />
         <Ticker icon="water" now={now.litres} before={data.naive.litres} delta={dWater} unit="L water" />
         <ul className="min-w-0 space-y-1 text-[12px] text-muted-foreground md:pl-2">
+          {preset.key !== "flexible" && (
+            <li className="flex flex-wrap items-center gap-x-3 gap-y-1 font-medium text-foreground">
+              {(Object.keys(RULE_ICON) as Rule[]).filter((r) => Object.values(preset.rules).some((rs) => rs.includes(r))).map((r) => {
+                const { Icon, label } = RULE_ICON[r];
+                return <span key={r} className="flex items-center gap-1"><Icon className="size-3.5" aria-hidden="true" /> {label}</span>;
+              })}
+              <Illustrative />
+            </li>
+          )}
           {view === "before" ? (
             <li>Each job runs at its home site the moment it arrives. Jobs and sizes are <span className="font-semibold text-amber-800">illustrative</span>.</li>
           ) : (

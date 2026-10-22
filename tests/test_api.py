@@ -39,7 +39,25 @@ def test_data_content_is_consistent():
     # balanced headline numbers
     mid = next(s for s in d["sweep"] if s["w"] == 0.5)
     assert round(mid["saved_kg_co2"]) == 530 and round(mid["saved_litres"]) == 1798
-    assert d["totals"]["hardware_jobs"] == 6
+    hw_files = [f for f in (ROOT / "results" / "hardware").glob("*.json") if json.loads(f.read_text()).get("status") == "DONE"]
+    assert d["totals"]["hardware_jobs"] == len(hw_files)
+
+
+def test_flex_section_is_consistent():
+    d = client.get("/api/data").json()
+    f = d["flex"]
+    keys = [p["key"] for p in f["presets"]]
+    assert keys == ["flexible", "mixed", "rigid"]
+    allowed = [p["allowed_schedules"] for p in f["presets"]]
+    assert allowed == sorted(allowed, reverse=True) and allowed[0] == d["instance"]["n_schedules"]
+    # the flexible preset is the same as the main sweep
+    assert [s["best"] for s in f["presets"][0]["sweep"]] == [s["best"] for s in d["sweep"]]
+    # savings shrink as fewer jobs are flexible, and are zero when none are
+    c = f["curve"]
+    assert c[0]["co2_saved_pct"] == 0 and c[0]["water_saved_pct"] == 0
+    assert all(a["co2_saved_pct"] <= b["co2_saved_pct"] for a, b in zip(c, c[1:]))
+    mixed = f["presets"][1]["qaoa"]
+    assert mixed["ideal"]["share_obeying_rules"] > mixed["ideal"]["share_obeying_rules_random"]
 
 
 def test_export_is_reproducible(tmp_path, monkeypatch):

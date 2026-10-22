@@ -78,6 +78,11 @@ export interface UiData {
     qubit_meaning: { qubit: number; job: string; bit: "when" | "where" }[];
   };
   totals: { hardware_jobs: number; quantum_seconds: number };
+  flex: {
+    presets: FlexPreset[];
+    curve: { flexible_share: number; subsets: number; co2_saved_pct: number; water_saved_pct: number }[];
+    note: string;
+  };
   methods: {
     instance: string;
     runtimes: string;
@@ -111,4 +116,27 @@ export interface MethodRow {
   schedule: number[];
   runtime_ms: number | null;
   note: string;
+}
+
+export type Rule = "deadline" | "residency" | "priority";
+
+export interface RuleStats {
+  shots: number;
+  allowed_schedules: number;
+  share_obeying_rules: number;
+  share_obeying_rules_random: number;
+  share_best10_allowed: number;
+  share_best10_allowed_random: number;
+  optimum_hits: number;
+  found_optimum: boolean;
+  best_sampled_schedule: number[] | null;
+}
+
+export interface FlexPreset {
+  key: "flexible" | "mixed" | "rigid";
+  label: string;
+  rules: Record<string, Rule[]>;
+  allowed_schedules: number;
+  sweep: SweepStop[];
+  qaoa?: { ideal: RuleStats; noisy?: RuleStats; hardware?: RuleStats & { backend: string; job_id: string; quantum_seconds: number | null } };
 }
