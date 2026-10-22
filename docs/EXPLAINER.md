@@ -103,6 +103,9 @@ Not really. Water is scarcer in some places. We weight each site's water by the 
 **Can I try my own jobs? What's it worth?**
 Yes. "Try it yourself" lets you type up to five jobs (or upload a CSV) and solves them live on a simulator, clearly marked as not hardware. The calculator next to it scales our measured 14% saving to a fleet size you choose. Those inputs are assumptions, the formula is shown, and we don't claim any real deployment.
 
+**What if the carbon forecast is wrong?**
+We tested that. We fix the plan from the forecast, then let the real grid carbon differ by up to 5% (and 10%), 200 times. The plan was always within 5% of the best possible plan for what actually happened, and usually exactly the best. So small forecast errors don't break it.
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 

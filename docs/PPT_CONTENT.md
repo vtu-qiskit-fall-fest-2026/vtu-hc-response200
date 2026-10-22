@@ -245,6 +245,14 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 10e: Is the plan fragile?
+**On slide**
+- Plan fixed from the forecast; reality differs by up to ±5% / ±10% in grid carbon; 200 draws.
+- **100% of draws within 5% of the new best**, at every priority and both error levels.
+- ±5%, balanced: still exactly best in 76.5% of draws, worst case 0.7% worse.
+
+---
+
 ## Slide 10d: Try it, and what it could be worth
 **On slide**
 - Live demo: enter up to 5 jobs (or a CSV) → best plan + QAOA simulator result in about 0.1 s (*live simulator, not hardware*).

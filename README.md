@@ -206,6 +206,21 @@ Savings shrink as fewer jobs are flexible (balanced priority; average over every
 
 Shots that obey every rule (mixed preset, balanced): random guessing 25%, ideal simulator 99%, noisy simulator 92%, **IBM ibm_marrakesh 61%** (job `dbd13dk24mrc73cki6eg`, 3 s QPU). The cheapest rule-obeying hardware shot was the true best allowed schedule (39 of 4,000 shots).
 
+### Is the plan fragile? (forecast error)
+
+The plan is fixed from the forecast; then each slot's grid carbon is perturbed independently by a uniform error of up to ±5% (and ±10%), 200 seeded draws each, and the plan is compared with the brute-force best for each draw (`python scripts/run_robustness.py` → `results/robustness.json`).
+
+| Forecast error | Priority | Within 5% of new best | Still exactly best | Worst case |
+|---|---|---|---|---|
+| ±5% | Water only | 100% | 92.0% | 0.37% worse |
+| ±5% | Balanced | 100% | 76.5% | 0.69% worse |
+| ±5% | Carbon only | 100% | 97.0% | 0.14% worse |
+| ±10% | Water only | 100% | 79.0% | 2.25% worse |
+| ±10% | Balanced | 100% | 63.5% | 1.84% worse |
+| ±10% | Carbon only | 100% | 73.5% | 0.93% worse |
+
+**Plain reading:** the schedule isn't fragile. Even with ±10% forecast error, it's never more than 2.3% worse than the best plan in hindsight.
+
 ### What could it be worth? (annual impact, assumptions only)
 
 The page includes a calculator that scales the **measured** saving (14.2% CO₂, 14.2% water at balanced priority, all flexible) to a fleet you describe:
