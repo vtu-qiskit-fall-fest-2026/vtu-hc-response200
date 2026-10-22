@@ -195,8 +195,9 @@ k1.metric("CO₂ saved vs business as usual", f"{base.kg_co2 - gq_co2:,.0f} kg",
           f"-{100 * (base.kg_co2 - gq_co2) / base.kg_co2:.0f}%", delta_color="inverse")
 k2.metric("Water saved", f"{base.litres - gq_water:,.0f} L",
           f"-{100 * (base.litres - gq_water) / base.litres:.0f}%", delta_color="inverse")
-k3.metric("Is it the true best schedule?", "Yes ✅" if m["found_optimum"] else "Close",
-          "checked against all 256 schedules", delta_color="off")
+k3.metric("Cheapest shot = true best schedule?", "Yes" if m["found_optimum"] else "No (close)",
+          f"seen in {round(m['p_optimal'] * m['shots'])} of {m['shots']:,} shots · random ≈ {m['shots'] / len(cost):.0f}",
+          delta_color="off")
 k4.metric("Quantum circuit", f"{enc.n_qubits} qubits",
           f"{m['shots']:,} shots · {src_label.split(' · ')[0]}", delta_color="off")
 

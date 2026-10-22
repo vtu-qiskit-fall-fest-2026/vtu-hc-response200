@@ -11,7 +11,8 @@ So carbon and water can pull in opposite directions. GreenQ picks a site and tim
 
 ## 2. The instance we solve
 - 4 jobs, 2 sites (A = evaporative, B = air-cooled), 2 time slots (day, night). That makes 4 options per job and 4^4 = **256 possible schedules**.
-- "Naive" baseline: every job runs at its home site the moment it's submitted. In our scenario, an evening batch burst puts the two biggest jobs on Site A overnight.
+- "Naive" baseline ("business as usual"): every job runs at its home site the moment it's submitted. In our scenario, an evening batch burst puts the two biggest jobs on Site A overnight.
+  - *Why it's fair:* it's what a scheduler does when it ignores carbon and water. It isn't a straw man either: two jobs already sit on the more energy-efficient site and one already runs in the clean daytime slot. An earlier baseline put every job in the daytime slot, which made the savings look mostly like overload avoidance, so we replaced it (DECISIONS D5).
 - Overlap cost: if two jobs share a site and slot, they overflow its spare capacity and cost extra energy. This is what makes the jobs' choices depend on each other.
 - **Real vs illustrative numbers:** the grid carbon average (CEA, Govt. of India) and power-plant water use (NREL) are cited. The site PUE/WUE values, the day/night split, the job sizes and the overlap cost are illustrative, chosen within published ranges. See `greenq/data.py`.
 
@@ -56,10 +57,15 @@ Results (p = 1, carbon/water weight 0.5, 4,000 shots each):
 | Ideal simulator | 0.843 | 1.5% |
 
 How to read this:
-- Real hardware is clearly better than random: the gap is about 15 standard errors, far beyond shot noise. Both hardware runs contain the true best schedule.
+- Real hardware is clearly better than random: the gap is about 15 standard errors, far beyond shot noise.
+- **Which run returned the true best schedule, and how often?** GreenQ's answer is the cheapest schedule among the 4,000 shots.
+  - Ideal simulator: yes, in 60/4,000 shots (1.5%).
+  - Hardware raw: yes, in 33/4,000 shots (0.83%). It was the 17th most frequent outcome, not the top one.
+  - Hardware mitigated: yes, in 28/4,000 shots (0.70%), 27th most frequent.
+  - Random guessing would hit it about 16 times in 4,000 shots. So "it found the optimum" proves nothing at this size; the distribution shift does.
 - Noise costs us part of the ideal gain: hardware recovers ~55-60% of the ideal improvement over random.
-- Error mitigation (dynamical decoupling + twirling) helped only slightly (+0.007, about 2σ), so we call it marginal. Twirling spreads the shots over randomised circuit copies, which reduces bias but doesn't remove gate errors.
-- The two jobs used about 3 seconds of quantum time each.
+- Error mitigation (dynamical decoupling + twirling) gave **no consistent benefit**: across our three paired runs the approximation ratio changed by +0.012 (water only), +0.007 (balanced) and −0.006 (carbon only). Dynamical decoupling protects idle qubits, and twirling turns coherent errors into random noise. Neither removes the gate errors that dominate a 114-gate circuit.
+- **We ran 6 hardware jobs in total:** 3 priority settings (water only, balanced, carbon only) × (raw, mitigated). All 6 beat random by 14-19 standard errors, and all 6 had the true best schedule as their cheapest shot. Each job used about 3 s of quantum time, 18 s in total. Full tables: README → Results, or `python scripts/summarize_results.py`.
 
 ## 7. Code map
 | File | What it does |

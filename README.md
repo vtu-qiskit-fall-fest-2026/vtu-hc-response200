@@ -70,7 +70,7 @@
 
 **Key idea:** a **binary "where + when" encoding**, 2 qubits per job. Every measured bitstring is a valid schedule. It needs half the qubits of the textbook one-hot QUBO, about half the two-qubit gates on IBM hardware, and no penalty tuning.
 
-**Why this works:** the quantum and classical sides provably solve the same problem (tests check the Hamiltonian equals the classical cost on all 256 schedules), and a brute-force baseline grades every quantum result against the true optimum.
+**Why this works:** the quantum and classical sides provably solve the same problem (tests check the Hamiltonian equals the classical cost on all 256 schedules), and a brute-force baseline grades every quantum result against the true optimum. At this size a classical computer is faster: **we make no claim of quantum advantage.**
 
 ![GreenQ demo](docs/images/demo_schedule.png)
 
@@ -105,22 +105,62 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 ## 📊 Results
 
-**Scenario (illustrative):** an evening batch burst. Business as usual runs every job at its home site immediately: **3,726 kg CO₂ · 12,687 L water**.
-**GreenQ (w = 0.5), found on IBM hardware and equal to the brute-force optimum:** **3,196 kg CO₂ (−14%) · 10,889 L water (−14%)**.
+**Scenario (illustrative):** an evening batch burst. All numbers below come from the illustrative instance in [greenq/data.py](greenq/data.py); they are not measurements of a real data centre.
 
-**Is the quantum part doing real work?** (p = 1, 8 qubits, 4,000 shots per run)
+**Baseline we compare against: "business as usual".** Each job runs at its home site the moment it is submitted: **3,726 kg CO₂ · 12,687 L water**. We think this is fair because:
+- it is what a scheduler does when it ignores carbon and water (run immediately, where the job lives);
+- it isn't a straw man: two of the four jobs already sit on the more energy-efficient site, and one already runs in the cleaner daytime slot;
+- we first tried a baseline with every job in the clean daytime slot, but it made the savings look mostly like overload avoidance, so we replaced it (see [DECISIONS.md](docs/DECISIONS.md) D5).
 
-| Run | Approx. ratio ↑ | Shots in best 10% of schedules ↑ | Shots on the optimum |
-|---|---|---|---|
-| Random guessing (baseline) | 0.743 | 10.0% | 0.39% |
-| **IBM `ibm_marrakesh`, raw** · job `dbcpub7i0auc73943vu0` | **0.798 ± 0.002** | **18.9%** | 0.83% |
-| **IBM `ibm_marrakesh`, DD + twirling** · job `dbcpub8c77vs7386pv9g` | **0.805 ± 0.002** | **21.1%** | 0.70% |
-| Noisy simulator (FakeMarrakesh) | 0.831 | 29.8% | 1.8% |
-| Ideal simulator | 0.843 | 33.5% | 1.5% |
+**Best schedule (w = 0.5), verified by brute force over all 256 schedules:** **3,196 kg CO₂ (−14%) · 10,889 L water (−14%)**.
 
-- Real hardware beats random sampling by ~15 standard errors, and both hardware runs contain the true optimum.
-- Noise costs part of the ideal improvement: the hardware keeps ~55-60% of the ideal gain over random. Error mitigation (dynamical decoupling + gate/measurement twirling) helped only slightly (~2σ).
-- Transpiled circuit on `ibm_marrakesh`: 114 two-qubit gates, depth 247. The two jobs used ~3 s of QPU time each.
+**Which run returned it, and how often?** GreenQ's answer is the cheapest schedule among the shots.
+- **Ideal simulator:** returned the true best schedule; it appeared in 60 of 4,000 shots (1.5%).
+- **IBM hardware, raw:** returned the true best schedule; it appeared in 33 of 4,000 shots (0.83%). It was *not* the most frequent outcome (17th most frequent).
+- **IBM hardware, error-mitigated:** returned the true best schedule; 28 of 4,000 shots (0.70%), 27th most frequent.
+- For comparison, random guessing would hit it about 16 times in 4,000 shots and would almost certainly see it at least once. **Finding the optimum at this size is therefore not evidence of quantum benefit.** The evidence that the circuit works is the shift of the whole distribution toward cheap schedules, shown below.
+
+**Is the quantum part doing real work?** p = 1, 8 qubits, 4,000 shots per run. We ran **6 jobs on IBM `ibm_marrakesh`**: three priority settings (water only, balanced, carbon only), each raw and with error mitigation. The table is generated from the saved counts by `python scripts/summarize_results.py`.
+
+*Balanced priority (w = 0.5):*
+
+| Run | Job | Approx. ratio ↑ | Shots in best 10% ↑ | Shots on optimum | Optimum's frequency rank | Cheapest shot is optimum |
+|---|---|---|---|---|---|---|
+| Random guessing | | 0.743 | 10.0% | ≈16/4000 | | |
+| **IBM ibm_marrakesh (raw)** | `dbcpub7i0auc73943vu0` | **0.798 ± 0.002** | **18.9%** | 33/4000 | 17 | yes |
+| **IBM ibm_marrakesh (DD + twirling)** | `dbcpub8c77vs7386pv9g` | **0.805 ± 0.002** | **21.1%** | 28/4000 | 27 | yes |
+| Noisy simulator (FakeMarrakesh) | | 0.831 ± 0.002 | 29.8% | 71/4000 | 1 | yes |
+| Ideal simulator | | 0.843 ± 0.002 | 33.5% | 60/4000 | 11 | yes |
+
+<details>
+<summary><b>Water only (w = 0) and carbon only (w = 1)</b></summary>
+
+*w = 0 (water only)*
+
+| Run | Job | Approx. ratio | Shots in best 10% | Shots on optimum | Optimum's frequency rank | Cheapest shot is optimum |
+|---|---|---|---|---|---|---|
+| Random guessing | | 0.749 | 10.0% | ≈16/4000 | | |
+| IBM ibm_marrakesh (raw) | `dbcq7qvi0auc73944pjg` | 0.801 ± 0.003 | 18.2% | 41/4000 | 8 | yes |
+| IBM ibm_marrakesh (DD + twirling) | `dbcq7rc24mrc73ck6i7g` | 0.813 ± 0.002 | 18.3% | 33/4000 | 9 | yes |
+| Noisy simulator (FakeMarrakesh) | | 0.847 ± 0.002 | 24.8% | 40/4000 | 21 | yes |
+| Ideal simulator | | 0.858 ± 0.002 | 28.1% | 39/4000 | 24 | yes |
+
+*w = 1 (carbon only)*
+
+| Run | Job | Approx. ratio | Shots in best 10% | Shots on optimum | Optimum's frequency rank | Cheapest shot is optimum |
+|---|---|---|---|---|---|---|
+| Random guessing | | 0.762 | 10.0% | ≈16/4000 | | |
+| IBM ibm_marrakesh (raw) | `dbcq829gv2cc738gq49g` | 0.825 ± 0.002 | 22.6% | 41/4000 | 11 | yes |
+| IBM ibm_marrakesh (DD + twirling) | `dbcq82s24mrc73ck6is0` | 0.819 ± 0.002 | 19.1% | 40/4000 | 4 | yes |
+| Noisy simulator (FakeMarrakesh) | | 0.848 ± 0.002 | 27.7% | 67/4000 | 1 | yes |
+| Ideal simulator | | 0.856 ± 0.002 | 30.6% | 54/4000 | 11 | yes |
+
+</details>
+
+- **Every one of the 6 hardware runs beats random sampling** on the whole distribution, by 14 to 19 standard errors, and puts 18-23% of its shots in the best 10% of schedules (random: 10%).
+- **Noise costs part of the ideal improvement:** the hardware keeps roughly half to two-thirds (48-67%) of the ideal simulator's gain over random.
+- **Error mitigation (XY4 dynamical decoupling + gate/measurement twirling) gave no consistent benefit:** approximation ratio +0.012 (w = 0), +0.007 (w = 0.5), −0.006 (w = 1).
+- Transpiled circuit on `ibm_marrakesh`: 114 two-qubit gates, depth ≈245. Each job used about 3 s of QPU time, **18 s in total**.
 - The binary encoding needs **8 qubits / ~114 two-qubit gates**, against **16 qubits / ~227 gates** for a one-hot QUBO, where only 0.39% of outputs would be valid schedules.
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
@@ -235,7 +275,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).
-- **Error mitigation** gave only a marginal gain on this circuit.
+- **Error mitigation** (dynamical decoupling + twirling) gave no consistent gain on this circuit across our 3 paired runs.
 
 ---
 
