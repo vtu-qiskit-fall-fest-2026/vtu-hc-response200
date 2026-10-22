@@ -1,0 +1,931 @@
+{
+ "source": "Kuzma, S., M.F.P. Bierkens, S. Lakshman, T. Luo, L. Saccoccia, E.H. Sutanudjaja and R. Van Beek (2023), Aqueduct 4.0: Updated decision-relevant global water risk indicators, Technical Note, World Resources Institute, doi:10.46830/writn.23.00061. Provincial baseline water stress (total demand), CC BY 4.0.",
+ "mapping": "multiplier = Aqueduct baseline water stress score / 5 (illustrative); state score used for the city; India country score used for power-plant water; grid carbon stays the CEA national average (one national grid).",
+ "india": {
+  "score": 4.108,
+  "label": "Extremely High (>80%)"
+ },
+ "presets": [
+  {
+   "key": "delhi_kolkata",
+   "label": "Delhi NCR + Kolkata",
+   "sites": {
+    "evap": {
+     "city": "Delhi NCR",
+     "state": "NCT of Delhi",
+     "score": 4.746,
+     "label": "Extremely High (>80%)",
+     "multiplier": 0.949
+    },
+    "air": {
+     "city": "Kolkata",
+     "state": "West Bengal",
+     "score": 2.528,
+     "label": "Medium - High (20-40%)",
+     "multiplier": 0.506
+    }
+   },
+   "grid_multiplier": 0.822,
+   "naive": {
+    "kg_co2": 3726.12,
+    "weighted_litres": 10730.61,
+    "litres": 12687.44
+   },
+   "sweep": [
+    {
+     "w": 0.0,
+     "schedule": [
+      2,
+      2,
+      3,
+      1
+     ],
+     "kg_co2": 3633.0,
+     "weighted_litres": 8791.54,
+     "litres": 10650.44,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.05,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.1,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.2,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.25,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.3,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.35,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8818.48,
+     "litres": 10553.15,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.4,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8883.19,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.45,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8883.19,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.5,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8883.19,
+     "litres": 10607.07,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.55,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 9192.27,
+     "litres": 10888.96,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.6,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 9192.27,
+     "litres": 10888.96,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.65,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9333.61,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.7,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9333.61,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.75,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9333.61,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.8,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9333.61,
+     "litres": 11022.98,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.85,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9790.23,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.9,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9790.23,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.95,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9790.23,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 1.0,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9790.23,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    }
+   ],
+   "qaoa_sim_balanced": {
+    "share_best10": 0.3155,
+    "approx_ratio": 0.8479,
+    "found_optimum": true,
+    "optimum_hits": 66
+   }
+  },
+  {
+   "key": "mumbai_hyderabad",
+   "label": "Mumbai + Hyderabad",
+   "sites": {
+    "evap": {
+     "city": "Mumbai",
+     "state": "Maharashtra",
+     "score": 4.201,
+     "label": "Extremely High (>80%)",
+     "multiplier": 0.84
+    },
+    "air": {
+     "city": "Hyderabad",
+     "state": "Telangana",
+     "score": 3.919,
+     "label": "High (40-80%)",
+     "multiplier": 0.784
+    }
+   },
+   "grid_multiplier": 0.822,
+   "naive": {
+    "kg_co2": 3726.12,
+    "weighted_litres": 10469.17,
+    "litres": 12687.44
+   },
+   "sweep": [
+    {
+     "w": 0.0,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.05,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.1,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.2,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.25,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.3,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8692.91,
+     "litres": 10553.15,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.35,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8740.18,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.4,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8740.18,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.45,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8740.18,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.5,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 8982.96,
+     "litres": 10888.96,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.55,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 8982.96,
+     "litres": 10888.96,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.6,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9097.54,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.65,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9097.54,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.7,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9097.54,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.75,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9097.54,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.8,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9097.54,
+     "litres": 11022.98,
+     "same_as_unweighted": false
+    },
+    {
+     "w": 0.85,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9487.85,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.9,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9487.85,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.95,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9487.85,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 1.0,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9487.85,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    }
+   ],
+   "qaoa_sim_balanced": {
+    "share_best10": 0.329,
+    "approx_ratio": 0.8435,
+    "found_optimum": true,
+    "optimum_hits": 58
+   }
+  },
+  {
+   "key": "chennai_bengaluru",
+   "label": "Chennai + Bengaluru",
+   "sites": {
+    "evap": {
+     "city": "Chennai",
+     "state": "Tamil Nadu",
+     "score": 4.149,
+     "label": "Extremely High (>80%)",
+     "multiplier": 0.83
+    },
+    "air": {
+     "city": "Bengaluru",
+     "state": "Karnataka",
+     "score": 3.735,
+     "label": "High (40-80%)",
+     "multiplier": 0.747
+    }
+   },
+   "grid_multiplier": 0.822,
+   "naive": {
+    "kg_co2": 3726.12,
+    "weighted_litres": 10440.56,
+    "litres": 12687.44
+   },
+   "sweep": [
+    {
+     "w": 0.0,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.05,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.1,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.2,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.25,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "kg_co2": 3336.2,
+     "weighted_litres": 8674.28,
+     "litres": 10553.15,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.3,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8719.89,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.35,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8719.89,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.4,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8719.89,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.45,
+     "schedule": [
+      2,
+      3,
+      0,
+      1
+     ],
+     "kg_co2": 3297.0,
+     "weighted_litres": 8719.89,
+     "litres": 10607.07,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.5,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 8957.29,
+     "litres": 10888.96,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.55,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "kg_co2": 3196.08,
+     "weighted_litres": 8957.29,
+     "litres": 10888.96,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.6,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9069.94,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.65,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9069.94,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.7,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9069.94,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.75,
+     "schedule": [
+      2,
+      0,
+      1,
+      3
+     ],
+     "kg_co2": 3168.0,
+     "weighted_litres": 9069.94,
+     "litres": 11022.98,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.8,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9454.89,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.85,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9454.89,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.9,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9454.89,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 0.95,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9454.89,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    },
+    {
+     "w": 1.0,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "kg_co2": 3133.44,
+     "weighted_litres": 9454.89,
+     "litres": 11484.45,
+     "same_as_unweighted": true
+    }
+   ],
+   "qaoa_sim_balanced": {
+    "share_best10": 0.3275,
+    "approx_ratio": 0.8425,
+    "found_optimum": true,
+    "optimum_hits": 59
+   }
+  }
+ ]
+}

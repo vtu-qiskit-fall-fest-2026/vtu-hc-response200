@@ -154,3 +154,38 @@ FLEX_PRESETS = {
         },
     },
 }
+
+
+# Feature 4: regional water stress. CITED: WRI Aqueduct 4.0 (2023) baseline water
+# stress, provincial (state) and country rankings, total-demand weighting, score 0-5
+# (Kuzma et al. 2023, doi:10.46830/writn.23.00061, CC BY 4.0; file
+# Aqueduct40_rankings_download_Y2023M07D05.xlsx). Scores are for the STATE the city
+# is in. ILLUSTRATIVE choices: which cities host Site A / Site B, and the mapping
+# multiplier = score / 5 (a litre in a state scoring 5 counts as one full litre).
+SOURCES["aqueduct"] = (
+    "Kuzma, S., M.F.P. Bierkens, S. Lakshman, T. Luo, L. Saccoccia, E.H. Sutanudjaja and R. Van Beek (2023), "
+    "Aqueduct 4.0: Updated decision-relevant global water risk indicators, Technical Note, World Resources "
+    "Institute, doi:10.46830/writn.23.00061. Provincial baseline water stress (total demand), CC BY 4.0."
+)
+AQUEDUCT_BWS = {   # state -> (score 0-5, WRI label)
+    "NCT of Delhi": (4.746, "Extremely High (>80%)"),
+    "Maharashtra": (4.201, "Extremely High (>80%)"),
+    "Tamil Nadu": (4.149, "Extremely High (>80%)"),
+    "Telangana": (3.919, "High (40-80%)"),
+    "Karnataka": (3.735, "High (40-80%)"),
+    "West Bengal": (2.528, "Medium - High (20-40%)"),
+}
+AQUEDUCT_INDIA = (4.108, "Extremely High (>80%)")   # country score, used for power-plant water
+
+CITY_PRESETS = {   # Site A (evaporative) city, Site B (air-cooled) city
+    "delhi_kolkata": {"label": "Delhi NCR + Kolkata", "evap": ("Delhi NCR", "NCT of Delhi"), "air": ("Kolkata", "West Bengal")},
+    "mumbai_hyderabad": {"label": "Mumbai + Hyderabad", "evap": ("Mumbai", "Maharashtra"), "air": ("Hyderabad", "Telangana")},
+    "chennai_bengaluru": {"label": "Chennai + Bengaluru", "evap": ("Chennai", "Tamil Nadu"), "air": ("Bengaluru", "Karnataka")},
+}
+
+
+def stress_multipliers(preset_key: str) -> tuple[dict[str, float], float]:
+    """(site multipliers, grid multiplier) for a city preset: score / 5."""
+    p = CITY_PRESETS[preset_key]
+    sites = {site: AQUEDUCT_BWS[p[site][1]][0] / 5 for site in ("evap", "air")}
+    return sites, AQUEDUCT_INDIA[0] / 5

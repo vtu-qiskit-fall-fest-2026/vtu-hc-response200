@@ -38,15 +38,26 @@ class Instance:
     #   "residency" - data must stay at the job's home site
     #   "priority"  - critical: must run in the slot it was submitted to
     constraints: dict[str, set[str]] = field(default_factory=dict)
+    # Feature 4: water-stress weighting. When set, "water" in the objective and
+    # footprints means stress-weighted litres: on-site litres x the site's
+    # multiplier + power-plant litres x the grid multiplier. Raw litres stay
+    # available as unit_litres / footprint_litres().
+    site_stress: dict[str, float] | None = None
+    grid_stress: float = 1.0
 
     def __post_init__(self) -> None:
         # Option index k = site_index * n_slots + slot_index.
         # With 2 sites x 2 slots: bit 0 of k is "when", bit 1 is "where".
         self.options = [(s, t) for s in self.sites for t in self.slots]
         # unit[k] = (kg CO2, litres) per kWh of IT energy at option k
+        self.unit_litres = np.array([
+            s.wue_l_per_kwh[t.key] + s.pue * t.grid_water_l_per_kwh for s, t in self.options
+        ])
+        stress = self.site_stress or {}
+        gs = self.grid_stress if self.site_stress else 1.0
         self.unit = np.array([
             (s.pue * t.carbon_kg_per_kwh,
-             s.wue_l_per_kwh[t.key] + s.pue * t.grid_water_l_per_kwh)
+             s.wue_l_per_kwh[t.key] * stress.get(s.key, 1.0) + s.pue * t.grid_water_l_per_kwh * gs)
             for s, t in self.options
         ])
         self.energy = np.array([j.it_energy_kwh for j in self.jobs])
@@ -110,6 +121,16 @@ class Instance:
             if schedule[i] == schedule[j]:
                 total = total + extra
         return np.asarray(total, dtype=float)
+
+    def footprint_litres(self, schedule: tuple[int, ...]) -> float:
+        """Raw (unweighted) litres for a schedule, even when stress weighting is on."""
+        e = self.energy
+        total = sum(e[j] * self.unit_litres[k] for j, k in enumerate(schedule))
+        mean = float(self.unit_litres.mean())
+        for i, j in self.pair:
+            if schedule[i] == schedule[j]:
+                total += self.congestion * (e[i] + e[j]) * mean
+        return float(total)
 
     def weights(self, w_carbon: float) -> np.ndarray:
         """Per-unit weights that turn [kg, litres] into the blended objective."""

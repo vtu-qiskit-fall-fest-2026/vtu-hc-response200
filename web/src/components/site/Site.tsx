@@ -39,6 +39,7 @@ export function PlayButton({ big = false }: { big?: boolean }) {
 export function Nav() {
   const links = [
     ["#dashboard", "Planner"],
+    ["#cities", "Cities"],
     ["#proof", "Quantum proof"],
     ["#methods", "Vs. classical"],
     ["#scaling", "Scaling"],
