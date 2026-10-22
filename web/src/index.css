@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* shadcn-style theme tokens (light). The widget grid uses bg-card, ring-border,
+   text-foreground, ring-ring; everything else uses the same tokens. */
+:root {
+  --background: #ffffff;
+  --foreground: #0b0b0f;
+  --card: #ffffff;
+  --card-foreground: #0b0b0f;
+  --muted: #f5f6f8;
+  --muted-foreground: #6b6f7a;
+  --border: #e7e8ec;
+  --ring: #18181b;
+
+  /* GreenQ meaning colours: carbon = emerald, water = blue */
+  --carbon: #059669;
+  --carbon-soft: #d1fae5;
+  --water: #2563eb;
+  --water-soft: #dbeafe;
+  --baseline: #e11d48;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-carbon: var(--carbon);
+  --color-carbon-soft: var(--carbon-soft);
+  --color-water: var(--water);
+  --color-water-soft: var(--water-soft);
+  --color-baseline: var(--baseline);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--carbon-soft); color: #064e3b; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
+
+/* Range input used inside the priority widget */
+.prio-range { appearance: none; -webkit-appearance: none; background: transparent; width: 100%; height: 28px; cursor: pointer; }
+.prio-range::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--water), #94a3b8 50%, var(--carbon)); }
+.prio-range::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--water), #94a3b8 50%, var(--carbon)); }
+.prio-range::-webkit-slider-thumb { -webkit-appearance: none; margin-top: -9px; width: 24px; height: 24px; border-radius: 999px; background: #fff; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.prio-range::-moz-range-thumb { width: 24px; height: 24px; border-radius: 999px; background: #fff; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.prio-range:focus-visible { outline: none; }
+.prio-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring); }
