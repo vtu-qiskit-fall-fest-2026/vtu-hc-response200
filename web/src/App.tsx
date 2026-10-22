@@ -12,6 +12,8 @@ import { QuantumScreen } from "@/components/slides/Quantum";
 import { CompareScreen } from "@/components/slides/Compare";
 import { AskScreen } from "@/components/slides/Ask";
 import { AboutScreen } from "@/components/slides/About";
+import { MascotProvider } from "@/components/mascot/MascotProvider";
+import { MoodGallery } from "@/components/mascot/MoodGallery";
 import type { FlexPreset, UiData } from "@/types";
 
 const VIEWS = [StartScreen, ScheduleScreen, QuantumScreen, CompareScreen, AskScreen, AboutScreen];
@@ -19,6 +21,7 @@ const VIEWS = [StartScreen, ScheduleScreen, QuantumScreen, CompareScreen, AskScr
 export default function App() {
   useStageScale();
   const { data, error } = useUiData();
+  if (window.location.hash === "#dewy-moods") return <MoodGallery />;
 
   if (error)
     return (
@@ -97,10 +100,11 @@ function SlideApp({ data }: { data: UiData }) {
   const Current = VIEWS[screen];
   return (
     <AppContext.Provider value={value}>
+      <MascotProvider>
       <div className="flex h-dvh w-full overflow-hidden bg-background text-foreground">
         <Sidebar open={sideOpen} setOpen={setSideOpen} />
         <div className="relative flex min-w-0 flex-1 flex-col">
-          <main className={`min-h-0 flex-1 overflow-hidden ${compact ? "px-4 pt-4 pb-4" : "px-10 pt-8 pb-7"}`} aria-label={SCREENS[screen].label}>
+          <main className={`min-h-0 flex-1 overflow-hidden ${compact ? "px-4 pt-4 pb-4" : "px-10 pt-8 pb-12"}`} aria-label={SCREENS[screen].label}>
             <Stage screen={screen} dir={dir}>
               <Current />
             </Stage>
@@ -108,6 +112,7 @@ function SlideApp({ data }: { data: UiData }) {
           <FooterBar captionText={caption ? narration[caption] ?? null : null} />
         </div>
       </div>
+      </MascotProvider>
     </AppContext.Provider>
   );
 }

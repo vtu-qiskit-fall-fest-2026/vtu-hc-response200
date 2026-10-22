@@ -90,7 +90,7 @@ export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean
 export function FooterBar({ captionText }: { captionText: string | null }) {
   const { screen, go, caption } = useApp();
   return (
-    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border px-8 max-sm:gap-2 max-sm:px-3 text-[13px] text-muted-foreground">
+    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border pr-[136px] pl-8 max-sm:gap-2 max-sm:px-3 text-[13px] text-muted-foreground">
       <div className="flex min-w-0 flex-1 items-center gap-6" aria-live="polite">
         <AnimatePresence mode="wait" initial={false}>
           {caption ? (
@@ -119,7 +119,7 @@ export function FooterBar({ captionText }: { captionText: string | null }) {
         </AnimatePresence>
       </div>
       <span className="shrink-0 rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200 max-sm:text-[11px]">Not quantum advantage<span className="max-sm:hidden"> · a laptop is the referee</span></span>
-      {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · F</span>}
+      {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · F · H</span>}
     </footer>
   );
 }

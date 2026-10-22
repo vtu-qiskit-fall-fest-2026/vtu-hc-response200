@@ -13,7 +13,7 @@ export function StartScreen() {
   return (
     <div className="relative h-full">
       <div
-        className={`absolute overflow-hidden ${compact ? "-inset-4" : "-inset-x-10 -top-8 -bottom-7"}`}
+        className={`absolute overflow-hidden ${compact ? "-inset-4" : "-inset-x-10 -top-8 -bottom-12"}`}
         onPointerEnter={() => setHover(true)}
         onPointerLeave={() => setHover(false)}
         data-tour="hero"
