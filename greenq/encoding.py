@@ -120,7 +120,7 @@ class Encoding:
             for q in qubits:
                 chars[n - 1 - q] = "Z"   # Qiskit labels: rightmost char is qubit 0
             labels.append(("".join(chars), coeff))
-        return SparsePauliOp.from_list(labels).simplify()
+        return SparsePauliOp.from_list(labels)
 
 
 def onehot_qubits(inst: Instance) -> int:

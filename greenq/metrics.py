@@ -3,6 +3,7 @@
 * approximation ratio r = (worst - mean) / (worst - best): 1 = always optimal, 0 = always worst.
   Uniform random guessing gives r_random (reported alongside so the gain is visible).
 * P(optimal): share of shots that landed exactly on the optimal schedule.
+* share in best 10%: share of shots in the cheapest 10% of all schedules (random = 10%).
 * best sampled: the cheapest schedule seen in any shot. This is what GreenQ outputs.
   (Honest note: with 256 schedules and thousands of shots, even random sampling
   would usually see the optimum; the distribution metrics above are what show
@@ -25,6 +26,10 @@ def analyze(counts: dict[str, int], enc: Encoding, top: int = 10) -> dict:
     p_opt = sum(c for b, c in counts.items() if idx[b] in opt_states) / shots
     best_b = min(counts, key=lambda b: cost[idx[b]])
     span = worst - best
+    # share of shots that land in the cheapest 10% of all schedules (random = 10%)
+    rank = np.argsort(np.argsort(cost, kind="stable"), kind="stable")
+    top_n = max(1, round(0.1 * len(cost)))
+    top10 = sum(c for b, c in counts.items() if rank[idx[b]] < top_n) / shots
     ranked = sorted(counts.items(), key=lambda kv: -kv[1])[:top]
     return {
         "shots": shots,
@@ -33,6 +38,8 @@ def analyze(counts: dict[str, int], enc: Encoding, top: int = 10) -> dict:
         "approx_ratio_random": float((worst - cost.mean()) / span),
         "p_optimal": float(p_opt),
         "p_optimal_random": len(opt_states) / len(cost),
+        "share_best10pct": float(top10),
+        "share_best10pct_random": top_n / len(cost),
         "best_sampled_bitstring": best_b,
         "best_sampled_schedule": list(enc.decode(best_b)),
         "best_sampled_objective": float(cost[idx[best_b]]),
