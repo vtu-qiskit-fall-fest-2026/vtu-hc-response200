@@ -49,6 +49,9 @@ export function Gauge({ tone, title, unit, min, max, major, naive, value }: Prop
 
   const marks: number[] = [];
   for (let v = Math.ceil(min / major) * major; v < max; v += major) marks.push(v);
+  const half = major / 2;
+  const halves: number[] = [];
+  for (let v = Math.ceil(min / half) * half; v < max; v += half) halves.push(v);
   const tooth = (major / 10) * ((BOTTOM - TOP) / (max - min));
   const color = `var(--${tone})`;
 
@@ -70,42 +73,52 @@ export function Gauge({ tone, title, unit, min, max, major, naive, value }: Prop
         <rect x="18" y={TOP - 18} width={W - 36} height={BOTTOM - TOP + 36} className="gauge__well" />
         <motion.rect x="18" width={W - 36} y={levelY} height={fillH} fill={`url(#well-${uid})`} />
 
-        {/* enamel staff with alternating E marks */}
+        {/* enamel staff plate: a continuous ladder of E marks, alternating sides every half step */}
         <rect x={STAFF_X} y={TOP - 10} width={STAFF_W} height={BOTTOM - TOP + 20} className="gauge__staff" />
-        {marks.map((v, i) => {
+        {halves.map((v, i) => {
           const left = i % 2 === 0;
-          const x0 = left ? STAFF_X + 6 : STAFF_X + STAFF_W / 2 + 2;
-          const spineX = left ? x0 : x0 + STAFF_W / 2 - 14;
+          const x0 = left ? STAFF_X + 5 : STAFF_X + STAFF_W / 2;
+          const w = STAFF_W / 2 - 5;
+          const spineX = left ? x0 : x0 + w - 7;
           const yb = y(v);
           return (
-            <g key={v} fill={color}>
-              <rect x={spineX} y={yb - tooth * 5} width={6} height={tooth * 5} />
+            <g key={v} className={`gauge__e gauge__e--${tone}`}>
+              <rect x={spineX} y={yb - tooth * 5} width={7} height={tooth * 5} />
               {[0, 2, 4].map((t) => (
-                <rect key={t} x={x0} y={yb - tooth * (t + 1)} width={STAFF_W / 2 - 8} height={tooth} />
+                <rect key={t} x={x0} y={yb - tooth * (t + 1)} width={w} height={tooth} />
               ))}
-              <text
-                x={left ? STAFF_X - 10 : STAFF_X + STAFF_W + 10}
-                y={yb + 9}
-                textAnchor={left ? "end" : "start"}
-                className="gauge__num"
-              >
-                {n0(v)}
-              </text>
             </g>
           );
         })}
 
         {/* business-as-usual mark */}
         <line x1="10" x2={W - 10} y1={y(naive)} y2={y(naive)} className="gauge__naive" />
+        <g transform={`translate(10 ${y(naive) - 30})`} className="gauge__tag">
+          <rect width="172" height="24" rx="2" />
+          <text x="8" y="17">BUSINESS AS USUAL</text>
+        </g>
 
         {/* saved span between the marks */}
-        <motion.rect x={STAFF_X} width={STAFF_W} y={y(naive)} height={hatchH} fill={`url(#hatch-${uid})`} />
+        <motion.rect x="18" width={W - 36} y={y(naive)} height={hatchH} fill={`url(#hatch-${uid})`} />
         <motion.text x={STAFF_X + STAFF_W / 2} y={savedY} textAnchor="middle" className="gauge__saved">
           {savedText}
         </motion.text>
 
         {/* GreenQ level */}
+        <motion.rect x="18" width={W - 36} y={levelY} height={10} fill={color} fillOpacity={0.28} />
         <motion.line x1="10" x2={W - 10} y1={levelY} y2={levelY} className="gauge__level" stroke={color} />
+        {/* numerals last, so their halo sits above the level lines */}
+        {marks.map((v, i) => (
+          <text
+            key={v}
+            x={i % 2 === 0 ? STAFF_X - 10 : STAFF_X + STAFF_W + 10}
+            y={y(v) + 9}
+            textAnchor={i % 2 === 0 ? "end" : "start"}
+            className="gauge__num"
+          >
+            {n0(v)}
+          </text>
+        ))}
       </svg>
       <figcaption>
         <span className="gauge__title">{title}</span>

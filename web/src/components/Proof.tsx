@@ -8,9 +8,9 @@ interface Props {
   onSelect: (w: number) => void;
 }
 
-type Row = { key: string; label: string; kind: "random" | "hw" | "sim"; share: number; sub: string };
+type Row = { key: string; label: string; kind: "random" | "hw" | "sim"; share: number; sub: string; mono?: boolean };
 
-function rowsFor(p: ProofEntry): Row[] {
+function rowsFor(p: ProofEntry, mitigationNote: string): Row[] {
   const rows: Row[] = [
     { key: "random", label: "Random guessing", kind: "random", share: p.random.share_best10, sub: "every schedule equally likely" },
   ];
@@ -20,7 +20,8 @@ function rowsFor(p: ProofEntry): Row[] {
       label: `IBM hardware, ${h.mitigation === "none" ? "raw" : "error-mitigated"}`,
       kind: "hw",
       share: h.share_best10,
-      sub: `${h.backend} · ${h.job_id}`,
+      sub: h.mitigation === "none" ? `${h.backend} · ${h.job_id}` : `no consistent gain over raw: ${mitigationNote}`,
+      mono: h.mitigation === "none",
     });
   }
   if (p.noisy) rows.push({ key: "noisy", label: "Noisy simulator", kind: "sim", share: p.noisy.share_best10, sub: `${p.noisy.backend} noise model` });
@@ -46,6 +47,7 @@ export function Proof({ data, w, onSelect }: Props) {
     x.ideal ? x.hardware.map((h) => (h.approx_ratio - x.random.approx_ratio) / (x.ideal!.approx_ratio - x.random.approx_ratio)) : [],
   );
   const raw = p.hardware.find((h) => h.mitigation === "none")!;
+  const mitigationNote = `approx. ratio ${mitigation.map((m) => signed(m.delta)).join(" / ")} across the three settings`;
 
   return (
     <section className="section proof" id="proof" aria-labelledby="proof-title">
@@ -54,7 +56,7 @@ export function Proof({ data, w, onSelect }: Props) {
         <p className="lede">
           Each shot of the circuit reads out one complete schedule. Random guessing puts {pct(0.1)} of its shots in the
           best tenth of the {data.instance.n_schedules} schedules. On IBM&rsquo;s <span className="mono">{raw.backend}</span>, our
-          circuit put <strong>{pct(shareMin)}–{pct(shareMax)}</strong> there.
+          circuit put <strong>{pct(shareMin)}–{pct(shareMax)}</strong> there. Error mitigation gave no consistent extra gain.
         </p>
       </div>
 
@@ -74,11 +76,11 @@ export function Proof({ data, w, onSelect }: Props) {
               <span key={v} style={{ left: `${(v / SCALE) * 100}%` }}>{pct(v)}</span>
             ))}
           </div>
-          {rowsFor(p).map((r) => (
+          {rowsFor(p, mitigationNote).map((r) => (
             <div key={r.key} className={`level level--${r.kind}`}>
               <div className="level__label">
                 <strong>{r.label}</strong>
-                <span className={r.kind === "hw" ? "mono" : undefined}>{r.sub}</span>
+                <span className={r.mono ? "mono" : undefined}>{r.sub}</span>
               </div>
               <div className="level__bar">
                 <span className="level__fill" style={{ width: `${(r.share / SCALE) * 100}%` }} />
