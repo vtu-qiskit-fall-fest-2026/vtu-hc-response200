@@ -127,12 +127,20 @@ Start it with `python -m server` (after pulling new code: `python -m server --re
 
 | Screen | What it shows | One line to say |
 |---|---|---|
-| 1 Start | Headline, the two savings counting up, a mini scene that switches once from run now to run smart | "Same four jobs. Run smart instead of run now: 530 kg CO₂ and 1,798 L water less." |
+| 1 Start | A wordless 16-second loop: jobs pile up at home under a grey haze, a quantum chip lights up (its links are the real circuit's qubit pairs), the jobs move, and the two savings count up from the data | "Same jobs, smarter place and time: 530 kg CO₂ and 1,798 L water less in this example." |
 | 2 Schedule | *Run now / Run smart* toggle; job rules (all flexible, mixed, mostly rigid); the two sites with day and night lanes; moved jobs glow and a line shows where each went; the priority slider (the 3 **IBM** stops ran on real hardware); the trade-off curve; "Why this schedule" | "Run now piles two big jobs onto Site A at night. Run smart spreads them to cleaner, drier slots, and here is why each one moved." |
 | 3 Quantum | The real 8-qubit circuit (it lights up gate by gate), then where 4,000 shots landed (random, simulator, IBM), the key numbers, and all 7 job IDs | "IBM's machine lands in the best tenth of schedules about twice as often as random. Error mitigation didn't help consistently. No advantage claimed." |
 | 4 Compare | Tabs: Methods (every method reaches the best; classical is faster), Scaling (gates grow from 114 to 1,010), Job rules, Cities (water stress), Forecasts (robustness) | "We show the fair comparison on purpose: at this size a laptop wins." |
 | 5 Ask | Ask GreenQ: 5 example questions or your own; Describe your jobs in plain English, check the table, run it on the live simulator; fleet calculator | "The AI only explains our saved results. It never picks the schedule, and any number it can't match to our data is deleted." |
 | 6 About | Three steps (encode, run, check), six honest answers, sources | "A laptop is our referee." |
+
+### Dewy, the guide (`web/src/components/mascot/`)
+- **What it is:** our own little mascot, a water drop with a leaf (water and carbon), drawn in SVG and animated with Motion. Eyes only, no mouth.
+- **What it does:** reacts to the demo (wakes up, gets excited when you hover Play, celebrates when the savings appear, thinks while the quantum circuit runs, falls asleep after 30 seconds of nothing) and gives a guided tour: press **T** (or "Show me around") and it walks through one widget per screen with a short line. **P** plays the same tour as a timed story. **H** hides it.
+- **Honesty rules:** its own lines are short and contain no numbers; when it reads out an AI answer, that answer passed the number check and carries its badge.
+- **Where the idea came from:** the handout *Make Your Own Mascot* (Saksham Gupta), which uses Bible Strong Avatar Lab. We only borrowed ideas (eyes-only face, blinking, a list of moods and when to play them); the drawing and code are ours, so there's no licence issue.
+
+**Jury question: "Is the mascot just decoration?"** It's a guide: it points the audience at one thing per screen, and on the Ask screen it is the speaker for the grounded AI answers. It never makes a claim of its own.
 
 ### The AI part, in plain words (`server/llm.py`)
 - **What it is:** a language model (Groq's `openai/gpt-oss-20b`) that writes short sentences. It's not part of the optimisation.

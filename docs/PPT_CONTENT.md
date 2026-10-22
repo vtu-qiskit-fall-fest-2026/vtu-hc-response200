@@ -267,6 +267,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 - **Ask GreenQ:** a language model (Groq, `openai/gpt-oss-20b`) **explains** saved results in at most 3 sentences, and reads typed job descriptions into a table.
 - **It never decides:** schedules come from brute force and QAOA. Every number it writes is checked against our data, and unmatched sentences are deleted. Typed kWh must appear in the user's text.
 - **Never breaks:** live model → pre-generated cache → templates. Each answer is labelled *AI explanation* or *Template*.
+- **Dewy, the guide:** an original water-drop mascot that tours one widget per screen and speaks the grounded answers; its own lines have no numbers.
 
 **Visual:** `docs/images/ui_ask.png` (chat with badges, plus a typed job description turned into a table and solved on the live simulator).
 

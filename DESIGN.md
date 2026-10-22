@@ -227,7 +227,7 @@ A near-monochrome light palette with two strictly semantic accents and two signa
 
 | Screen | Body |
 |---|---|
-| 1 Start | full-bleed background slideshow under a left glass card (60px two-tone headline, one sub-line, two 58px count-up savings with ILLUSTRATIVE badges, Play + Explore, two trust chips); right: the scene caption chip on top and the mini scene below; bottom: a three-step strip |
+| 1 Start | the full-bleed hero loop (wordless, 16 s) with one button, Play the story (P), and a small link, "or let Dewy show you around" (T) |
 | 2 Schedule | left card: run now / run smart, job rules, job chips, the two sites, tickers; right column (440px): priority slider, trade-off curve, why-this-schedule |
 | 3 Quantum | top: circuit card; bottom: histogram (1.35fr) and facts + 7 job IDs (1fr) |
 | 4 Compare | one card with five tabs: Methods, Scaling, Job rules, Cities, Forecasts |
@@ -299,12 +299,41 @@ Two grey site panels, each with its building illustration, PUE and water figures
 ### Quantum Proof
 A white circuit card drawn in SVG: grey wires, ink H gates and measurement boxes, emerald Rz/ZZ gates over a pale emerald cost band, blue Rx gates over a pale blue mixer band. Beside a histogram of ten deciles (best tenth tinted pale emerald), three series follow the Three Provenances Rule, with grey well fact tiles holding one big number and one sentence each.
 
-### Start screen: slideshow, overlay and glass
-- **Scenes:** five SVG illustrations drawn by us (`StartScenes.tsx`), light pastel style, no photos or logos. Each is drawn on the 1600×900 canvas and fitted into the top-right window (translate 523,30 · scale 0.62) that stays visible between the text card and the mini scene.
-- **Order and captions (≤ 4 words):** Servers never sleep → Cooling drinks water → Grid carbon changes hourly → A quantum computer decides → Smarter placement, less impact. Scenes 1–3 light step 1 *Jobs arrive*, scene 4 lights step 2 *Quantum computer chooses*, scene 5 lights step 3 *Footprint drops*; clicking a step jumps to its first scene.
-- **Overlay rule:** a left-to-right white gradient (85% → 55% → 25%) over the images, and all text sits on glass cards (white 85%, backdrop blur, white hairline ring). Measured contrast on every scene: headline 19.5:1, grey second line 5.2:1, sub-line 10.9:1. Text never sits directly on an image; only the caption chip does, and it's white on 85% ink.
-- **Motion:** a 1.2 s cross-fade every 5.5 s; the active scene zooms 1.00 → 1.05 (Ken Burns) and nothing else moves behind the text. Paused while the pointer is over the visible image and during story mode. Reduced motion: scene 1 as a still, no fade or zoom.
-- **Phone width:** the sidebar starts collapsed; cards stack (text, caption, mini scene, steps) and the screen scrolls.
+### Start screen: the hero loop
+A wordless SVG scene (`Hero.tsx`, viewBox 1380×840) driven by one phase clock. No sentences: only icons, shapes and numbers.
+
+| Phase | Time | What happens |
+|---|---|---|
+| 0 Night | 0–4 s | Site A (building + cooling tower with steam) and Site B (building + spinning chiller fans); rack lights blink; the four job blocks (width ∝ kWh) sit in their home lanes (run now); a grey CO₂ haze hangs over both sites; the thermometer is high and rose |
+| 1 Chip | 4–8 s | a chip with 8 qubit dots appears between the sites; links between dots draw and pulse, using the two-qubit pairs of the real exported circuit; a REAL IBM RUN badge flickers on |
+| 2 Move | 8–11 s | each block arcs to its run-smart lane along a dashed packet path in its own colour; the haze thins, the steam shrinks, the thermometer drops to emerald, the sky turns mint |
+| 3 Saved | 11–15 s | two white cards count up the savings from `ui_data.json` (leaf + kg CO₂, droplet + L water), each with an ILLUSTRATIVE badge |
+| 4 Reset | 15–16 s | the stage fades out and the loop restarts |
+
+Hover holds the current phase; story mode holds it too. Reduced motion shows phase 3 still. Only transforms, opacity and colours animate.
+
+## Dewy, the guide
+
+**Look.** An original water drop (blue gradient, white highlight) with an emerald leaf sprout: water and carbon in one shape. Eyes only, no mouth; a soft ground shadow. 88 px high on desktop, 64 px on phones. Home is the bottom-right corner, standing on the footer; the footer reserves 136 px on the right so nothing is covered. **H** or the small eye button hides it.
+
+**Alive.** Random blinks every 3–6 s and a slow breath (scaleY 1 → 1.025). Moods change eye shape (open, wide, half, squint, closed ⌣, happy ∩), eye size, body tilt and bounce, and the leaf angle (perks up when happy, droops when sleepy), plus small effects:
+
+| Mood | Look | When |
+|---|---|---|
+| waking → idle | half eyes, stretch | the app opens; waking from sleep |
+| excited | wide eyes, bounce, leaf up | hover or focus on Play the story; a good answer |
+| celebrate | happy eyes, jump, sparkles | the savings finish counting |
+| thinking → working → proud | eyes up + dots → squint + gear → happy | the Quantum screen lights its circuit, fills the histogram, then is done |
+| curious | wide eyes, lean, looks at the slider then the curve | the priority slider moves |
+| confused | odd eyes, tilt, "?" | the server can't be reached (then a calm fallback line) |
+| drowsy → sleeping | half → closed eyes, leaf droops, zZ | 30 s, then 45 s without input; any input wakes it |
+| laughing | happy eyes, shake | a click on Dewy |
+
+**Speech bubble.** One line, white, appears and fades. Hand-written lines stay under 10 words and carry no numbers; any number in a bubble comes from the data (an AI answer that passed the number check, shown with its AI EXPLANATION or TEMPLATE badge).
+
+**Tour.** One step per screen. A dim layer (ink at 42%) covers the stage only, never the sidebar or the footer, with a rounded hole that springs to the target widget. Dewy stands beside the widget and says its line. In manual mode a pill shows step, Back, Next and ✕; ← → and Esc work.
+
+**Reduced motion.** Dewy holds idle, with no blinking, breathing or reactions; bubbles still appear, without animation.
 
 ### Honest answers
 A two-column definition list on the About screen: a 15px semibold question, then one grey line.
@@ -336,7 +365,7 @@ Motion explains a change; nothing loops and nothing moves for decoration. Under 
 ### Don't:
 - **Don't** use emerald or blue for anything that is not carbon or water.
 - **Don't** show an invented number, or an illustrative one without its tag.
-- **Don't** add decorative motion, parallax or any looping ornament (the start-screen miniature switches once).
+- **Don't** add decorative motion, parallax or looping ornament outside the hero loop and Dewy's breathing.
 - **Don't** let a screen scroll at 1366×768 or 1920×1080; cut text instead.
 - **Don't** show model text without its AI EXPLANATION or TEMPLATE badge.
 - **Don't** introduce a dark theme, heavy or hard offset shadows, or sharp corners.

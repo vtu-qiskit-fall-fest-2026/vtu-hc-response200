@@ -120,9 +120,20 @@ Forecast error is modelled as a uniform independent error on each slot's grid ca
 - **Why this model:** on Groq, strict `json_schema` structured outputs are supported by `openai/gpt-oss-20b` and `openai/gpt-oss-120b` (checked in Groq's docs on Oct 22). The 20b model is the faster one, and the explanations are short. We send `reasoning_effort: low` and temperature 0.2. Other models fall back to JSON-object mode.
 - **Time limits:** 8–12 s timeouts. Live answers are memoised in memory, and the cache script paces its requests for the free tier.
 
-### D24. Start screen: our own SVG scenes instead of photos (Oct 22)
+### D24. Start screen: our own SVG scenes instead of photos (Oct 22; superseded by D25)
 - **Why:** the Start slide must explain the project in five seconds, so it got a background slideshow (servers → cooling water → grid carbon → quantum computer → greener data hall) whose captions drive a three-step strip.
 - **SVG, not photos:** we drew the scenes ourselves rather than downloading licensed photos. There are no licences or authors to track, they are sharp at any size, they add only a few KB to the JavaScript bundle (no image files, nothing to preload), they work offline, and they carry no brand marks. In particular there is no IBM marketing photo of their hardware: the quantum scene is a generic gold dilution-refrigerator "chandelier".
 - **Readability:** text sits on 85% white glass cards over a white gradient. We measured the contrast of every text colour against the actual card pixels in all five scenes; the lowest was 4.4:1 for the grey second headline line, so it was darkened to 60% ink (5.2:1).
 - **Honest chips:** "Real IBM quantum runs: 7" is counted from the data (6 at the three priority settings + 1 with job rules), not typed in.
+
+### D25. A wordless hero loop replaces the Start text (Oct 23)
+- **Why:** a juror should get the story in one glance without reading: jobs pile up at home, a quantum chip works, jobs move, and footprint drops. The Start screen is now a 16-second SVG loop with one button; the headline, sub-line, number row, chips and slideshow are gone.
+- **Real, not decorative:** the chip's qubit links are the two-qubit (ZZ) pairs of the actual exported circuit, the blocks move between the real run-now and run-smart schedules, and the savings count up from `ui_data.json` (a test checks no saving is typed into the source). The ILLUSTRATIVE and REAL IBM RUN badges stay on screen.
+- **SVG + Motion, not video:** it stays sharp on a projector, works offline, weighs a few KB, and can be held, paused or frozen (reduced motion). A recording for YouTube can be made with Playwright; the live hero stays code.
+
+### D26. Our own mascot ("Dewy") instead of the Bible Strong Avatar Lab package (Oct 23)
+- **Source of ideas:** the handout *Make Your Own Mascot* (Saksham Gupta) walks through Bible Strong Avatar Lab by Stéphane Montlouis-Calixte (AGPL-3.0). We took only ideas: eyes-only faces, automatic blinking and breathing, a named set of moods, a mood controller (play / setMood / onEnd), and the table of moments that trigger a mood.
+- **Why our own:** no licence question (AGPL would bind the app), no manual step in a browser studio, fully offline, moods tied directly to our app state, and all of it our own work inside the hackathon window, as the rules require. Dewy is an original SVG drawn for GreenQ and animated with Motion, which we already use.
+- **Guardrails:** Dewy never states a number on its own; tour lines are under 10 words and number-free (tested); AI answers it speaks are the grounded ones, with their badge. The Bible Strong swap stays optional and is not done; if it ever is, the README and About must credit the author and repo and state AGPL-3.0.
+- **Rate limits:** Groq's free tier returned HTTP 429 when the slider swept quickly. The server now cools down for the `retry-after` time and serves the cache or a template meanwhile; the explanation request waits 0.7 s for the slider to settle, and the cache builder retries.
 

@@ -33,6 +33,7 @@
 - [Proposed Solution](#-proposed-solution)
 - [Approach & Architecture](#-approach--architecture)
 - [Results](#-results)
+- [Dewy, the guide](#-dewy-the-guide)
 - [The language model's role](#-the-language-models-role)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
@@ -75,7 +76,7 @@
 
 ![GreenQ demo: start screen](docs/images/ui_start.png)
 
-*The Start screen at 1920×1080: a background slideshow of five drawn scenes (servers, cooling water, grid carbon, a quantum computer, a greener data hall) whose captions match a three-step strip, the two savings, and the run now → run smart mini scene. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About); each fits one screen with no scrolling. Press **P** for a 35-second guided story, arrows or 1–6 to move, **F** for full screen.*
+*The Start screen at 1920×1080: a wordless 16-second loop (jobs pile up at home, a quantum chip works out a plan, the jobs move, the savings count up from the data) and Dewy, our guide, in the corner. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About); each fits one screen with no scrolling. Press **P** for the 50-second story, **T** for Dewy's tour, arrows or 1–6 to move, **F** for full screen.*
 
 ---
 
@@ -286,6 +287,12 @@ Same objective, same instance, balanced setting (`python scripts/run_baselines.p
 
 ---
 
+## 💧 Dewy, the guide
+
+The demo has a small original mascot, **Dewy**: a water drop with a leaf sprout (water and carbon), eyes only. It reacts to what happens (wakes up, gets excited on Play, celebrates when the savings appear, thinks while the quantum circuit runs, dozes after 30 seconds), gives a guided tour of one widget per screen (**T**, or "Show me around"), and on the Ask screen it speaks the grounded AI answers. Its own lines are under 10 words and never contain numbers; numbers it shows come from the data. **H** hides it; with reduced motion it holds still. All moods are at http://127.0.0.1:8000/#dewy-moods.
+
+---
+
 ## 🤖 The language model's role
 
 GreenQ uses a language model (Groq's hosted `openai/gpt-oss-20b` by default) for **words only**:
@@ -345,7 +352,8 @@ vtu-hc-response200/
 │   ├── run_cities.py         # water-stress city presets -> results/cities.json
 │   ├── run_robustness.py     # forecast-error robustness -> results/robustness.json
 │   ├── export_ui_data.py     # saved results -> results/ui_data.json for the UI
-│   └── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
+│   ├── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
+│   └── ui_smoke.py           # optional browser checks (Playwright): no console errors, no overflow, numbers match data
 ├── server/                   # FastAPI: /api/data, /api/custom, serves web/dist
 │   └── llm.py                # grounded explanations: facts, number check, cache, templates
 ├── web/                      # React + Vite demo UI (source; built into web/dist)
@@ -391,7 +399,7 @@ python -m server
 
 Then open **http://127.0.0.1:8000**. The first run builds the web UI automatically (`npm ci` + `npm run build` in `web/`, about a minute); later runs start in seconds. Use `python -m server --rebuild` after pulling new code or changing anything in `web/src`.
 
-**Using the demo:** six screens in the left sidebar. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 35-second story (Start → Schedule → Quantum), **F** full screen, **Esc** leaves it. The app is laid out for a 16:9 screen and scales to fit (tested at 1920×1080 and 1366×768); the last screen is remembered.
+**Using the demo:** six screens in the left sidebar. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 50-second story (all six screens, with Dewy's spotlights), **T** starts Dewy's tour (← → to step, **Esc** to stop), **H** hides Dewy, **F** full screen, **Esc** leaves it. The app is laid out for a 16:9 screen and scales to fit (tested at 1920×1080 and 1366×768); the last screen is remembered.
 
 The demo reads only saved results (`results/ui_data.json`, exported from `results/hardware/` and `results/sim/`), so it works offline and never waits for a quantum queue. The optional "Re-run this setting on the local simulator" button calls the local Qiskit simulator through the server; nothing depends on it.
 
@@ -480,7 +488,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 
 **UI:** the v2 dashboard used the [21st.dev](https://21st.dev) community component `draggable-widget-grid` (kept unchanged in `web/src/components/ui/`); the v3 slide screens place the same GreenQ widgets in fixed layouts, because a drag grid can't fit a no-scroll slide. The page's visual style is inspired by the [Waymark template](https://waymark-template.vercel.app/); no code or assets were copied from it.
 
-**Images:** the five Start-screen background scenes (server racks, cooling towers, power grid, a generic dilution-refrigerator "chandelier", a green data hall) are SVG illustrations drawn by Team Response200 for this app, in `web/src/components/slides/StartScenes.tsx`. No photos, stock images, AI-generated images or logos (IBM, Qiskit, VTU) are used anywhere in the app.
+**Images and mascot:** the Start-screen animation (`web/src/components/slides/Hero.tsx`) and Dewy, the mascot (`web/src/components/mascot/`), are original SVG drawings by Team Response200 for this app, animated with Motion. No photos, stock images, AI-generated images or logos (IBM, Qiskit, VTU) are used anywhere in the app. The mascot *idea* (eyes-only face, automatic blinking and breathing, named moods, and which moment triggers which mood) was inspired by the free guide *Make Your Own Mascot* by Saksham Gupta (@saksham.700x), which walks through [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab) by Stéphane Montlouis-Calixte. We used none of its text, artwork or code, and not the AGPL-3.0 packages.
 
 **Tools:** development was assisted by Claude Code (Anthropic); commits it co-authored are marked in the git history.
 

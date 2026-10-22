@@ -42,7 +42,7 @@ EXAMPLES = [
 ]
 # Which widget each answer can point to: focus id -> slide index (web/src/lib/screens.ts)
 FOCUS = {"schedule": 1, "tradeoff": 1, "why": 1, "circuit": 2, "histogram": 2, "methods": 3, "scaling": 3, "about": 5}
-CAPTIONS = ["start", "run_now", "run_smart", "tradeoff", "circuit", "histogram"]
+CAPTIONS = ["start", "run_now", "run_smart", "tradeoff", "circuit", "histogram", "compare", "ask", "about"]
 
 
 # --------------------------------------------------------------------------- config
@@ -238,7 +238,14 @@ def ground(text: str, allowed: list[float]) -> str:
 
 # --------------------------------------------------------------------------- model call
 
-def _chat(cfg: dict, system: str, user: str, schema: dict | None = None, timeout: float = 8.0) -> str | None:
+_GATE = {"last": 0.0, "cool_until": 0.0}  # simple client-side rate limiting
+
+
+def _chat(cfg: dict, system: str, user: str, schema: dict | None = None, timeout: float = 8.0, interactive: bool = True) -> str | None:
+    """One chat completion. Interactive calls never wait: during a rate-limit
+    cooldown, or within 1.2 s of the previous call, they return None at once so
+    the caller falls back to the cache or a template. Batch calls (the cache
+    builder) wait and retry on HTTP 429."""
     body: dict[str, Any] = {
         "model": cfg["model"],
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
@@ -251,16 +258,35 @@ def _chat(cfg: dict, system: str, user: str, schema: dict | None = None, timeout
         strict = "gpt-oss" in cfg["model"]
         body["response_format"] = ({"type": "json_schema", "json_schema": {"name": schema["name"], "strict": True, "schema": schema["schema"]}}
                                    if strict else {"type": "json_object"})
-    try:
-        r = httpx.post(f"{cfg['base']}/chat/completions", json=body, timeout=timeout,
-                       headers={"Authorization": f"Bearer {cfg['key']}"})
-        if r.status_code != 200:
-            print(f"[llm] call failed: HTTP {r.status_code}", flush=True)  # status only, never the key
+    for attempt in range(1 if interactive else 5):
+        now = time.monotonic()
+        if interactive and (now < _GATE["cool_until"] or now - _GATE["last"] < 1.2):
             return None
-        return r.json()["choices"][0]["message"]["content"]
-    except (httpx.HTTPError, KeyError, IndexError, ValueError) as e:
-        print(f"[llm] call failed: {type(e).__name__}", flush=True)
-        return None
+        _GATE["last"] = now
+        try:
+            r = httpx.post(f"{cfg['base']}/chat/completions", json=body, timeout=timeout,
+                           headers={"Authorization": f"Bearer {cfg['key']}"})
+        except httpx.HTTPError as e:
+            print(f"[llm] call failed: {type(e).__name__}", flush=True)  # never the key
+            return None
+        if r.status_code == 429:
+            try:
+                wait = float(r.headers.get("retry-after", "10"))
+            except ValueError:
+                wait = 10.0
+            _GATE["cool_until"] = time.monotonic() + wait
+            print(f"[llm] rate limited, cooling down {wait:.0f} s", flush=True)
+            if not interactive:
+                time.sleep(wait + 0.5)
+            continue
+        if r.status_code != 200:
+            print(f"[llm] call failed: HTTP {r.status_code}", flush=True)
+            return None
+        try:
+            return r.json()["choices"][0]["message"]["content"]
+        except (KeyError, IndexError, ValueError):
+            return None
+    return None
 
 
 def _json(text: str | None) -> dict | None:
@@ -310,14 +336,14 @@ def template_explain(data: dict, preset: str, w: float) -> list[str]:
     return [f"{m['job']} → {m['to']}: {', '.join(m['reasons'][:2])}." for m in moves(data, preset, w)]
 
 
-def generate_explain(cfg: dict, data: dict, preset: str, w: float) -> list[str] | None:
+def generate_explain(cfg: dict, data: dict, preset: str, w: float, interactive: bool = True) -> list[str] | None:
     f = facts(data, preset, w)
     mv = moves(data, preset, w)
     if not mv:
         return []
     user = (f"Facts:\n{facts_text(f)}\n\nFor each moved job write one line (at most 14 words) saying where it went and why, "
             f"using the reasons in 'moved jobs'. Return JSON {{\"lines\": [...]}} with {len(mv)} lines.")
-    out = _json(_chat(cfg, RULES, user, EXPLAIN_SCHEMA))
+    out = _json(_chat(cfg, RULES, user, EXPLAIN_SCHEMA, interactive=interactive))
     if not out or not isinstance(out.get("lines"), list):
         return None
     allowed = allowed_numbers(f)
@@ -385,11 +411,11 @@ def template_answer(data: dict, preset: str, w: float, question: str) -> dict | 
     return None
 
 
-def generate_answer(cfg: dict, data: dict, preset: str, w: float, question: str) -> dict | None:
+def generate_answer(cfg: dict, data: dict, preset: str, w: float, question: str, interactive: bool = True) -> dict | None:
     f = facts(data, preset, w)
     user = (f"Facts:\n{facts_text(f)}\n\nQuestion: {question}\n\nAnswer in at most 3 short sentences (at most 60 words). "
             f"Pick focus = the screen widget that shows the answer ({', '.join(FOCUS)}), or none. Return JSON.")
-    out = _json(_chat(cfg, RULES, user, ASK_SCHEMA, timeout=10.0))
+    out = _json(_chat(cfg, RULES, user, ASK_SCHEMA, timeout=10.0, interactive=interactive))
     if not out or not isinstance(out.get("answer"), str):
         return None
     text = ground(out["answer"], allowed_numbers(f))
@@ -509,11 +535,12 @@ def narration() -> dict:
 
 def generate_narration(cfg: dict, data: dict) -> dict | None:
     f = facts(data, "flexible", 0.5)
-    user = (f"Facts:\n{facts_text(f)}\n\nWrite one spoken caption (at most 18 words) for each moment of a 35-second demo: "
+    user = (f"Facts:\n{facts_text(f)}\n\nWrite one spoken caption (at most 18 words) for each moment of a 50-second demo: "
             "start (the idea: same jobs, where and when), run_now (every job at home when it arrives; Site A crowded at night), "
             "run_smart (jobs move; footprint drops), tradeoff (slider: carbon vs water compromise), circuit (8 qubits, a where and a when "
-            "per job), histogram (real IBM shots vs random guessing). Return JSON.")
-    out = _json(_chat(cfg, RULES, user, NARRATION_SCHEMA, timeout=15.0))
+            "per job), histogram (real IBM shots vs random guessing), compare (classical methods find the same answer, faster; shown on "
+            "purpose), ask (an AI explains saved results and never picks the schedule), about (cited or labelled; no quantum advantage). Return JSON.")
+    out = _json(_chat(cfg, RULES, user, NARRATION_SCHEMA, timeout=20.0, interactive=False))
     if not out:
         return None
     allowed = allowed_numbers(f)
@@ -531,12 +558,12 @@ def build_cache(data: dict, presets=("flexible", "mixed", "rigid"), weights=(0.0
                              "explain": {}, "ask": {}, "narration": {}}
     for p in presets:
         for w in weights:
-            lines = generate_explain(cfg, data, p, w)
+            lines = generate_explain(cfg, data, p, w, interactive=False)
             if lines is not None:
                 cache["explain"][_key(p, w)] = {"lines": lines}
             time.sleep(pause)
             for q in EXAMPLES:
-                a = generate_answer(cfg, data, p, w, q)
+                a = generate_answer(cfg, data, p, w, q, interactive=False)
                 if a:
                     cache["ask"][f"{_key(p, w)}|{_norm(q)}"] = a
                 time.sleep(pause)

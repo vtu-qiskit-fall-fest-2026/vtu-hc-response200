@@ -6,6 +6,7 @@ import { ask, parseJobs, type AskReply } from "@/lib/llm";
 import { SCREENS } from "@/lib/screens";
 import { AnnualImpact, YourJobs, type JobIn } from "@/components/proof/TryIt";
 import { Badge, Card, Info, Screen, Segmented } from "./ui";
+import { useMascot } from "@/components/mascot/MascotProvider";
 
 /** The five preset questions; their answers are pre-generated in results/llm_cache.json. */
 export const EXAMPLES = [
@@ -18,8 +19,15 @@ export const EXAMPLES = [
 
 type Turn = { q: string; a: AskReply | null };
 
+/** First sentence of an answer, for Dewy's one-line bubble (the full answer stays in the chat). */
+const firstSentence = (t: string) => {
+  const s = t.split(/(?<=[.!?])\s+/)[0] ?? t;
+  return s.length > 120 ? `${s.slice(0, 117).trimEnd()}…` : s;
+};
+
 function Chat() {
   const { preset, stop, show } = useApp();
+  const mascot = useMascot();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [text, setText] = useState("");
   const busy = turns.some((t) => t.a === null);
@@ -28,7 +36,17 @@ function Chat() {
     if (!question || busy) return;
     setText("");
     setTurns((ts) => [...ts.slice(-2), { q: question, a: null }]);
+    mascot.setMood("thinking");
+    mascot.point("[data-widget=chat]");
     const a = await ask(question, preset.key, stop.w);
+    if (a.failed) {
+      mascot.setMood("confused", { for: 2200 });
+      mascot.say("I'm offline, but the example questions still work.", { ms: 4000 });
+    } else {
+      mascot.setMood("excited", { for: 1600 });
+      mascot.say(firstSentence(a.text), { ms: 6500, badge: a.source === "template" ? "template" : "ai" });
+    }
+    mascot.point(null);
     setTurns((ts) => ts.map((t) => (t.q === question && t.a === null ? { q: t.q, a } : t)));
   };
   return (

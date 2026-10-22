@@ -29,7 +29,7 @@ export function useExplain(preset: string, w: number, fallback: string[]) {
       post<{ lines: string[]; source: Source }>("/api/explain", { preset, w })
         .then((r) => alive && setState({ key, lines: r.lines, source: r.source }))
         .catch(() => alive && setState(null));
-    }, 250); // the slider sweeps quickly in story mode
+    }, 700); // wait until the slider settles (story mode sweeps it quickly)
     return () => {
       alive = false;
       window.clearTimeout(t);

@@ -36,7 +36,9 @@ export const useMascot = () => {
 type Bubble = { id: number; text: string; badge?: BadgeKind };
 
 export function MascotProvider({ children }: { children: ReactNode }) {
-  const [mood, setMoodState] = useState<Mood>("waking");
+  const reducedMotion = prefersReducedMotion();
+  // Reduced motion: one still expression, no reactions.
+  const [mood, setMoodState] = useState<Mood>(reducedMotion ? "idle" : "waking");
   const [bubble, setBubble] = useState<Bubble | null>(null);
   const [look, setLook] = useState<[number, number]>([0, 0]);
   const [spot, setSpot] = useState<DOMRect | null>(null);
@@ -47,6 +49,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
   const home = useRef<HTMLDivElement>(null);
 
   const setMood = useCallback((m: Mood, o?: { for?: number }) => {
+    if (reducedMotion) return;
     window.clearTimeout(moodTimer.current);
     setMoodState(m);
     if (o?.for) {
@@ -55,7 +58,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
         listeners.current.forEach((cb) => cb(m));
       }, o.for);
     }
-  }, []);
+  }, [reducedMotion]);
 
   const say = useCallback((text: string, o?: { ms?: number; badge?: BadgeKind }) => {
     window.clearTimeout(bubbleTimer.current);

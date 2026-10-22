@@ -6,6 +6,7 @@ import { Board, RULE_ICON, Tickers } from "@/components/dashboard/Scene";
 import { PrioritySlider, TradeOff } from "@/components/dashboard/Panels";
 import { useExplain } from "@/lib/llm";
 import { Badge, Card, Info, Screen, Segmented } from "./ui";
+import { useMascot } from "@/components/mascot/MascotProvider";
 
 /** The four jobs as chips; the "data packets" start here. */
 function JobStrip() {
@@ -91,6 +92,15 @@ function WhyCaption() {
   const { data, stop, view, preset } = useApp();
   const fallback = whyLines(data, data.naive.schedule, stop.best.schedule).map((l) => l.text);
   const { lines, source } = useExplain(preset.key, stop.w, fallback);
+  const { tour, playing } = useApp();
+  const mascot = useMascot();
+  // When jobs have moved, Dewy reads out the first reason (not during the tour or story).
+  const first = lines[0];
+  useEffect(() => {
+    if (view !== "greenq" || !first || tour || playing) return;
+    const t = window.setTimeout(() => mascot.say(first, { ms: 5000, badge: source === "template" ? "template" : "ai" }), 900);
+    return () => window.clearTimeout(t);
+  }, [first, view, source]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Card id="why" className="p-5">
       <div className="flex items-center justify-between gap-2">
