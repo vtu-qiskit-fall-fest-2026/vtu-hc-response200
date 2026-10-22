@@ -39,13 +39,13 @@ export function useExplain(preset: string, w: number, fallback: string[]) {
   return { lines: fallback, source: "template" as Source };
 }
 
-export interface AskReply { text: string; source: Source; focus: string | null; screen: number | null }
+export interface AskReply { text: string; source: Source; focus: string | null; screen: number | null; failed?: boolean }
 
 export async function ask(question: string, preset: string, w: number): Promise<AskReply> {
   try {
     return await post<AskReply>("/api/ask", { question, preset, w }, 12000);
   } catch {
-    return { text: "I can't reach the GreenQ server right now. Try one of the example questions.", source: "template", focus: null, screen: null };
+    return { text: "I can't reach the GreenQ server right now. Try one of the example questions.", source: "template", focus: null, screen: null, failed: true };
   }
 }
 

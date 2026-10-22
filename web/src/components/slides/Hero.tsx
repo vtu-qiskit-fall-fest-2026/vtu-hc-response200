@@ -189,6 +189,7 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
           <text x={1080} y={340} textAnchor="middle" fontSize={22} fontWeight={700} fill="#0b0b0f">B</text>
         </g>
 
+        <g data-tour="jobs">
         {/* lanes: day and night at each site */}
         {(["evap", "air"] as const).map((s) =>
           (["day", "night"] as const).map((t) => (
@@ -200,6 +201,8 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
             </g>
           )),
         )}
+
+        </g>
 
         {/* the quantum chip: qubits link and pulse */}
         <motion.g initial={false} animate={{ opacity: phase === 1 || phase === 2 ? 1 : 0, scale: phase === 1 || phase === 2 ? 1 : 0.85 }} transition={T(0.6)} style={{ transformOrigin: `${CHIP.x}px ${CHIP.y}px` }}>

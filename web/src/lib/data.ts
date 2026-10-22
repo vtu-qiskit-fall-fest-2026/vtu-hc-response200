@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { FlexPreset, ProofEntry, SweepStop, UiData } from "../types";
 import type { CaptionId } from "./story";
+import type { TourState } from "./tour";
 
 /** Loads results/ui_data.json through the FastAPI server. */
 export function useUiData() {
@@ -37,6 +38,10 @@ export interface AppState {
   caption: CaptionId | null;   // story-mode caption on screen
   flash: string | null;        // a widget id to highlight once (Ask -> "show me")
   show: (screen: number, widget: string) => void;
+  tour: TourState;             // guided tour (lib/tour.ts)
+  startTour: () => void;
+  setTourStep: (i: number) => void;
+  endTour: () => void;
 }
 
 export const AppContext = createContext<AppState | null>(null);

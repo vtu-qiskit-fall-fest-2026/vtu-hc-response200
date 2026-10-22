@@ -14,6 +14,9 @@ import { AskScreen } from "@/components/slides/Ask";
 import { AboutScreen } from "@/components/slides/About";
 import { MascotProvider } from "@/components/mascot/MascotProvider";
 import { MoodGallery } from "@/components/mascot/MoodGallery";
+import { TourLayer } from "@/components/mascot/Tour";
+import { Reactions } from "@/components/mascot/Reactions";
+import { TOUR, type TourState } from "@/lib/tour";
 import type { FlexPreset, UiData } from "@/types";
 
 const VIEWS = [StartScreen, ScheduleScreen, QuantumScreen, CompareScreen, AskScreen, AboutScreen];
@@ -49,6 +52,7 @@ function SlideApp({ data }: { data: UiData }) {
   const [dir, setDir] = useState(1);
   const [caption, setCaption] = useState<CaptionId | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
+  const [tour, setTour] = useState<TourState>(null);
   const [sideOpen, setSideOpen] = useState(() => !isCompact());
   const compact = useCompact();
   const narration = useNarration();
@@ -62,10 +66,19 @@ function SlideApp({ data }: { data: UiData }) {
     saveScreen(n);
   }, []);
 
-  const { playing, togglePlay, stop: stopStory } = useStory({ setScreen, setIdx, setView, setCaption, balanced: BALANCED, last: data.sweep.length - 1 });
+  const { playing, togglePlay, stop: stopStory } = useStory({ setScreen, setIdx, setView, setCaption, setTour, balanced: BALANCED, last: data.sweep.length - 1 });
+  const playingRef = useRef(playing);
+  playingRef.current = playing;
 
   /** User navigation (not the story): pauses the story. */
-  const go = useCallback((i: number) => { stopStory(); setScreen(i); }, [stopStory, setScreen]);
+  const go = useCallback((i: number) => { if (playingRef.current) stopStory(); setScreen(i); }, [stopStory, setScreen]);
+  const setTourStep = useCallback((i: number) => {
+    const n = Math.max(0, Math.min(TOUR.length - 1, i));
+    go(TOUR[n].screen);
+    setTour({ step: n, mode: "manual" });
+  }, [go]);
+  const startTour = useCallback(() => setTourStep(0), [setTourStep]);
+  const endTour = useCallback(() => setTour(null), []);
   const show = useCallback((s: number, widget: string) => {
     go(s);
     setFlash(null);
@@ -82,6 +95,7 @@ function SlideApp({ data }: { data: UiData }) {
     go,
     step: (d) => go(cur.current + d),
     togglePlay,
+    tour: () => startTour(),
   });
 
   const value: AppState = useMemo(() => {
@@ -93,9 +107,9 @@ function SlideApp({ data }: { data: UiData }) {
       data, idx, setIdx, view, setView, preset, setPreset, sweep, stop,
       proof: hw ?? data.proof.find((p) => p.w === 0.5)!,
       onHardware: stop.hardware, playing, togglePlay,
-      screen, go, caption, flash, show,
+      screen, go, caption, flash, show, tour, startTour, setTourStep, endTour,
     };
-  }, [data, idx, view, presetKey, playing, togglePlay, screen, go, caption, flash, show]);
+  }, [data, idx, view, presetKey, playing, togglePlay, screen, go, caption, flash, show, tour, startTour, setTourStep, endTour]);
 
   const Current = VIEWS[screen];
   return (
@@ -112,6 +126,8 @@ function SlideApp({ data }: { data: UiData }) {
           <FooterBar captionText={caption ? narration[caption] ?? null : null} />
         </div>
       </div>
+      <TourLayer />
+      <Reactions />
       </MascotProvider>
     </AppContext.Provider>
   );

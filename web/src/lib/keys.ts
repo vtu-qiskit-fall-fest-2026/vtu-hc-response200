@@ -16,8 +16,8 @@ export async function toggleFullscreen(force?: boolean) {
   }
 }
 
-/** ← → move, 1–6 jump, P plays the story, F full screen, Esc leaves full screen. */
-export function useSlideKeys(opts: { count: number; go: (i: number) => void; step: (d: number) => void; togglePlay: () => void }) {
+/** ← → move, 1–6 jump, P plays the story, T starts the tour, F full screen, Esc leaves full screen. */
+export function useSlideKeys(opts: { count: number; go: (i: number) => void; step: (d: number) => void; togglePlay: () => void; tour?: () => void }) {
   const ref = useRef(opts);
   ref.current = opts;
   useEffect(() => {
@@ -29,6 +29,7 @@ export function useSlideKeys(opts: { count: number; go: (i: number) => void; ste
       else if (/^[1-9]$/.test(e.key) && Number(e.key) <= o.count) o.go(Number(e.key) - 1);
       else if (e.key === "p" || e.key === "P") o.togglePlay();
       else if (e.key === "f" || e.key === "F") void toggleFullscreen();
+      else if ((e.key === "t" || e.key === "T") && o.tour) o.tour();
       else if (e.key === "Escape") void toggleFullscreen(false);
       else return;
       e.preventDefault();

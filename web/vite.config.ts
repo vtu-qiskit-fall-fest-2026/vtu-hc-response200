@@ -38,5 +38,5 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), pxToRem()],
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   server: { proxy: { "/api": "http://127.0.0.1:8000" } },
-  build: { outDir: "dist", emptyOutDir: true, sourcemap: false },
+  build: { outDir: "dist", emptyOutDir: true, sourcemap: false, chunkSizeWarningLimit: 700 },
 });
