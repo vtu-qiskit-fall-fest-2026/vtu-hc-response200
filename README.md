@@ -33,6 +33,7 @@
 - [Proposed Solution](#-proposed-solution)
 - [Approach & Architecture](#-approach--architecture)
 - [Results](#-results)
+- [The language model's role](#-the-language-models-role)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
 - [How to Run](#-how-to-run)
@@ -66,15 +67,15 @@
 
 ## 💡 Proposed Solution
 
-**Solution:** GreenQ assigns every flexible job a (site, time slot) so the blended carbon + water footprint is as low as possible. It formulates the schedule as a cost Hamiltonian and solves it with **QAOA built in Qiskit**, on a simulator and on **real IBM Quantum hardware**. A web demo (React + FastAPI) shows the business-as-usual schedule next to GreenQ's, with kg CO₂ and litres of water saved, and a slider that trades carbon against water, with the three positions that ran on real IBM hardware marked.
+**Solution:** GreenQ assigns every flexible job a (site, time slot) so the blended carbon + water footprint is as low as possible. It formulates the schedule as a cost Hamiltonian and solves it with **QAOA built in Qiskit**, on a simulator and on **real IBM Quantum hardware**. A six-screen slide demo (React + FastAPI) shows *run now* (business as usual) next to *run smart* (GreenQ), with kg CO₂ and litres of water saved, a slider that trades carbon against water (the three positions that ran on real IBM hardware are marked), the real circuit and its hardware results, fair classical comparisons, and an "Ask GreenQ" screen where a language model **explains** the saved results in plain words. The model never chooses the schedule and every number it states is checked against the data (see [The language model's role](#-the-language-models-role)).
 
 **Key idea:** a **binary "where + when" encoding**, 2 qubits per job. Every measured bitstring is a valid schedule. It needs half the qubits of the textbook one-hot QUBO, about half the two-qubit gates on IBM hardware, and no penalty tuning.
 
 **Why this works:** the quantum and classical sides provably solve the same problem (tests check the Hamiltonian equals the classical cost on all 256 schedules), and a brute-force baseline grades every quantum result against the true optimum. At this size a classical computer is faster: **we make no claim of quantum advantage.**
 
-![GreenQ demo: landing page](docs/images/ui_hero.png)
+![GreenQ demo: start screen](docs/images/ui_start.png)
 
-*The web demo at 1920×1080: the headline, the savings, and a looping miniature of the jobs moving. Press **Play story** for a 20-second guided run.*
+*The demo at 1920×1080. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About); each fits one screen with no scrolling. Press **P** for a 35-second guided story, arrows or 1–6 to move, **F** for full screen.*
 
 ---
 
@@ -93,7 +94,9 @@ flowchart LR
     G --> J["IBM hardware<br/>ibm_marrakesh"]
     H & I & J --> K["Decode + score<br/>vs brute-force optimum"]
     K --> X["results/ui_data.json<br/>(export of saved results)"]
-    X --> L["Web demo: React UI<br/>served by FastAPI"]
+    X --> L["Web demo: React slide app<br/>served by FastAPI"]
+    X --> M["server/llm.py<br/>explains saved results (Groq)<br/>numbers checked, cache + template fallback"]
+    M --> L
 ```
 
 1. **Input:** 4 flexible jobs × 2 sites (A = evaporative cooling, B = air-cooled chillers) × 2 slots (day, night). Grid carbon and power-plant water figures are cited; site and job figures are **illustrative** (see [greenq/data.py](greenq/data.py)).
@@ -168,13 +171,17 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
 
-| Two data centres: jobs move from business as usual to GreenQ | The real 8-qubit circuit we ran (drawn from the exported gates) |
+| Schedule: run now → run smart, slider, trade-off, why | Quantum: the real circuit, where 4,000 shots landed, job IDs |
 |---|---|
-| ![two data centres](docs/images/ui_dashboard.png) | ![circuit](docs/images/ui_circuit.png) |
+| ![schedule screen](docs/images/ui_schedule.png) | ![quantum screen](docs/images/ui_quantum.png) |
 
-| Quantum vs random vs simulator, with the honest strip |
+| Compare: methods, scaling, job rules, cities, forecasts | Ask: grounded answers + describe your own jobs |
+|---|---|
+| ![compare screen](docs/images/ui_compare.png) | ![ask screen](docs/images/ui_ask.png) |
+
+| About: three steps, honest answers, sources |
 |---|
-| ![quantum proof](docs/images/ui_proof.png) |
+| ![about screen](docs/images/ui_about.png) |
 
 <details><summary>Fallback Streamlit demo screenshots</summary>
 
@@ -279,6 +286,23 @@ Same objective, same instance, balanced setting (`python scripts/run_baselines.p
 
 ---
 
+## 🤖 The language model's role
+
+GreenQ uses a language model (Groq's hosted `openai/gpt-oss-20b` by default) for **words only**:
+
+| It does | It never does |
+| :--- | :--- |
+| Writes the "Why this schedule" lines on the Schedule screen | Choose, change or suggest a schedule (brute force and QAOA do that) |
+| Answers questions on the Ask screen in at most 3 sentences, and points to the screen that shows the answer | Produce numbers: any sentence with a number that doesn't match the saved results is removed |
+| Reads a plain-English job description into the job table (then brute force + the QAOA simulator solve it, labelled *live simulator, not hardware*) | Invent a job size: a kWh figure must appear in your text, and every job passes the same validation as the form |
+| Writes the story-mode captions (pre-generated) | Claim quantum advantage: such sentences are dropped |
+
+How the check works ([server/llm.py](server/llm.py)): the server builds a list of named facts from `results/ui_data.json` for the current setting, sends only those facts, then splits the reply into sentences and keeps a sentence only if every number in it matches a fact (allowing ordinary rounding). The browser talks only to our FastAPI server; the API key stays in `.env` on the server and is never logged, returned or sent to the browser.
+
+**It works with no key and no network.** The order is: live model → pre-generated `results/llm_cache.json` → fixed templates built from the same data. Each answer shows where it came from: *AI explanation* (model, live or cached) or *Template*. The audience never sees an error.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
@@ -289,9 +313,10 @@ Same objective, same instance, balanced setting (`python scripts/run_baselines.p
 | Simulation | Exact statevector (training), Qiskit Aer 0.18 via fake IBM backends (noise) |
 | Optimisation | CVaR objective, SciPy COBYLA |
 | Demo UI | React 19 + Vite 8 (TypeScript), Tailwind CSS 4 with shadcn-style tokens, Motion, Lucide icons, self-hosted Inter and JetBrains Mono |
-| Demo server | FastAPI + Uvicorn (serves the built UI and `/api/data`) |
+| Demo server | FastAPI + Uvicorn (serves the built UI, `/api/data`, the live-jobs endpoint and the explanation endpoints) |
+| Explanations | Groq API (OpenAI-compatible), model `openai/gpt-oss-20b` with strict JSON schema; called with `httpx`; grounded and cached (`server/llm.py`) |
 | Fallback demo | Streamlit + Plotly (`app/streamlit_app.py`) |
-| Tests | pytest: model, Hamiltonian, QAOA, API, and a headless Streamlit app test |
+| Tests | pytest: model, Hamiltonian, QAOA, API, LLM grounding and fallbacks, and a headless Streamlit app test |
 
 ---
 
@@ -319,8 +344,10 @@ vtu-hc-response200/
 │   ├── run_scaling.py        # 4-11 jobs (8-22 qubits) scaling study -> results/scaling.json
 │   ├── run_cities.py         # water-stress city presets -> results/cities.json
 │   ├── run_robustness.py     # forecast-error robustness -> results/robustness.json
-│   └── export_ui_data.py     # saved results -> results/ui_data.json for the UI
-├── server/                   # FastAPI: /api/data, optional /api/simulate, serves web/dist
+│   ├── export_ui_data.py     # saved results -> results/ui_data.json for the UI
+│   └── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
+├── server/                   # FastAPI: /api/data, /api/custom, serves web/dist
+│   └── llm.py                # grounded explanations: facts, number check, cache, templates
 ├── web/                      # React + Vite demo UI (source; built into web/dist)
 ├── app/streamlit_app.py      # fallback demo (Streamlit)
 ├── results/                  # saved simulator and hardware results (JSON)
@@ -362,17 +389,37 @@ pytest -q
 python -m server
 ```
 
-Then open **http://127.0.0.1:8000**. The first run builds the web UI automatically (`npm ci` + `npm run build` in `web/`, about a minute); later runs start in seconds. Use `python -m server --rebuild` after changing anything in `web/src`.
+Then open **http://127.0.0.1:8000**. The first run builds the web UI automatically (`npm ci` + `npm run build` in `web/`, about a minute); later runs start in seconds. Use `python -m server --rebuild` after pulling new code or changing anything in `web/src`.
+
+**Using the demo:** six screens in the left sidebar. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 35-second story (Start → Schedule → Quantum), **F** full screen, **Esc** leaves it. The app is laid out for a 16:9 screen and scales to fit (tested at 1920×1080 and 1366×768); the last screen is remembered.
 
 The demo reads only saved results (`results/ui_data.json`, exported from `results/hardware/` and `results/sim/`), so it works offline and never waits for a quantum queue. The optional "Re-run this setting on the local simulator" button calls the local Qiskit simulator through the server; nothing depends on it.
 
-**Try your own jobs (live):** the "Try it yourself" section sends up to 5 jobs to `POST /api/custom` and solves them by brute force plus the QAOA simulator (about 0.1 s). It is labelled *live simulator, not hardware* and needs the server running; everything else on the page works from saved results. CSV columns: `name, kWh, home site (A/B), arrives (day/night), day deadline (yes/no), stays local (yes/no)`.
+**Try your own jobs (live):** on the Ask screen, "Describe your jobs" or "Form" sends up to 5 jobs to `POST /api/custom` and solves them by brute force plus the QAOA simulator (about 0.1 s). It is labelled *live simulator, not hardware* and needs the server running; everything else on the page works from saved results. CSV columns: `name, kWh, home site (A/B), arrives (day/night), day deadline (yes/no), stays local (yes/no)`.
 
 **Fallback (no Node.js):** `streamlit run app/streamlit_app.py` starts the earlier Streamlit version of the demo.
 
 **Frontend development:** run `python -m server` in one terminal and `cd web && npm run dev` in another (Vite proxies `/api` to the server).
 
-### 4. Re-run the quantum pipeline (optional)
+### 4. Optional: AI explanations (Groq)
+
+Without a key everything still works, using templates. To turn on the language model, add these lines to `.env` (gitignored; get a free key at [console.groq.com](https://console.groq.com/keys)):
+
+```text
+GROQ_API_KEY=<your Groq API key>
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_MODEL=openai/gpt-oss-20b
+```
+
+Then pre-generate the answers the demo shows, so it also works offline:
+
+```bash
+python scripts/build_llm_cache.py      # about 2 minutes; writes results/llm_cache.json
+```
+
+Set `GREENQ_LLM_OFFLINE=1` to force the offline path (cache and templates) even with a key.
+
+### 5. Re-run the quantum pipeline (optional)
 
 ```bash
 python scripts/run_sim.py --w 0.5 --reps 1        # train + ideal and noisy simulation
@@ -407,6 +454,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).
 - **Job rules are illustrative** (which jobs have deadlines, residency or priority). On real hardware only 61% of shots obeyed every rule on the mixed preset (simulator 99%), because noise flips the penalised bits; GreenQ discards rule-breaking shots.
 - **Error mitigation** (dynamical decoupling + twirling) gave no consistent gain on this circuit across our 3 paired runs.
+- **AI explanations are wording, not analysis.** The number check catches invented numbers, not every wrong word; that's why answers are short, limited to saved facts, labelled *AI explanation*, and backed by templates. Free-typed questions need a key and network; offline only the five example questions are answered.
 
 ---
 
@@ -414,6 +462,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 
 **Libraries:** [Qiskit](https://github.com/Qiskit/qiskit), [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), [Qiskit IBM Runtime](https://github.com/Qiskit/qiskit-ibm-runtime), [NumPy](https://numpy.org), [SciPy](https://scipy.org), [pandas](https://pandas.pydata.org), [Matplotlib](https://matplotlib.org), [pylatexenc](https://github.com/phfaist/pylatexenc), [FastAPI](https://fastapi.tiangolo.com), [Uvicorn](https://www.uvicorn.org), [React](https://react.dev), [Vite](https://vite.dev), [Motion](https://motion.dev), [Tailwind CSS](https://tailwindcss.com), [Lucide](https://lucide.dev) icons (ISC), [Fontsource](https://fontsource.org) (Inter and JetBrains Mono, SIL Open Font License), [Streamlit](https://streamlit.io), [Plotly](https://plotly.com/python/), [python-dotenv](https://github.com/theskumar/python-dotenv), [pytest](https://pytest.org).
 **Hardware:** IBM Quantum Platform (Open Plan), device `ibm_marrakesh`.
+**Language model:** [Groq](https://groq.com) API (OpenAI-compatible), model [`openai/gpt-oss-20b`](https://huggingface.co/openai/gpt-oss-20b) (OpenAI open-weight model, Apache 2.0), called with [httpx](https://www.python-httpx.org).
 
 **Data sources**
 - Central Electricity Authority, Govt. of India: *CO2 Baseline Database for the Indian Power Sector*, User Guide v21.0 (Nov 2025), FY 2024-25: weighted average 0.710 tCO₂/MWh, operating margin 0.961 tCO₂/MWh.
@@ -429,7 +478,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - P. Barkoutsos et al., *Improving Variational Quantum Optimization using CVaR*, Quantum 4, 256 (2020).
 - L. Zhou et al., *Quantum Approximate Optimization Algorithm: Performance, Mechanism, and Implementation on Near-Term Devices*, Phys. Rev. X 10, 021067 (2020) (INTERP initialisation for p > 1).
 
-**UI:** the dashboard grid is the [21st.dev](https://21st.dev) community component `draggable-widget-grid` (in `web/src/components/ui/`, integrated unchanged); the GreenQ widgets inside it are our own. The page's visual style is inspired by the [Waymark template](https://waymark-template.vercel.app/); no code or assets were copied from it.
+**UI:** the v2 dashboard used the [21st.dev](https://21st.dev) community component `draggable-widget-grid` (kept unchanged in `web/src/components/ui/`); the v3 slide screens place the same GreenQ widgets in fixed layouts, because a drag grid can't fit a no-scroll slide. The page's visual style is inspired by the [Waymark template](https://waymark-template.vercel.app/); no code or assets were copied from it.
 
 **Tools:** development was assisted by Claude Code (Anthropic); commits it co-authored are marked in the git history.
 

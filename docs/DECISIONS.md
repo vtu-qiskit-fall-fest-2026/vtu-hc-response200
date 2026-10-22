@@ -102,3 +102,21 @@ Real jobs are not all flexible, so each job can carry rules: deadline (day slot 
 
 ### D20. Robustness: fixed plan, perturbed reality, regret vs brute force (Oct 22)
 Forecast error is modelled as a uniform independent error on each slot's grid carbon intensity (±5%, plus ±10% for context). Power-plant water follows, because it is derived from the fossil share. 200 seeded draws per setting. Regret is measured on each draw's own objective. Result: within 5% of the new best in 100% of draws. At ±5% and balanced priority the plan is still exactly best in 76.5% of draws, with a worst case of 0.7%. The error model is simple and illustrative; real forecast errors are correlated over time.
+
+### D21. UI v3: six no-scroll slides, scaled by root font size (Oct 22)
+- **Why:** the long scroll page was too wordy for a jury and a projector. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About), one headline of 8 words or fewer each, labels instead of paragraphs, and `i` popovers of at most two lines. Exact names (QAOA, qubits, ibm_marrakesh) stay on the Quantum, Compare and About screens; elsewhere the words are "run now / run smart", "where" and "when".
+- **Fit:** every screen is laid out on a 1600×900 canvas. The root font size scales it to the window, and a small Vite plugin converts the built CSS from px to rem. We tried CSS `zoom` and `transform: scale` first: in a measured test both started the moving job blocks 20% off their real position at 1.2× (Motion measures in screen pixels, then applies its transform in scaled pixels). Root font size has no such problem. Checked at 1920×1080 and 1366×768: no screen scrolls, no element overflows.
+- **Reuse:** the v2 widgets (scene, slider, trade-off, circuit, histogram, methods, scaling, cities, robustness, live jobs, fleet calculator) are reused with their text trimmed. The draggable widget grid is kept in the repo but unused, because a drag grid can't fit a no-scroll slide.
+- **Story mode:** about 35 s over Start → Schedule → Quantum, with captions in the footer so the "Not quantum advantage" pill is never covered. Any click, wheel or navigation key pauses it.
+
+### D22. A language model explains; it never decides (Oct 22)
+- **Role:** words only: why-this-schedule lines, short answers on the Ask screen, story captions, and reading a typed job description into the job table. Schedules always come from brute force and QAOA.
+- **Grounding:** the server sends only named facts built from `results/ui_data.json` for the current setting. It then splits the reply into sentences and drops any sentence with a number that doesn't match a fact (ordinary rounding allowed), any schedule suggestion ("should…"), and any advantage claim that isn't a negation. Cached text is checked again when served. For typed jobs, every kWh figure must appear in the user's text, and each job passes the same pydantic validation as the form.
+- **Fallback:** live model → `results/llm_cache.json` → templates built from the same data. Every reply carries its source, and the UI badge says AI EXPLANATION or TEMPLATE. Offline, free-typed questions get a polite pointer to the five example questions; there's never an error on screen.
+- **Key:** `GROQ_API_KEY` lives in `.env`, is read on the server only, and is never logged (failures log only the HTTP status), returned, or sent to the browser. Tests check API responses and the built frontend for the key and its name.
+
+### D23. Groq with `openai/gpt-oss-20b` and strict JSON schema (Oct 22)
+- **Why Groq:** it's free to start, fast, and OpenAI-compatible, so it's a plain `httpx` POST to `/chat/completions` with no new SDK. `LLM_BASE_URL` and `LLM_MODEL` can point at any compatible provider.
+- **Why this model:** on Groq, strict `json_schema` structured outputs are supported by `openai/gpt-oss-20b` and `openai/gpt-oss-120b` (checked in Groq's docs on Oct 22). The 20b model is the faster one, and the explanations are short. We send `reasoning_effort: low` and temperature 0.2. Other models fall back to JSON-object mode.
+- **Time limits:** 8–12 s timeouts. Live answers are memoised in memory, and the cache script paces its requests for the free tier.
+

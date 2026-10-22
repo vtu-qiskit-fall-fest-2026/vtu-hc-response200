@@ -131,7 +131,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 - The slider changes the answer: 5 different best schedules across the range
 - *Data is illustrative (see slide 11)*
 
-**Visual:** demo screenshot `docs/images/demo_schedule.png` (business as usual vs GreenQ grids).
+**Visual:** demo screenshot `docs/images/ui_schedule.png` (run now vs run smart, slider, trade-off, why).
 
 **Say:** "In the balanced setting, moving the ML training job to the air-cooled site by day, and spreading the others out, saves 14% of both carbon and water. Push the slider and the best schedule changes, which is the carbon-water trade-off made visible."
 
@@ -153,7 +153,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 - Hardware keeps **48-67%** of the ideal simulator's gain (noise costs the rest)
 - Error mitigation: **no consistent benefit** (+0.012, +0.008, −0.006)
 
-**Visual:** the decile bar chart (`docs/images/demo_quantum_proof.png`): random flat at 10%, hardware and simulator piled into the cheapest deciles.
+**Visual:** the Quantum screen (`docs/images/ui_quantum.png`): the circuit, and the decile chart with random flat at 10% and hardware and simulator piled into the cheapest deciles.
 
 **Say:** "Random guessing puts 10% of its shots in the best 10% of schedules. The real quantum computer puts about 19-21% there, roughly twice as many, and the ideal simulator 33%. We report the error-mitigation result as it was: no consistent gain on this circuit."
 
@@ -261,6 +261,19 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 10f: The demo, and what the AI does (and doesn't)
+**On slide**
+- Six-screen demo: Start · Schedule · Quantum · Compare · Ask · About. No scrolling; keyboard and a 35-second story mode; runs offline from saved results.
+- **Ask GreenQ:** a language model (Groq, `openai/gpt-oss-20b`) **explains** saved results in at most 3 sentences, and reads typed job descriptions into a table.
+- **It never decides:** schedules come from brute force and QAOA. Every number it writes is checked against our data, and unmatched sentences are deleted. Typed kWh must appear in the user's text.
+- **Never breaks:** live model → pre-generated cache → templates. Each answer is labelled *AI explanation* or *Template*.
+
+**Visual:** `docs/images/ui_ask.png` (chat with badges, plus a typed job description turned into a table and solved on the live simulator).
+
+**Say:** "The AI is a narrator, not a decision-maker. It only sees facts from our saved results, and if it writes a number we can't match, that sentence is removed. If the internet is down, the demo falls back to answers generated in advance or to templates."
+
+---
+
 ## Slide 11: Data honesty and limitations
 **On slide**
 - **Cited:** grid carbon 0.710 kg/kWh (CEA v21.0, FY 2024-25); fossil-only 0.961 (CEA); coal plant water 2.60 L/kWh (Macknick et al. 2012, NREL)
@@ -278,7 +291,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 **On slide**
 - **Repository:** github.com/vtu-qiskit-fall-fest-2026/vtu-hc-response200
 - **Demo video (YouTube):** *add link*
-- **Run it:** `pip install -r requirements.txt` → `pytest -q` → start the demo (README "How to Run")
+- **Run it:** `pip install -r requirements.txt` → `pytest -q` → `python -m server` → open http://127.0.0.1:8000 (README "How to Run")
 - **Hardware evidence:** `results/hardware/` (backend, job IDs, counts)
 - **Team Response200**
 
@@ -289,7 +302,7 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 - Built with Qiskit 2.6, Qiskit IBM Runtime, Qiskit Aer. Development assisted by Claude Code.
 
-**Visual:** QR code to the repo (optional), demo screenshot thumbnail.
+**Visual:** QR code to the repo (optional), demo screenshot thumbnail (`docs/images/ui_start.png`).
 
 **Say:** "Everything is in the repo: code, tests, saved hardware results with job IDs, and a plain-language explainer."
 

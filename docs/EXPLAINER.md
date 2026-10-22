@@ -80,6 +80,10 @@ How to read this:
 | `greenq/ibm.py` | Connects to IBM Quantum using the token in `.env` |
 | `scripts/run_sim.py` | Train + simulate, writes `results/sim/` |
 | `scripts/run_hardware.py` | Run on IBM hardware, writes `results/hardware/` |
+| `server/main.py` | FastAPI: serves the app, saved results, live jobs and the explanation endpoints |
+| `server/llm.py` | Language model layer: facts, number check, cache, templates (explains, never decides) |
+| `scripts/build_llm_cache.py` | Pre-generates the AI explanations into `results/llm_cache.json` (needs `GROQ_API_KEY`) |
+| `web/src/components/slides/` | The six screens and the sidebar; `web/src/lib/stage.ts` scales the 1600×900 canvas |
 
 ## 8. Likely jury questions (honest answers)
 **Is this faster or better than a classical computer?**
@@ -118,16 +122,26 @@ The search space grows as 4^jobs. Qubits grow linearly (2 per job), but circuit 
 **Where is the quantum part, exactly?**
 The circuit in `greenq/qaoa.py`, built with Qiskit's `QAOAAnsatz` from our own Hamiltonian, transpiled for the real device and run with `SamplerV2` on IBM hardware. Job IDs are in `results/hardware/`.
 
-## 9. The demo UI (what each part shows, and what to say)
-Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results (`results/ui_data.json`), so it needs no internet and no IBM account. Press **Play story** for a 20-second guided run; scrolling or clicking pauses it.
+## 9. The demo UI (what each screen shows, and what to say)
+Start it with `python -m server` (after pulling new code: `python -m server --rebuild`) and open http://127.0.0.1:8000. It reads only saved results (`results/ui_data.json`), so it needs no internet and no IBM account. It's six slides in a left sidebar; nothing scrolls. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 35-second story (Start → Schedule → Quantum, with captions in the footer), **F** full screen, **Esc** leaves full screen.
 
-| Part | What it shows | One line to say |
+| Screen | What it shows | One line to say |
 |---|---|---|
-| Hero | Headline, the two savings, and a small looping animation of the 4 jobs moving | "Same jobs, smarter placement: 530 kg CO₂ and 1,798 L water saved in this example." |
-| What matters more? | Big slider (21 settings; the 3 marked **IBM** ran on real hardware), savings at that setting, and the trade-off curve (CO₂ saved vs water saved) | "Carbon and water pull against each other; the curve is every possible compromise." |
-| Two data centres | Site A (cooling tower, evaporative) and Site B (chillers, air-cooled), each with a day and a night lane and that slot's grid carbon. Job blocks are sized by energy. Toggle *Business as usual* / *GreenQ* to watch them move; the reasons are listed underneath. | "Business as usual piles two big jobs onto Site A at night. GreenQ spreads them to cleaner, drier slots, and here is why each one moved." |
-| Savings / Real IBM runs | Before vs after bars; all 6 hardware job IDs with copy buttons | "Every hardware shot is saved in the repo with its job ID." |
-| The quantum part, shown | The real 8-qubit circuit (H, cost layer with γ, mixer with β, measure; each wire is a job's where/when bit), the histogram (random vs simulator vs IBM), and four honest facts | "The real hardware lands in the best tenth of schedules about twice as often as random. Error mitigation didn't help consistently. No advantage claimed." |
-| How it works / Honest answers / Footer | 3 steps, 5 FAQ answers, cited vs illustrative, sources | "A laptop is our referee." |
+| 1 Start | Headline, the two savings counting up, a mini scene that switches once from run now to run smart | "Same four jobs. Run smart instead of run now: 530 kg CO₂ and 1,798 L water less." |
+| 2 Schedule | *Run now / Run smart* toggle; job rules (all flexible, mixed, mostly rigid); the two sites with day and night lanes; moved jobs glow and a line shows where each went; the priority slider (the 3 **IBM** stops ran on real hardware); the trade-off curve; "Why this schedule" | "Run now piles two big jobs onto Site A at night. Run smart spreads them to cleaner, drier slots, and here is why each one moved." |
+| 3 Quantum | The real 8-qubit circuit (it lights up gate by gate), then where 4,000 shots landed (random, simulator, IBM), the key numbers, and all 7 job IDs | "IBM's machine lands in the best tenth of schedules about twice as often as random. Error mitigation didn't help consistently. No advantage claimed." |
+| 4 Compare | Tabs: Methods (every method reaches the best; classical is faster), Scaling (gates grow from 114 to 1,010), Job rules, Cities (water stress), Forecasts (robustness) | "We show the fair comparison on purpose: at this size a laptop wins." |
+| 5 Ask | Ask GreenQ: 5 example questions or your own; Describe your jobs in plain English, check the table, run it on the live simulator; fleet calculator | "The AI only explains our saved results. It never picks the schedule, and any number it can't match to our data is deleted." |
+| 6 About | Three steps (encode, run, check), six honest answers, sources | "A laptop is our referee." |
+
+### The AI part, in plain words (`server/llm.py`)
+- **What it is:** a language model (Groq's `openai/gpt-oss-20b`) that writes short sentences. It's not part of the optimisation.
+- **What it gets:** a list of facts taken from our saved results, for the current setting (for example "saved: 530 kg CO2 (14%)…"). Nothing else.
+- **The number check:** we split its reply into sentences, read every number, and keep a sentence only if each number matches one of the facts (rounding like 1,798 → 1,800 is fine). We also drop "you should move…" suggestions and any claim of quantum advantage.
+- **Typed jobs:** the model fills in a table (name, kWh, site, arrival, deadline, stays local). Every kWh must appear in what you typed, and the table goes through the same checks as the form. Brute force and the QAOA simulator then solve it, labelled *live simulator, not hardware*.
+- **No key or no internet:** it uses `results/llm_cache.json` (answers generated in advance and checked the same way), and if that's missing, fixed templates. The badge on each answer says AI EXPLANATION or TEMPLATE, so the audience always knows which.
+- **The key:** it's only in `.env` on the laptop running the server. The browser never sees it.
+
+**Jury question: "Isn't the AI just making things up?"** It can only use facts we hand it, and a sentence with any number it can't match is deleted before you see it. It explains; brute force and QAOA decide. If the model is down, templates built from the same data take over.
 
 **Where each number comes from:** savings and schedules come from brute force over all 256 schedules (`scripts/export_ui_data.py`); the circuit is exported from the real cost operator, and a test rebuilds it and checks it matches; the histograms come from the saved counts in `results/sim/` and `results/hardware/`.
