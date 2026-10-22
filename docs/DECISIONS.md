@@ -24,3 +24,18 @@ Our first draft had every job submitted in the daytime solar slot. That is alrea
 
 ### D6. Congestion coupling (Oct 22)
 Without a coupling term, each job could pick its best option independently, which is trivial. The congestion term (sharing a site-slot costs an extra 15% of the pair's energy at the average footprint) makes it a genuine combinatorial problem: choices interact, and the search space grows as (options)^(jobs). We make no formal hardness claim for this exact cost structure. At our size a classical computer solves it instantly; we do not claim advantage.
+
+### D7. CVaR-QAOA, trained on an exact simulator; only fixed circuits go to hardware (Oct 22)
+The Open Plan gives 10 QPU minutes per 28 days and no Session mode, so a variational loop on hardware (hundreds of jobs, each queued) is impractical. We train γ, β on an exact simulator and send one fixed circuit per run. Training uses a small numpy simulator of the same circuit, which is exact here because the cost layer is diagonal and the mixer is single-qubit RX gates. A test checks it equals Qiskit's `Statevector` of the `QAOAAnsatz`. It is ~100x faster, so the demo can retrain live when the slider moves. The objective is CVaR with α = 0.25 (Barkoutsos et al. 2020); α between 0.05 and 1 changed results very little on this instance.
+
+### D8. p = 1 on hardware (Oct 22)
+On the simulator, p = 2 and p = 3 raise P(optimal) from 1.5% to 2.8% and 4.1%. But each layer roughly doubles the two-qubit gates (≈114 → ≈258 for p = 2 on Marrakesh), and noise would erase the gain. We use p = 1 on hardware and report deeper p on the simulator only.
+
+### D9. Hardware runs: raw vs DD + twirling, 4,000 shots, ibm_marrakesh (Oct 22)
+Two jobs per run, identical except for error suppression (XY4 dynamical decoupling + gate and measurement twirling), give a direct mitigation comparison for ~6 s of QPU time. Results are saved at submission and on completion. Mitigation gain was marginal (+0.007 approximation ratio, ~2σ).
+
+### D10. All Qiskit calls in the demo on one persistent worker thread (Oct 22)
+Streamlit runs each rerun on a new thread. Qiskit 2.6's Rust extension (mimalloc allocator) segfaulted inside `SparsePauliOp.simplify` when a new thread called in after an earlier thread exited. A native crash report pointed at `_mi_malloc_generic`, and a five-line Streamlit script reproduced it. The fix: the app sends every Qiskit call to a single `ThreadPoolExecutor(max_workers=1)` kept alive with `st.cache_resource`. A headless app test (`tests/test_app.py`) moves the slider to guard against regressions.
+
+### D11. Headline metric for non-experts: share of shots in the best 10% (Oct 22)
+"Approximation ratio" is hard to explain in a minute. "The quantum computer put 19-21% of its shots in the best 10% of schedules; random guessing puts 10%" is easy, and is computed from the same counts.
