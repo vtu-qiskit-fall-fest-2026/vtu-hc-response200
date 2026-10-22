@@ -13,7 +13,11 @@ pandas==3.0.6
 matplotlib==3.11.2
 pylatexenc==2.11        # needed by Qiskit's circuit drawer
 
-# Demo app
+# Demo: React UI served by FastAPI (Node.js 20+ needed once, to build web/)
+fastapi==0.159.1
+uvicorn==0.54.0
+
+# Fallback demo app (Streamlit)
 streamlit==1.66.1
 plotly==7.1.0
 
@@ -22,3 +26,4 @@ python-dotenv==1.2.4
 
 # Tests
 pytest==9.1.1
+httpx==0.28.1          # FastAPI TestClient

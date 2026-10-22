@@ -1,0 +1,1018 @@
+{
+ "generated_utc": "2026-10-22T06:05:23Z",
+ "instance": {
+  "sites": [
+   {
+    "key": "evap",
+    "label": "Site A (evaporative cooling)",
+    "cooling": "evaporative",
+    "pue": 1.4,
+    "wue": {
+     "day": 1.9,
+     "night": 1.1
+    }
+   },
+   {
+    "key": "air",
+    "label": "Site B (air-cooled chillers)",
+    "cooling": "air-cooled",
+    "pue": 1.58,
+    "wue": {
+     "day": 0.05,
+     "night": 0.05
+    }
+   }
+  ],
+  "slots": [
+   {
+    "key": "day",
+    "label": "Day (10:00-16:00)",
+    "carbon_kg_per_kwh": 0.64,
+    "grid_water_l_per_kwh": 1.732
+   },
+   {
+    "key": "night",
+    "label": "Night (22:00-04:00)",
+    "carbon_kg_per_kwh": 0.78,
+    "grid_water_l_per_kwh": 2.111
+   }
+  ],
+  "jobs": [
+   {
+    "key": "train",
+    "label": "ML model training",
+    "it_energy_kwh": 1200.0,
+    "home_site": "evap",
+    "submitted_slot": "night"
+   },
+   {
+    "key": "genome",
+    "label": "Genomics batch",
+    "it_energy_kwh": 900.0,
+    "home_site": "evap",
+    "submitted_slot": "night"
+   },
+   {
+    "key": "etl",
+    "label": "Analytics ETL",
+    "it_energy_kwh": 600.0,
+    "home_site": "air",
+    "submitted_slot": "day"
+   },
+   {
+    "key": "render",
+    "label": "Video rendering",
+    "it_energy_kwh": 400.0,
+    "home_site": "air",
+    "submitted_slot": "night"
+   }
+  ],
+  "options": [
+   {
+    "index": 0,
+    "site": "evap",
+    "slot": "day",
+    "kg_co2_per_kwh": 0.896,
+    "litres_per_kwh": 4.3247
+   },
+   {
+    "index": 1,
+    "site": "evap",
+    "slot": "night",
+    "kg_co2_per_kwh": 1.092,
+    "litres_per_kwh": 4.0551
+   },
+   {
+    "index": 2,
+    "site": "air",
+    "slot": "day",
+    "kg_co2_per_kwh": 1.0112,
+    "litres_per_kwh": 2.7864
+   },
+   {
+    "index": 3,
+    "site": "air",
+    "slot": "night",
+    "kg_co2_per_kwh": 1.2324,
+    "litres_per_kwh": 3.385
+   }
+  ],
+  "congestion_fraction": 0.15,
+  "n_schedules": 256
+ },
+ "naive": {
+  "schedule": [
+   1,
+   1,
+   2,
+   3
+  ],
+  "kg_co2": 3726.12,
+  "litres": 12687.44
+ },
+ "sweep": [
+  {
+   "w": 0.0,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": true
+  },
+  {
+   "w": 0.05,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": false
+  },
+  {
+   "w": 0.1,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": false
+  },
+  {
+   "w": 0.15,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": false
+  },
+  {
+   "w": 0.2,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": false
+  },
+  {
+   "w": 0.25,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "kg_co2": 3336.2,
+    "litres": 10553.15
+   },
+   "saved_kg_co2": 389.92,
+   "saved_litres": 2134.29,
+   "hardware": false
+  },
+  {
+   "w": 0.3,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     0,
+     1
+    ],
+    "kg_co2": 3297.0,
+    "litres": 10607.07
+   },
+   "saved_kg_co2": 429.12,
+   "saved_litres": 2080.37,
+   "hardware": false
+  },
+  {
+   "w": 0.35,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     0,
+     1
+    ],
+    "kg_co2": 3297.0,
+    "litres": 10607.07
+   },
+   "saved_kg_co2": 429.12,
+   "saved_litres": 2080.37,
+   "hardware": false
+  },
+  {
+   "w": 0.4,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     0,
+     1
+    ],
+    "kg_co2": 3297.0,
+    "litres": 10607.07
+   },
+   "saved_kg_co2": 429.12,
+   "saved_litres": 2080.37,
+   "hardware": false
+  },
+  {
+   "w": 0.45,
+   "best": {
+    "schedule": [
+     2,
+     3,
+     0,
+     1
+    ],
+    "kg_co2": 3297.0,
+    "litres": 10607.07
+   },
+   "saved_kg_co2": 429.12,
+   "saved_litres": 2080.37,
+   "hardware": false
+  },
+  {
+   "w": 0.5,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     3,
+     1
+    ],
+    "kg_co2": 3196.08,
+    "litres": 10888.96
+   },
+   "saved_kg_co2": 530.04,
+   "saved_litres": 1798.47,
+   "hardware": true
+  },
+  {
+   "w": 0.55,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     3,
+     1
+    ],
+    "kg_co2": 3196.08,
+    "litres": 10888.96
+   },
+   "saved_kg_co2": 530.04,
+   "saved_litres": 1798.47,
+   "hardware": false
+  },
+  {
+   "w": 0.6,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     1,
+     3
+    ],
+    "kg_co2": 3168.0,
+    "litres": 11022.98
+   },
+   "saved_kg_co2": 558.12,
+   "saved_litres": 1664.46,
+   "hardware": false
+  },
+  {
+   "w": 0.65,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     1,
+     3
+    ],
+    "kg_co2": 3168.0,
+    "litres": 11022.98
+   },
+   "saved_kg_co2": 558.12,
+   "saved_litres": 1664.46,
+   "hardware": false
+  },
+  {
+   "w": 0.7,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     1,
+     3
+    ],
+    "kg_co2": 3168.0,
+    "litres": 11022.98
+   },
+   "saved_kg_co2": 558.12,
+   "saved_litres": 1664.46,
+   "hardware": false
+  },
+  {
+   "w": 0.75,
+   "best": {
+    "schedule": [
+     2,
+     0,
+     1,
+     3
+    ],
+    "kg_co2": 3168.0,
+    "litres": 11022.98
+   },
+   "saved_kg_co2": 558.12,
+   "saved_litres": 1664.46,
+   "hardware": false
+  },
+  {
+   "w": 0.8,
+   "best": {
+    "schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "kg_co2": 3133.44,
+    "litres": 11484.45
+   },
+   "saved_kg_co2": 592.68,
+   "saved_litres": 1202.98,
+   "hardware": false
+  },
+  {
+   "w": 0.85,
+   "best": {
+    "schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "kg_co2": 3133.44,
+    "litres": 11484.45
+   },
+   "saved_kg_co2": 592.68,
+   "saved_litres": 1202.98,
+   "hardware": false
+  },
+  {
+   "w": 0.9,
+   "best": {
+    "schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "kg_co2": 3133.44,
+    "litres": 11484.45
+   },
+   "saved_kg_co2": 592.68,
+   "saved_litres": 1202.98,
+   "hardware": false
+  },
+  {
+   "w": 0.95,
+   "best": {
+    "schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "kg_co2": 3133.44,
+    "litres": 11484.45
+   },
+   "saved_kg_co2": 592.68,
+   "saved_litres": 1202.98,
+   "hardware": false
+  },
+  {
+   "w": 1.0,
+   "best": {
+    "schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "kg_co2": 3133.44,
+    "litres": 11484.45
+   },
+   "saved_kg_co2": 592.68,
+   "saved_litres": 1202.98,
+   "hardware": true
+  }
+ ],
+ "proof": [
+  {
+   "w": 0.0,
+   "random": {
+    "approx_ratio": 0.7487,
+    "share_best10": 0.1,
+    "expected_optimum_hits": 15.6,
+    "deciles": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ]
+   },
+   "hardware": [
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcq7qvi0auc73944pjg",
+     "mitigation": "none",
+     "completed_utc": "2026-10-22T05:49:50Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 244,
+     "physical_qubits": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.8009,
+     "approx_ratio_se": 0.0025,
+     "share_best10": 0.1817,
+     "optimum_hits": 41,
+     "found_optimum": true,
+     "optimum_frequency_rank": 8,
+     "best_sampled_schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "deciles": [
+      0.18175,
+      0.14275,
+      0.1225,
+      0.1035,
+      0.102,
+      0.07475,
+      0.07425,
+      0.06875,
+      0.06925,
+      0.0605
+     ]
+    },
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcq7rc24mrc73ck6i7g",
+     "mitigation": "dd_twirl",
+     "completed_utc": "2026-10-22T05:49:52Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 244,
+     "physical_qubits": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.8128,
+     "approx_ratio_se": 0.0024,
+     "share_best10": 0.1832,
+     "optimum_hits": 33,
+     "found_optimum": true,
+     "optimum_frequency_rank": 9,
+     "best_sampled_schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "deciles": [
+      0.18325,
+      0.1595,
+      0.136,
+      0.11225,
+      0.09575,
+      0.07925,
+      0.06725,
+      0.06025,
+      0.0575,
+      0.049
+     ]
+    }
+   ],
+   "ideal": {
+    "shots": 4000,
+    "approx_ratio": 0.8584,
+    "approx_ratio_se": 0.0022,
+    "share_best10": 0.2807,
+    "optimum_hits": 39,
+    "found_optimum": true,
+    "optimum_frequency_rank": 24,
+    "best_sampled_schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "deciles": [
+     0.28075,
+     0.227,
+     0.14125,
+     0.09875,
+     0.08375,
+     0.031,
+     0.03425,
+     0.0315,
+     0.03025,
+     0.0415
+    ]
+   },
+   "qaoa": {
+    "gammas": [
+     0.6151924198178408
+    ],
+    "betas": [
+     2.84339470754392
+    ]
+   },
+   "noisy": {
+    "backend": "fake_marrakesh",
+    "shots": 4000,
+    "approx_ratio": 0.847,
+    "approx_ratio_se": 0.0023,
+    "share_best10": 0.2482,
+    "optimum_hits": 40,
+    "found_optimum": true,
+    "optimum_frequency_rank": 21,
+    "best_sampled_schedule": [
+     2,
+     3,
+     1,
+     0
+    ],
+    "deciles": [
+     0.24825,
+     0.207,
+     0.1475,
+     0.11225,
+     0.08925,
+     0.044,
+     0.0375,
+     0.03475,
+     0.03675,
+     0.04275
+    ]
+   }
+  },
+  {
+   "w": 0.5,
+   "random": {
+    "approx_ratio": 0.7427,
+    "share_best10": 0.1,
+    "expected_optimum_hits": 15.6,
+    "deciles": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ]
+   },
+   "hardware": [
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcpub7i0auc73943vu0",
+     "mitigation": "none",
+     "completed_utc": "2026-10-22T05:29:51Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 247,
+     "physical_qubits": [
+      129,
+      118,
+      109,
+      110,
+      111,
+      98,
+      91,
+      92
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.7979,
+     "approx_ratio_se": 0.0024,
+     "share_best10": 0.1885,
+     "optimum_hits": 33,
+     "found_optimum": true,
+     "optimum_frequency_rank": 17,
+     "best_sampled_schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "deciles": [
+      0.1885,
+      0.1615,
+      0.13125,
+      0.09225,
+      0.07,
+      0.072,
+      0.08425,
+      0.07975,
+      0.064,
+      0.0565
+     ]
+    },
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcpub8c77vs7386pv9g",
+     "mitigation": "dd_twirl",
+     "completed_utc": "2026-10-22T05:29:53Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 247,
+     "physical_qubits": [
+      129,
+      118,
+      109,
+      110,
+      111,
+      98,
+      91,
+      92
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.8055,
+     "approx_ratio_se": 0.0024,
+     "share_best10": 0.2105,
+     "optimum_hits": 28,
+     "found_optimum": true,
+     "optimum_frequency_rank": 27,
+     "best_sampled_schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "deciles": [
+      0.2105,
+      0.159,
+      0.1375,
+      0.09,
+      0.079,
+      0.075,
+      0.067,
+      0.069,
+      0.05375,
+      0.05925
+     ]
+    }
+   ],
+   "ideal": {
+    "shots": 4000,
+    "approx_ratio": 0.8433,
+    "approx_ratio_se": 0.0025,
+    "share_best10": 0.3352,
+    "optimum_hits": 60,
+    "found_optimum": true,
+    "optimum_frequency_rank": 11,
+    "best_sampled_schedule": [
+     2,
+     0,
+     3,
+     1
+    ],
+    "deciles": [
+     0.33525,
+     0.21525,
+     0.163,
+     0.06175,
+     0.041,
+     0.02225,
+     0.025,
+     0.033,
+     0.03875,
+     0.06475
+    ]
+   },
+   "qaoa": {
+    "gammas": [
+     0.32110434207623145
+    ],
+    "betas": [
+     2.87701476412391
+    ]
+   },
+   "noisy": {
+    "backend": "fake_marrakesh",
+    "shots": 4000,
+    "approx_ratio": 0.8311,
+    "approx_ratio_se": 0.0025,
+    "share_best10": 0.2983,
+    "optimum_hits": 71,
+    "found_optimum": true,
+    "optimum_frequency_rank": 1,
+    "best_sampled_schedule": [
+     2,
+     0,
+     3,
+     1
+    ],
+    "deciles": [
+     0.29825,
+     0.201,
+     0.1445,
+     0.0665,
+     0.0485,
+     0.04525,
+     0.046,
+     0.03925,
+     0.05425,
+     0.0565
+    ]
+   }
+  },
+  {
+   "w": 1.0,
+   "random": {
+    "approx_ratio": 0.7619,
+    "share_best10": 0.1,
+    "expected_optimum_hits": 15.6,
+    "deciles": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ]
+   },
+   "hardware": [
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcq829gv2cc738gq49g",
+     "mitigation": "none",
+     "completed_utc": "2026-10-22T05:50:20Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 247,
+     "physical_qubits": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.825,
+     "approx_ratio_se": 0.0022,
+     "share_best10": 0.226,
+     "optimum_hits": 41,
+     "found_optimum": true,
+     "optimum_frequency_rank": 11,
+     "best_sampled_schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "deciles": [
+      0.226,
+      0.15275,
+      0.1295,
+      0.12175,
+      0.07725,
+      0.06175,
+      0.06675,
+      0.0615,
+      0.04525,
+      0.0575
+     ]
+    },
+    {
+     "backend": "ibm_marrakesh",
+     "job_id": "dbcq82s24mrc73ck6is0",
+     "mitigation": "dd_twirl",
+     "completed_utc": "2026-10-22T05:50:22Z",
+     "quantum_seconds": 3,
+     "two_qubit_gates": 114,
+     "depth": 247,
+     "physical_qubits": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "shots": 4000,
+     "approx_ratio": 0.8187,
+     "approx_ratio_se": 0.0021,
+     "share_best10": 0.1913,
+     "optimum_hits": 40,
+     "found_optimum": true,
+     "optimum_frequency_rank": 4,
+     "best_sampled_schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "deciles": [
+      0.19125,
+      0.1565,
+      0.133,
+      0.10825,
+      0.0805,
+      0.0825,
+      0.0765,
+      0.06225,
+      0.06025,
+      0.049
+     ]
+    }
+   ],
+   "ideal": {
+    "shots": 4000,
+    "approx_ratio": 0.8561,
+    "approx_ratio_se": 0.0022,
+    "share_best10": 0.3063,
+    "optimum_hits": 54,
+    "found_optimum": true,
+    "optimum_frequency_rank": 11,
+    "best_sampled_schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "deciles": [
+     0.30625,
+     0.22625,
+     0.15675,
+     0.09775,
+     0.03225,
+     0.02925,
+     0.0305,
+     0.028,
+     0.03825,
+     0.05475
+    ]
+   },
+   "qaoa": {
+    "gammas": [
+     0.44615149800262444
+    ],
+    "betas": [
+     2.8727539195442047
+    ]
+   },
+   "noisy": {
+    "backend": "fake_marrakesh",
+    "shots": 4000,
+    "approx_ratio": 0.848,
+    "approx_ratio_se": 0.0022,
+    "share_best10": 0.2767,
+    "optimum_hits": 67,
+    "found_optimum": true,
+    "optimum_frequency_rank": 1,
+    "best_sampled_schedule": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "deciles": [
+     0.27675,
+     0.19075,
+     0.15225,
+     0.11175,
+     0.0535,
+     0.044,
+     0.04425,
+     0.04075,
+     0.04025,
+     0.04575
+    ]
+   }
+  }
+ ],
+ "circuit": {
+  "n_qubits": 8,
+  "hamiltonian_terms": 31,
+  "onehot_qubits": 16,
+  "onehot_valid_fraction": 0.003906,
+  "onehot_two_qubit_gates_estimate": 227,
+  "reps_on_hardware": 1
+ },
+ "totals": {
+  "hardware_jobs": 6,
+  "quantum_seconds": 18
+ },
+ "sources": {
+  "cited": [
+   {
+    "figure": "Indian grid average carbon intensity",
+    "value": "0.710 kg CO2/kWh",
+    "source": "Central Electricity Authority (Govt. of India), CO2 Baseline Database for the Indian Power Sector, User Guide v21.0, Nov 2025, Table S (FY 2024-25): weighted average 0.710 tCO2/MWh; operating margin (fossil stations) 0.961 tCO2/MWh. https://cea.nic.in/api/cdm-report-version/view-pdf/en/78"
+   },
+   {
+    "figure": "Fossil-only grid intensity (operating margin)",
+    "value": "0.961 kg CO2/kWh",
+    "source": "Central Electricity Authority (Govt. of India), CO2 Baseline Database for the Indian Power Sector, User Guide v21.0, Nov 2025, Table S (FY 2024-25): weighted average 0.710 tCO2/MWh; operating margin (fossil stations) 0.961 tCO2/MWh. https://cea.nic.in/api/cdm-report-version/view-pdf/en/78"
+   },
+   {
+    "figure": "Water consumed by coal plants with cooling towers",
+    "value": "2.60 L/kWh",
+    "source": "Macknick, Newmark, Heath & Hallett (2012), Operational water consumption and withdrawal factors for electricity generating technologies, Environ. Res. Lett. 7 045802, Table 2: coal, cooling tower, median 687 gal/MWh (= 2.60 L/kWh). https://doi.org/10.1088/1748-9326/7/4/045802"
+   }
+  ],
+  "illustrative": [
+   "Day / night carbon split (0.640 / 0.780 kg/kWh; mean = CEA 0.710)",
+   "Site PUE (1.40 evaporative, 1.58 air-cooled), anchored to Uptime Institute Global Data Center Survey 2024 and the Phoenix study",
+   "On-site water use (WUE), inside the 0-2.5 L/kWh range reported by Equinix",
+   "Job energies and the overload penalty",
+   "Indirect water = fossil share x coal-plant water use (an approximation)"
+  ],
+  "references": [
+   "Central Electricity Authority (Govt. of India), CO2 Baseline Database for the Indian Power Sector, User Guide v21.0, Nov 2025, Table S (FY 2024-25): weighted average 0.710 tCO2/MWh; operating margin (fossil stations) 0.961 tCO2/MWh. https://cea.nic.in/api/cdm-report-version/view-pdf/en/78",
+   "Macknick, Newmark, Heath & Hallett (2012), Operational water consumption and withdrawal factors for electricity generating technologies, Environ. Res. Lett. 7 045802, Table 2: coal, cooling tower, median 687 gal/MWh (= 2.60 L/kWh). https://doi.org/10.1088/1748-9326/7/4/045802",
+   "Uptime Institute Global Data Center Survey 2024: average annual PUE 1.56. https://intelligence.uptimeinstitute.com/resource/uptime-institute-global-data-center-survey-2024",
+   "University of Arizona, Water-energy tradeoffs in data centers: a case study in hot-arid climates (Phoenix colocation sites): air-cooled site had ~13% higher PUE but 66% lower source WUE than the evaporative site. https://experts.arizona.edu/en/publications/water-energy-tradeoffs-in-data-centers-a-case-study-in-hot-arid-c/",
+   "Equinix, What is Water Usage Effectiveness (WUE): air-cooled-only sites near 0 L/kWh, fully evaporative sites up to about 2.5 L/kWh. https://blog.equinix.com/blog/2024/11/13/what-is-water-usage-effectiveness-wue-in-data-centers/",
+   "The Green Grid, WUE: a green grid data center sustainability metric (WP #35, 2011): WUE = annual site water (L) / IT equipment energy (kWh)."
+  ]
+ }
+}

@@ -55,3 +55,16 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Frontend (built by `python -m server` or `npm run build`)
+node_modules/
+web/dist/
+*.tsbuildinfo
+.vite/
+
+# Design-tool working files (keep surface briefs and design tokens)
+.impeccable/decision/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.impeccable/live/
