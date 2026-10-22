@@ -216,6 +216,18 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 10c: How it scales (measured)
+**On slide**
+- 4 → 11 jobs (8 → 22 qubits), simulators; compiled for the ibm_marrakesh layout.
+- Two-qubit gates: 114 → 1,010 (every job pair adds gates).
+- Best-10% share (random = 10%): ideal QAOA 33% → 44%; noisy device model 30% → 27% (up to 16 qubits); **real chip at 8 qubits: 19%**.
+- Greedy misses the optimum from 5 jobs (up to 3%); annealing from 8 jobs (up to 0.3%); exhaustive search 0.5 s at 22 qubits.
+- Honest line: today's hardware fits our 8-qubit case; larger cases need better hardware. No extrapolation, no advantage claim.
+
+**Visual:** the two "How it scales" charts from the demo.
+
+---
+
 ## Slide 11: Data honesty and limitations
 **On slide**
 - **Cited:** grid carbon 0.710 kg/kWh (CEA v21.0, FY 2024-25); fossil-only 0.961 (CEA); coal plant water 2.60 L/kWh (Macknick et al. 2012, NREL)

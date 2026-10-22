@@ -206,6 +206,26 @@ Savings shrink as fewer jobs are flexible (balanced priority; average over every
 
 Shots that obey every rule (mixed preset, balanced): random guessing 25%, ideal simulator 99%, noisy simulator 92%, **IBM ibm_marrakesh 61%** (job `dbd13dk24mrc73cki6eg`, 3 s QPU). The cheapest rule-obeying hardware shot was the true best allowed schedule (39 of 4,000 shots).
 
+### How it scales (measured, simulator)
+
+`python scripts/run_scaling.py` → `results/scaling.json`. Same 2 sites × 2 slots and balanced priority; jobs beyond the 4 demo jobs are illustrative (seeded). Only measured sizes are shown; nothing is extrapolated.
+
+| Jobs | Qubits | Schedules | 2-qubit gates (marrakesh layout) | Best-10% share: ideal | noisy model | random | Greedy gap | Annealing gap | Exhaustive search |
+|---|---|---|---|---|---|---|---|---|---|
+| 4 | 8 | 256 | 114 | 33.5% | 29.5% | 10% | 0.0% | 0.00% | 0 ms |
+| 5 | 10 | 1,024 | 188 | 37.9% | 30.3% | 10% | 0.1% | 0.00% | 0 ms |
+| 6 | 12 | 4,096 | 280 | 35.7% | 27.7% | 10% | 1.4% | 0.00% | 0 ms |
+| 7 | 14 | 16,384 | 411 | 36.5% | 25.9% | 10% | 2.1% | 0.00% | 1 ms |
+| 8 | 16 | 65,536 | 518 | 37.4% | 26.6% | 10% | 2.4% | 0.15% | 3 ms |
+| 9 | 18 | 262,144 | 664 | 41.9% | not run | 10% | 3.0% | 0.27% | 16 ms |
+| 10 | 20 | 1,048,576 | 828 | 42.7% | not run | 10% | 3.0% | 0.13% | 94 ms |
+| 11 | 22 | 4,194,304 | 1,010 | 43.6% | not run | 10% | 2.6% | 0.07% | 515 ms |
+
+**Plain reading:**
+- **Circuit size:** it grows quickly, about 9× in two-qubit gates from 8 to 22 qubits, because every pair of jobs adds gates.
+- **Noise:** on the noisy model of ibm_marrakesh, QAOA keeps 83% of its ideal gain over random at 8 qubits and 60% at 16 qubits. The model is optimistic: at 8 qubits it predicted 29.5% of shots in the best tenth, and the real device gave 18.9%.
+- **Classical methods:** greedy starts missing the optimum from 5 jobs (up to 3%) and annealing from 8 jobs (up to 0.3%). Exhaustive search still takes only 0.5 s at 22 qubits (4.2 million schedules). There's no quantum advantage at these sizes.
+
 ### Compared with classical methods (fair baselines)
 
 Same objective, same instance, balanced setting (`python scripts/run_baselines.py` → `results/baselines.json`; water-only and carbon-only give the same picture):
@@ -338,7 +358,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 ## ⚠️ Limitations (honest)
 
 - **No quantum advantage is claimed.** 256 schedules are solved instantly by brute force, which is how we grade the quantum result. Greedy, simulated annealing and even random sampling also reach the true best at this size, and they are faster (see Results). Our claim is a correct, compact formulation, validated end to end on real hardware with measured accuracy.
-- **Small instance.** 4 jobs, 2 sites, 2 slots (8 qubits). Circuit depth grows with the number of job pairs, and hardware noise limits the size today.
+- **Small instance on hardware.** Hardware runs use 4 jobs (8 qubits). The scaling study goes to 22 qubits on simulators only; one QAOA layer then needs about 1,000 two-qubit gates, beyond what current devices run reliably. The noisy device model was optimistic compared with the real chip.
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).

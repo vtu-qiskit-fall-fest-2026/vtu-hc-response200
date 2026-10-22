@@ -81,3 +81,10 @@ Real jobs are not all flexible, so each job can carry rules: deadline (day slot 
 - **Presets (illustrative):** all flexible (256 schedules), mixed (64), mostly rigid (8). The flexibility curve averages over every subset of flexible jobs, so it doesn't depend on which job we picked.
 - **Hardware:** one job only, on the most informative instance (mixed, balanced, raw, 4,000 shots), job `dbd13dk24mrc73cki6eg`, about 3 s. Remaining Open Plan time was 582 s before the job and 579 s after. 61% of hardware shots obeyed every rule (random 25%, ideal simulator 99%, noisy model 92%). The real device is noisier than its model, which matches the earlier runs.
 - **Code:** hardware selection everywhere (export, summary, baselines, Streamlit) now filters by preset, so the rules run never mixes into the original six.
+
+### D17. Scaling study: measured only, best-10% share as the headline metric (Oct 22)
+- **Setup:** 4–11 jobs (8–22 qubits). QAOA p=1 trained on the exact simulator; the grid search is coarser above 14 qubits to keep each size under about 3 minutes. The circuit is compiled for the ibm_marrakesh layout (FakeMarrakesh, level 3).
+- **Noisy simulation:** run up to 16 qubits only, because noisy trajectories at 18+ qubits were too slow on the laptop. We don't extrapolate.
+- **Metric:** the chart uses "share of shots in the best 10%" rather than the approximation ratio. Random guessing's ratio drifts upward with size, while its best-10% share stays at exactly 10%, so the comparison stays readable.
+- **Calibration:** the real hardware point (8 qubits) is plotted next to the noise model, so the model's optimism is visible.
+- **Findings:** greedy misses from 5 jobs and annealing from 8. Exhaustive search is still fast at 22 qubits. No advantage claimed.

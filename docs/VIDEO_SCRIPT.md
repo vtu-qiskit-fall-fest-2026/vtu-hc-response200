@@ -41,6 +41,9 @@ For: whoever records the YouTube demo. The viewers are the hackathon jury, so it
 ### 3:00-3:10 · Compared with simple methods (scroll to "Is it better than simple methods?")
 **Say:** "We also compared against greedy, simulated annealing and random guessing. At this size they all find the best schedule, faster. We say that openly."
 
+### 3:10-3:20 · How it scales (scroll to "How it scales")
+**Say:** "We also measured bigger problems on simulators, up to 22 qubits. The circuit grows fast, from 114 to about a thousand two-qubit gates, and noise eats into the gain. That tells us where today's hardware stops."
+
 ### 3:10-3:40 · Honest close (scroll to How it works, Honest answers, footer)
 **Say:** "To be clear: at this size a laptop checks all 256 schedules instantly, and we use it as our referee. We claim no quantum advantage. The grid carbon and power-plant water figures are cited; the sites and jobs are illustrative. What we show is a correct, compact quantum formulation of a real sustainability problem, tested on real IBM hardware. That's GreenQ, by Team Response200."
 

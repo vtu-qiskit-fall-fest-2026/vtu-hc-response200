@@ -94,6 +94,9 @@ Not on this instance. We tested it: greedy, simulated annealing and even 4,000 r
 **Real jobs have deadlines and data rules. Does it still work?**
 Yes, within limits. We added three rules a job can have: a deadline, data that must stay at its home site, and a critical slot. The "How flexible are the jobs?" switch shows the effect. Savings shrink as fewer jobs are flexible: from 14% (all flexible) to about 8% CO₂ when only one in four is. The rules go into the quantum cost as penalties. On the simulator 99% of shots obey every rule; on the real IBM machine 61% did (random guessing: 25%), and we simply discard the rest. That run is saved in the repo (job `dbd13dk24mrc73cki6eg`).
 
+**Does it scale?**
+We measured it up to 11 jobs (22 qubits) on simulators. The quantum circuit keeps finding good schedules in the ideal case, but it gets big fast: 114 two-qubit gates at 8 qubits, about 1,000 at 22. On a noisy model of the IBM chip the advantage over random shrinks as it grows, and the real chip was noisier than the model. So today's hardware handles our small case, and larger ones need better hardware or smarter circuits. A classical computer still solves all these sizes in under a second, and we say so.
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 
