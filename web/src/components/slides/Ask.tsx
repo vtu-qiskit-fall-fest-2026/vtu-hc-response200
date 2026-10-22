@@ -75,7 +75,7 @@ function Chat() {
                   <span className="flex items-center gap-2 text-muted-foreground"><Loader2 className="size-4 animate-spin" aria-hidden="true" /> Checking the saved results…</span>
                 ) : (
                   <>
-                    <p className="line-clamp-4">{t.a.text}</p>
+                    <p className="line-clamp-6">{t.a.text}</p>
                     <div className="mt-2 flex items-center gap-2">
                       <Badge kind={t.a.source === "template" ? "template" : "ai"} label={t.a.source === "live" ? "AI explanation · live" : undefined} />
                       {t.a.screen !== null && t.a.focus && (
