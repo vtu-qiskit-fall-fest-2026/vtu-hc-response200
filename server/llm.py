@@ -40,6 +40,12 @@ EXAMPLES = [
     "Is this faster than a laptop?",
     "What are the limits?",
 ]
+# Questions typed by the automated demo (docs/demo/timeline.json); answered from the
+# reviewed cache or a template, never live.
+DEMO_QUESTIONS = [
+    "What is GreenQ and what are its advantages?",
+    "Is it better than a normal computer?",
+]
 # Which widget each answer can point to: focus id -> slide index (web/src/lib/screens.ts)
 FOCUS = {"schedule": 1, "tradeoff": 1, "why": 1, "circuit": 2, "histogram": 2, "methods": 3, "scaling": 3, "about": 5}
 CAPTIONS = ["start", "run_now", "run_smart", "tradeoff", "circuit", "histogram", "compare", "ask", "about"]
@@ -182,6 +188,8 @@ def facts(data: dict, preset: str, w: float) -> dict[str, str]:
     bf = next((r for r in (data.get("methods") or {}).get("weights", [{}])[0].get("rows", []) if r.get("kind") == "referee"), None)
     f["speed"] = ("a laptop checks all schedules by brute force" + (f" in about {bf['runtime_ms']:.1f} ms" if bf and bf.get("runtime_ms") else "")
                   + "; the quantum computer is slower at this size, so no quantum advantage is claimed")
+    f["why we built it"] = ("to show a correct quantum formulation of a real sustainability problem, tested end to end on real IBM "
+                            "hardware with measured accuracy, as a step toward bigger problems where classical search gets hard")
     f["honesty"] = ("grid carbon (CEA), power-plant water (NREL) and state water stress (WRI Aqueduct) are cited; "
                     "the sites, the jobs and the day/night carbon split are illustrative")
     return f
@@ -452,6 +460,14 @@ def template_answer(data: dict, preset: str, w: float, question: str) -> dict | 
         return {"text": f"It ran on real IBM hardware: {f['real IBM hardware']}. Shots in the best tenth: {f['shots in the best tenth of schedules']}.", "focus": "histogram"}
     if q == _norm(EXAMPLES[3]):
         return {"text": f"No. A laptop checks {f['schedules checked by laptop']} schedules almost instantly and grades the quantum answer. No quantum advantage is claimed at this size.", "focus": "methods"}
+    if q == _norm(DEMO_QUESTIONS[0]):
+        _, s = _stop(data, preset, w)
+        return {"text": (f"GreenQ decides where and when flexible data-centre jobs run, to cut carbon and water together. "
+                         f"In our example it saves {s['saved_kg_co2']:,.0f} kg CO2 and {s['saved_litres']:,.0f} L of water versus run now. "
+                         f"A quantum algorithm (QAOA) ran on a real IBM computer, and a laptop checks every answer."), "focus": "schedule"}
+    if q == _norm(DEMO_QUESTIONS[1]):
+        return {"text": (f"No, not at this size. A laptop checks {f['schedules checked by laptop']} schedules faster than the quantum computer. "
+                         "We built GreenQ to show a correct quantum formulation, tested on real hardware, as a step toward bigger problems."), "focus": "methods"}
     if q == _norm(EXAMPLES[4]):
         lim = f.get("scaling (simulated)", "bigger problems need many more gates")
         return {"text": f"Four illustrative jobs on two sites, so a laptop wins easily. Noise grows with size: {lim}.", "focus": "scaling"}
@@ -474,7 +490,7 @@ def generate_answer(cfg: dict, data: dict, preset: str, w: float, question: str,
     return {"text": text, "focus": focus}
 
 
-def ask(data: dict, preset: str, w: float, question: str) -> dict:
+def ask(data: dict, preset: str, w: float, question: str, demo: bool = False) -> dict:
     question = question.strip()[:300]
     key = f"{_key(preset, w)}|{_norm(question)}"
 
@@ -487,9 +503,9 @@ def ask(data: dict, preset: str, w: float, question: str) -> dict:
         text = ground(cached["text"], allowed_numbers(facts(data, preset, w)))
         if text:
             return reply({"text": text, "focus": cached.get("focus")}, "cached")
-    example = _norm(question) in {_norm(q) for q in EXAMPLES}
+    example = _norm(question) in {_norm(q) for q in EXAMPLES + DEMO_QUESTIONS}
     cfg = config()
-    if cfg and not example:  # example questions: reviewed cache or hand-written template only
+    if cfg and not example and not demo:  # example questions: reviewed cache or hand-written template only
         memo = _LIVE.get(f"ask:{key}") or generate_answer(cfg, data, preset, w, question)
         if memo:
             _LIVE[f"ask:{key}"] = memo
@@ -542,13 +558,13 @@ def _rule_parse(text: str) -> list[dict]:
     return jobs[:5]
 
 
-def parse_jobs(text: str, validate) -> dict:
+def parse_jobs(text: str, validate, demo: bool = False) -> dict:
     """text -> {"jobs": [...] | None, "note": str, "source": ...}. ``validate`` is the
     server's pydantic job check; anything that fails it is dropped and reported."""
     text = text.strip()[:800]
     stated = numbers(text)
     raw, source = None, "template"
-    cfg = config()
+    cfg = None if demo else config()  # the demo uses the rule reader: deterministic, offline
     if cfg:
         out = _json(_chat(cfg, PARSE_RULES, text, JOBS_SCHEMA, timeout=12.0))
         if out and isinstance(out.get("jobs"), list):
@@ -596,6 +612,22 @@ def generate_narration(cfg: dict, data: dict) -> dict | None:
     allowed = allowed_numbers(f)
     res = {c: ground(str(out.get(c, "")), allowed) for c in CAPTIONS}
     return {c: v for c, v in res.items() if v}
+
+
+def build_demo_answers(data: dict, cache: dict, pause: float = 2.2) -> dict:
+    """Add (or refresh) the cached answers to the demo's questions, at the demo's setting."""
+    cfg = config()
+    if cfg is None:
+        raise RuntimeError("No GROQ_API_KEY in .env (or GREENQ_LLM_OFFLINE=1); nothing to generate.")
+    cache.setdefault("ask", {})
+    for q in DEMO_QUESTIONS:
+        # the honest question must also say why we built it; the instruction is part of the prompt only
+        prompt = q + (" Answer honestly, then say why we still built it." if q == DEMO_QUESTIONS[1] else "")
+        a = generate_answer(cfg, data, "flexible", 0.5, prompt, interactive=False)
+        if a:
+            cache["ask"][f"{_key('flexible', 0.5)}|{_norm(q)}"] = a
+        time.sleep(pause)
+    return cache
 
 
 def build_cache(data: dict, presets=("flexible", "mixed", "rigid"), weights=(0.0, 0.5, 1.0), pause: float = 2.2) -> dict:

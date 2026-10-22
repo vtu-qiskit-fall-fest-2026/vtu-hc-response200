@@ -189,10 +189,12 @@ class ExplainRequest(BaseModel):
 
 class AskRequest(ExplainRequest):
     question: str = Field(..., min_length=1, max_length=300)
+    demo: bool = False  # the automated demo: cached or template answers only, never live
 
 
 class ParseRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=800)
+    demo: bool = False
 
 
 @app.post("/api/explain")
@@ -202,17 +204,29 @@ def explain(req: ExplainRequest) -> dict:
 
 @app.post("/api/ask")
 def ask(req: AskRequest) -> dict:
-    return llm.ask(load_data(), req.preset, req.w, req.question)
+    return llm.ask(load_data(), req.preset, req.w, req.question, demo=req.demo)
 
 
 @app.post("/api/parse-jobs")
 def parse_jobs(req: ParseRequest) -> dict:
-    return llm.parse_jobs(req.text, lambda j: CustomJob(**j).model_dump())
+    return llm.parse_jobs(req.text, lambda j: CustomJob(**j).model_dump(), demo=req.demo)
 
 
 @app.get("/api/narration")
 def narration() -> dict:
     return llm.narration()
+
+
+DEMO_FILE = ROOT / "docs" / "demo" / "timeline.json"
+
+
+@app.get("/api/demo")
+def demo_timeline() -> dict:
+    """The automated demo's timeline (scripts/build_demo.py writes it)."""
+    try:
+        return json.loads(DEMO_FILE.read_text())
+    except (OSError, json.JSONDecodeError):
+        raise HTTPException(404, "docs/demo/timeline.json is missing: run  python scripts/build_demo.py")
 
 
 @app.get("/api/llm-status")

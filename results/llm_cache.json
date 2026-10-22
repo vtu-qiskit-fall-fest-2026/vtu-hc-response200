@@ -204,6 +204,14 @@
     "rigid:1.0|is this faster than a laptop": {
       "text": "No. A laptop checks all schedules in about 1.2 ms, while the quantum computer is slower at this size, so there is no speed advantage.",
       "focus": "methods"
+    },
+    "flexible:0.5|what is greenq and what are its advantages": {
+      "text": "GreenQ is a demo that schedules data‑centre jobs across two sites and two time slots to reduce CO2 emissions and water use. It finds the best schedule, saving 530 kg CO2 (14%) and 1,798 L water (14%) compared with running jobs immediately. It also demonstrates a correct quantum formulation of the problem.",
+      "focus": "about"
+    },
+    "flexible:0.5|is it better than a normal computer": {
+      "text": "No, the quantum approach is slower than classical methods for this 4‑job case. We built it to demonstrate a correct quantum formulation and test it end‑to‑end on real hardware as a step toward larger problems where classical search becomes hard.",
+      "focus": "methods"
     }
   },
   "narration": {},
@@ -215,6 +223,7 @@
       "flexible:1.0|why did video rendering move": "says video moved for water; at carbon only it does not move",
       "rigid:0.0|why did video rendering move": "credits the move to carbon at the water-only setting",
       "rigid:0.5|how do i know the quantum part is real": "quotes the 61% rule result, which was measured on the mixed preset"
-    }
+    },
+    "demo_questions": "2 demo answers generated with openai/gpt-oss-120b and checked against the data (530 kg / 1,798 L = 14% each; 4 jobs; slower than classical; reasons for building it match README)."
   }
 }

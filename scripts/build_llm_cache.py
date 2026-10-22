@@ -27,12 +27,19 @@ def main() -> None:
     import os
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="openai/gpt-oss-120b", help="model for the saved answers (live answers keep LLM_MODEL)")
+    ap.add_argument("--only-demo", action="store_true", help="only (re)generate the two demo questions, keep the rest of the cache")
     args = ap.parse_args()
     os.environ["LLM_MODEL"] = args.model
     data = json.loads((ROOT / "results" / "ui_data.json").read_text())
     if llm.config() is None:
         sys.exit("No GROQ_API_KEY in .env, so there is nothing to generate. The demo still works: it falls back to templates.")
     print(f"Generating with {llm.config()['model']} ...", flush=True)
+    if args.only_demo:
+        old = json.loads(llm.CACHE_FILE.read_text()) if llm.CACHE_FILE.exists() else {}
+        cache = llm.build_demo_answers(data, old)
+        llm.CACHE_FILE.write_text(json.dumps(cache, indent=2, ensure_ascii=False) + "\n")
+        print("Updated the demo answers in results/llm_cache.json; review them before committing.")
+        return
     cache = llm.build_cache(data)
     out = llm.CACHE_FILE
     out.write_text(json.dumps(cache, indent=2, ensure_ascii=False) + "\n")
