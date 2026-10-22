@@ -12,7 +12,8 @@ export function StartScreen() {
   const celebrated = useRef(false);
   const onSaved = useCallback(() => {
     if (tour || playing) return;
-    mascot.setMood("celebrate", { for: 2200 });
+    // bounce along with the count-up, then celebrate
+    void mascot.motion.bounce(3, 10).then(() => mascot.setMood("celebrate", { for: 2200 }));
     if (!celebrated.current) { celebrated.current = true; mascot.say("Same jobs, lighter footprint!", { ms: 2800 }); }
   }, [tour, playing]); // eslint-disable-line react-hooks/exhaustive-deps
   const excite = () => !tour && mascot.setMood("excited");
@@ -23,7 +24,7 @@ export function StartScreen() {
   return (
     <div className="relative h-full">
       <div
-        className={`absolute overflow-hidden ${compact ? "-inset-4" : "-inset-x-10 -top-8 -bottom-12"}`}
+        className={`absolute overflow-hidden ${compact ? "-inset-4" : "-top-8 right-0 -bottom-12 -left-10"}`}
         onPointerEnter={() => setHover(true)}
         onPointerLeave={() => setHover(false)}
         data-tour="hero"

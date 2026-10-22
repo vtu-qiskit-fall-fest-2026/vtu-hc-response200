@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, type TargetAndTransition } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useTransform, type MotionValue, type TargetAndTransition } from "motion/react";
 import { prefersReducedMotion } from "@/format";
 
 /**
@@ -95,7 +95,14 @@ function Effect({ fx }: { fx: NonNullable<Look["fx"]> }) {
   );
 }
 
-export function Dewy({ mood = "idle", size = 110, look = [0, 0], onClick }: { mood?: Mood; size?: number; look?: [number, number]; onClick?: () => void }) {
+const HAPPY: Mood[] = ["excited", "celebrate", "laughing", "proud", "curious"];
+
+export function Dewy({ mood = "idle", size = 110, look = [0, 0], lookX, lookY, shadow = true, blinkSignal = 0, onClick }: {
+  mood?: Mood; size?: number; look?: [number, number];
+  /** Live eye direction (-1..1) from the movement controller; overrides `look`. */
+  lookX?: MotionValue<number>; lookY?: MotionValue<number>;
+  shadow?: boolean; blinkSignal?: number; onClick?: () => void;
+}) {
   const reduced = prefersReducedMotion();
   const L = LOOK[mood];
   const [blink, setBlink] = useState(false);
@@ -115,7 +122,18 @@ export function Dewy({ mood = "idle", size = 110, look = [0, 0], onClick }: { mo
     return () => window.clearTimeout(t);
   }, [reduced]);
 
-  const [lx, ly] = mood === "thinking" ? [0.6, -0.8] : mood === "sleeping" || mood === "drowsy" ? [0, 0.4] : look;
+  // a surprised blink on demand (fast cursor sweep)
+  useEffect(() => {
+    if (!blinkSignal || reduced) return;
+    setBlink(true);
+    const t = window.setTimeout(() => setBlink(false), 140);
+    return () => window.clearTimeout(t);
+  }, [blinkSignal, reduced]);
+
+  const [lx, ly] = mood === "thinking" ? [0.6, -0.8] : mood === "sleeping" || mood === "drowsy" ? [0, 0.4] : lookX ? [0, 0] : look;
+  const zero = useMotionValue(0);
+  const eyeX = useTransform(lookX ?? zero, (v) => (mood === "sleeping" ? 0 : v * 4.5));
+  const eyeY = useTransform(lookY ?? zero, (v) => (mood === "sleeping" ? 0 : v * 3.5));
   const scale = L.eyeScale ?? 1;
   const loopBody = !reduced && L.body;
   return (
@@ -131,15 +149,19 @@ export function Dewy({ mood = "idle", size = 110, look = [0, 0], onClick }: { mo
     >
       <defs>
         <linearGradient id="dewyBody" x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0" stopColor="#bfdbfe" />
-          <stop offset="0.55" stopColor="#7cb4f8" />
-          <stop offset="1" stopColor="#3b82f6" />
+          <stop offset="0" stopColor="#dbeafe" />
+          <stop offset="0.5" stopColor="#93c5fd" />
+          <stop offset="1" stopColor="#4f8ff0" />
         </linearGradient>
+        <radialGradient id="dewySheen">
+          <stop offset="0" stopColor="#ffffff" stopOpacity={0.85} />
+          <stop offset="1" stopColor="#ffffff" stopOpacity={0} />
+        </radialGradient>
       </defs>
-      {/* soft shadow */}
-      <motion.ellipse cx={60} cy={142} rx={34} ry={6} fill="#0f172a" opacity={0.12}
+      {/* soft shadow (the controller draws its own when Dewy hops) */}
+      {shadow && <motion.ellipse cx={60} cy={142} rx={34} ry={6} fill="#0f172a" opacity={0.12}
         animate={loopBody && L.body?.y ? { rx: [34, 28, 34], opacity: [0.12, 0.07, 0.12] } : undefined}
-        transition={{ duration: BODY_LOOP[mood] ?? 1, repeat: Infinity }} />
+        transition={{ duration: BODY_LOOP[mood] ?? 1, repeat: Infinity }} />}
       <motion.g
         style={{ transformOrigin: "60px 138px" }}
         animate={{ rotate: L.tilt ?? 0 }}
@@ -158,11 +180,20 @@ export function Dewy({ mood = "idle", size = 110, look = [0, 0], onClick }: { mo
             <path d="M68 6 Q 80 4 90 4" stroke="#059669" strokeWidth={1} fill="none" />
           </motion.g>
           {/* drop body */}
-          <path d="M60 18 C 52 34 18 66 18 96 A 42 42 0 0 0 102 96 C 102 66 68 34 60 18 Z" fill="url(#dewyBody)" stroke="#2f6fd6" strokeWidth={2} />
-          <ellipse cx={40} cy={78} rx={7} ry={14} fill="#ffffff" opacity={0.55} transform="rotate(20 40 78)" />
-          {/* eyes */}
-          <EyeShape cx={46} cy={98} kind={L.eye} scale={L.oddEye ? scale * 0.8 : scale} blink={blink} lx={lx} ly={ly} />
-          <EyeShape cx={74} cy={98} kind={L.eye} scale={L.oddEye ? scale * 1.25 : scale} blink={blink} lx={lx} ly={ly} />
+          <path d="M60 18 C 52 34 18 66 18 96 A 42 42 0 0 0 102 96 C 102 66 68 34 60 18 Z" fill="url(#dewyBody)" stroke="#3b7ddd" strokeWidth={1.6} />
+          {/* soft highlights: a fluffy sheen, not a hard glint */}
+          <ellipse cx={40} cy={80} rx={9} ry={17} fill="url(#dewySheen)" transform="rotate(20 40 80)" />
+          <circle cx={84} cy={110} r={4} fill="#ffffff" opacity={0.35} />
+          {/* rosy cheeks when happy */}
+          <motion.g initial={false} animate={{ opacity: HAPPY.includes(mood) ? 0.75 : 0 }} transition={{ duration: 0.3 }}>
+            <ellipse cx={35} cy={110} rx={7} ry={4} fill="#fb7185" opacity={0.55} />
+            <ellipse cx={85} cy={110} rx={7} ry={4} fill="#fb7185" opacity={0.55} />
+          </motion.g>
+          {/* eyes: the controller's live look direction moves both together */}
+          <motion.g style={{ x: eyeX, y: eyeY }}>
+            <EyeShape cx={46} cy={98} kind={L.eye} scale={L.oddEye ? scale * 0.8 : scale} blink={blink} lx={lx} ly={ly} />
+            <EyeShape cx={74} cy={98} kind={L.eye} scale={L.oddEye ? scale * 1.25 : scale} blink={blink} lx={lx} ly={ly} />
+          </motion.g>
         </motion.g>
       </motion.g>
       <AnimatePresence>

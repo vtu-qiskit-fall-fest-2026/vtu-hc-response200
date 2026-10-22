@@ -83,7 +83,7 @@ export function JobBlock({ data, j, moved, compact = false, layoutPrefix, rules 
       animate={moved && !reduced ? { boxShadow: ["0 0 0 0px rgba(16,185,129,0)", "0 0 0 7px rgba(16,185,129,0.5)", "0 0 0 0px rgba(16,185,129,0)"] } : { boxShadow: "0 0 0 0px rgba(16,185,129,0)" }}
       transition={reduced ? { duration: 0 } : { layout: { type: "spring", visualDuration: 0.7, bounce: 0.18 }, boxShadow: { duration: 1.1, delay: 0.55 } }}
       className={`relative flex min-w-0 shrink-0 flex-col justify-center rounded-lg ${st.cls} ${st.text} ${compact ? "h-7 px-1" : "h-[58px] px-2.5"}`}
-      style={{ width: `calc(${(job.it_energy_kwh / maxLaneLoad(data)) * 100}% - 4px)` }}
+      style={{ width: `calc(${(job.it_energy_kwh / maxLaneLoad(data)) * 100}% - 4px)`, minWidth: compact ? undefined : "4.125rem" }}
       title={`${job.label}: ${n0(job.it_energy_kwh)} kWh`}
     >
       {!compact && (

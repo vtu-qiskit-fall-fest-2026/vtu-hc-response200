@@ -98,7 +98,7 @@ export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean
 export function FooterBar({ captionText }: { captionText: string | null }) {
   const { screen, go, caption } = useApp();
   return (
-    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border pr-[136px] pl-8 max-sm:gap-2 max-sm:px-3 text-[13px] text-muted-foreground">
+    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border pr-14 pl-8 max-sm:gap-2 max-sm:px-3 text-[13px] text-muted-foreground">
       <div className="flex min-w-0 flex-1 items-center gap-6" aria-live="polite">
         <AnimatePresence mode="wait" initial={false}>
           {caption ? (

@@ -53,7 +53,7 @@ export function QuantumScreen() {
         </>
       }
     >
-      <div className="grid h-full grid-rows-[minmax(0,1.12fr)_minmax(0,1fr)] gap-5">
+      <div className="grid h-full grid-rows-[minmax(0,1.04fr)_minmax(0,1fr)] gap-5">
         <Card id="circuit" className="flex flex-col p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="flex items-center gap-1 text-[18px] font-semibold">

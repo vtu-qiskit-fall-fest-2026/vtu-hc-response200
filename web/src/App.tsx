@@ -118,7 +118,7 @@ function SlideApp({ data }: { data: UiData }) {
       <div className="flex h-dvh w-full overflow-hidden bg-background text-foreground">
         <Sidebar open={sideOpen} setOpen={setSideOpen} />
         <div className="relative flex min-w-0 flex-1 flex-col">
-          <main className={`min-h-0 flex-1 overflow-hidden ${compact ? "px-4 pt-4 pb-4" : "px-10 pt-8 pb-12"}`} aria-label={SCREENS[screen].label}>
+          <main className={`min-h-0 flex-1 overflow-hidden ${compact ? "px-4 pt-4 pb-4" : "pt-8 pr-[150px] pb-12 pl-10"}`} aria-label={SCREENS[screen].label}>
             <Stage screen={screen} dir={dir}>
               <Current />
             </Stage>

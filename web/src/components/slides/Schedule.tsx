@@ -14,15 +14,15 @@ function JobStrip() {
   return (
     <div className="flex gap-2">
       {data.instance.jobs.map((j, i) => (
-        <span key={j.key} data-chip={i} className={`flex min-w-0 flex-1 items-center justify-between gap-2 rounded-xl px-3 py-2 ${JOB_STYLE[i].cls} ${JOB_STYLE[i].text}`}>
-          <span className="flex min-w-0 items-center gap-1.5 truncate text-[15px] font-semibold">
+        <span key={j.key} data-chip={i} className={`flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-xl px-2.5 py-2 ${JOB_STYLE[i].cls} ${JOB_STYLE[i].text}`}>
+          <span className="flex min-w-0 items-center gap-1.5 truncate text-[14px] font-semibold">
             {JOB_STYLE[i].short}
             {(preset.rules[j.key] ?? []).map((r) => {
               const { Icon, label } = RULE_ICON[r];
               return <Icon key={r} className="size-4 shrink-0" aria-label={label}><title>{label}</title></Icon>;
             })}
           </span>
-          <span className="shrink-0 text-[13px] opacity-80 tabular-nums">{n0(j.it_energy_kwh)} kWh</span>
+          <span className="shrink-0 text-[12px] opacity-80 tabular-nums">{n0(j.it_energy_kwh)} kWh</span>
         </span>
       ))}
     </div>
