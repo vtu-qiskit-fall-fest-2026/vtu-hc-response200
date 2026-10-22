@@ -38,7 +38,6 @@ function Chat() {
           Ask about this plan
           <Info>Answers use only GreenQ&rsquo;s saved results. The model never changes the schedule; any number it can&rsquo;t match to the data is removed.</Info>
         </h2>
-        <Badge kind="ai" />
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
         {EXAMPLES.map((q) => (
@@ -92,6 +91,7 @@ function Describe() {
   const [state, setState] = useState<"idle" | "busy" | "done" | "fallback">("idle");
   const [jobs, setJobs] = useState<JobIn[] | null>(null);
   const [note, setNote] = useState("");
+  const [by, setBy] = useState<"live" | "cached" | "template">("template");
   const run = useRef(0);
   const go = async () => {
     setState("busy");
@@ -99,13 +99,17 @@ function Describe() {
     run.current += 1;
     setJobs(r.jobs);
     setNote(r.note);
+    setBy(r.source);
     setState(r.jobs && r.jobs.length ? "done" : "fallback");
   };
   if (state === "done" && jobs) {
     return (
       <div className="flex h-full flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-[14px] text-muted-foreground">Read from your text. Check the table, edit anything, run again.</p>
+          <p className="flex items-center gap-2 text-[14px] text-muted-foreground">
+            {by === "template" ? <Badge kind="template" label="Read by simple rules" /> : <Badge kind="ai" label="Read by AI" />}
+            Check the table; edit anything. {note}
+          </p>
           <button onClick={() => setState("idle")} className="text-[13px] font-semibold text-violet-700 hover:underline">Edit text</button>
         </div>
         <YourJobs key={run.current} initial={jobs} autoRun />

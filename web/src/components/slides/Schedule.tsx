@@ -28,6 +28,9 @@ function JobStrip() {
   );
 }
 
+// Same hues as the job blocks (JOB_STYLE).
+const PACKET = ["#8b5cf6", "#f59e0b", "#ec4899", "#334155"];
+
 type Line = { key: string; d: string; color: string; end: [number, number] };
 
 /** A short line from each moved job's chip to the lane it was sent to, drawn once. */
@@ -49,7 +52,7 @@ function Packets({ box }: { box: React.RefObject<HTMLDivElement | null> }) {
       const x1 = chip.left + chip.width / 2 - r0.left, y1 = chip.bottom - r0.top;
       const x2 = lane.left + lane.width / 2 - r0.left, y2 = lane.top + 18 - r0.top;
       const my = (y1 + y2) / 2;
-      out.push({ key: `${j}-${k}`, d: `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`, color: "var(--carbon)", end: [x2, y2] });
+      out.push({ key: `${j}-${k}`, d: `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`, color: PACKET[j] ?? "var(--carbon)", end: [x2, y2] });
     });
     setLines(out);
     setRun((n) => n + 1);
@@ -71,7 +74,7 @@ function Packets({ box }: { box: React.RefObject<HTMLDivElement | null> }) {
           />
           <motion.circle
             r={5}
-            fill="var(--carbon)"
+            fill={l.color}
             cx={l.end[0]}
             cy={l.end[1]}
             initial={{ scale: 0, opacity: 1 }}
@@ -99,8 +102,8 @@ function WhyCaption() {
       ) : lines.length === 0 ? (
         <p className="mt-2 text-[15px] text-muted-foreground">Nothing moves: run now is already the best here.</p>
       ) : (
-        <ul className="mt-2 space-y-1.5 text-[15px] leading-snug">
-          {lines.slice(0, 3).map((t) => (
+        <ul className="mt-2 space-y-1 text-[14px] leading-snug">
+          {lines.slice(0, 4).map((t) => (
             <motion.li key={t} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>{t}</motion.li>
           ))}
         </ul>

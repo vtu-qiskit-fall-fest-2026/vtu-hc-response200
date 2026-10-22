@@ -15,15 +15,15 @@ function Runs() {
     }).catch(() => undefined);
   const mixed = data.flex.presets.find((p) => p.qaoa?.hardware)?.qaoa?.hardware;
   const rows = [
-    ...data.proof.flatMap((p) => p.hardware.map((h) => ({ id: h.job_id, label: `${priorityLabel(p.w)} · ${h.mitigation === "none" ? "raw" : "mitigated"}`, active: p.w === proof.w }))),
-    ...(mixed ? [{ id: mixed.job_id, label: "Balanced · job rules · raw", active: false }] : []),
+    ...data.proof.flatMap((p) => p.hardware.map((h) => ({ id: h.job_id, label: `${priorityLabel(p.w)} · ${h.mitigation === "none" ? "raw" : "mitig."}`, active: p.w === proof.w }))),
+    ...(mixed ? [{ id: mixed.job_id, label: "Balanced · rules · raw", active: false }] : []),
   ];
   return (
-    <ul className="grid grid-cols-2 gap-1.5">
+    <ul className="grid grid-cols-3 gap-1.5">
       {rows.map((r) => (
         <li key={r.id} className={`flex items-center justify-between gap-1 rounded-lg px-2.5 py-1.5 ${r.active ? "bg-foreground/[0.07] ring-1 ring-foreground/15" : "bg-muted"}`}>
           <span className="min-w-0">
-            <span className="block truncate font-mono text-[12px]">{r.id}</span>
+            <span className="block truncate font-mono text-[11.5px]">{r.id}</span>
             <span className="block truncate text-[11px] text-muted-foreground">{r.label}</span>
           </span>
           <button onClick={() => copy(r.id)} className="shrink-0 rounded p-1 text-muted-foreground hover:bg-white hover:text-foreground" aria-label={`Copy job ID ${r.id}`}>

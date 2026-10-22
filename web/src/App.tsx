@@ -5,7 +5,7 @@ import { useStageScale } from "@/lib/stage";
 import { SCREENS, loadScreen, saveScreen } from "@/lib/screens";
 import { useSlideKeys } from "@/lib/keys";
 import { useNarration } from "@/lib/llm";
-import { Caption, FooterBar, Sidebar, Stage } from "@/components/slides/Shell";
+import { FooterBar, Sidebar, Stage } from "@/components/slides/Shell";
 import { StartScreen } from "@/components/slides/Start";
 import { ScheduleScreen } from "@/components/slides/Schedule";
 import { QuantumScreen } from "@/components/slides/Quantum";
@@ -104,8 +104,7 @@ function SlideApp({ data }: { data: UiData }) {
               <Current />
             </Stage>
           </main>
-          <Caption id={caption} text={caption ? narration[caption] ?? null : null} />
-          <FooterBar />
+          <FooterBar captionText={caption ? narration[caption] ?? null : null} />
         </div>
       </div>
     </AppContext.Provider>

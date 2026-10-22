@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronsLeft, ChevronsRight, CodeXml, Expand, Pause, Play } from "lucide-react";
 import { useApp } from "@/lib/data";
 import { SCREENS } from "@/lib/screens";
-import { FALLBACK_CAPTIONS, type CaptionId } from "@/lib/story";
+import { FALLBACK_CAPTIONS } from "@/lib/story";
 import { toggleFullscreen } from "@/lib/keys";
 import { prefersReducedMotion } from "@/format";
 import { Logo } from "@/components/site/Site";
@@ -86,44 +86,41 @@ export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean
   );
 }
 
-/** Thin footer: progress, the honesty line, keyboard hint. */
-export function FooterBar() {
-  const { screen, go } = useApp();
+/** Thin footer: progress (or the story caption), the honesty line, keyboard hint. */
+export function FooterBar({ captionText }: { captionText: string | null }) {
+  const { screen, go, caption } = useApp();
   return (
-    <footer className="flex h-[52px] shrink-0 items-center gap-6 border-t border-border px-8 text-[13px] text-muted-foreground">
-      <span className="font-medium text-foreground">Team Response200 · VTU Qiskit Fall Fest 2026 · Track 6</span>
-      <div className="flex flex-1 items-center justify-center gap-1.5" aria-label={`Screen ${screen + 1} of ${SCREENS.length}`}>
-        {SCREENS.map((s, i) => (
-          <button key={s.key} onClick={() => go(i)} aria-label={`Go to ${s.label}`} className="group py-2">
-            <span className={`block h-1.5 rounded-full transition-all duration-300 ${i === screen ? "w-10 bg-foreground" : i < screen ? "w-5 bg-foreground/40" : "w-5 bg-foreground/15 group-hover:bg-foreground/30"}`} />
-          </button>
-        ))}
+    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border px-8 text-[13px] text-muted-foreground">
+      <div className="flex min-w-0 flex-1 items-center gap-6" aria-live="polite">
+        <AnimatePresence mode="wait" initial={false}>
+          {caption ? (
+            <motion.p
+              key={caption}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.25 }}
+              className="line-clamp-2 text-[18px] leading-tight font-medium text-foreground"
+            >
+              {captionText ?? FALLBACK_CAPTIONS[caption]}
+            </motion.p>
+          ) : (
+            <motion.div key="bar" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex min-w-0 flex-1 items-center gap-6">
+              <span className="truncate font-medium text-foreground">Team Response200 · VTU Qiskit Fall Fest 2026 · Track 6</span>
+              <div className="flex flex-1 items-center justify-center gap-1.5" aria-label={`Screen ${screen + 1} of ${SCREENS.length}`}>
+                {SCREENS.map((s, i) => (
+                  <button key={s.key} onClick={() => go(i)} aria-label={`Go to ${s.label}`} className="group py-2">
+                    <span className={`block h-1.5 rounded-full transition-all duration-300 ${i === screen ? "w-10 bg-foreground" : i < screen ? "w-5 bg-foreground/40" : "w-5 bg-foreground/15 group-hover:bg-foreground/30"}`} />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <span className="rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200">Not quantum advantage · a laptop is the referee</span>
-      <span className="hidden font-mono text-[12px] xl:inline">← → · 1–6 · P · F</span>
+      <span className="shrink-0 rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200">Not quantum advantage · a laptop is the referee</span>
+      {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · F</span>}
     </footer>
-  );
-}
-
-/** Story caption, bottom centre of the stage. */
-export function Caption({ text, id }: { text: string | null; id: CaptionId | null }) {
-  return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-5 z-40 flex justify-center px-8" aria-live="polite">
-      <AnimatePresence mode="wait">
-        {id && (
-          <motion.p
-            key={id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.25 }}
-            className="max-w-[900px] rounded-2xl bg-foreground/90 px-6 py-3 text-center text-[20px] leading-snug font-medium text-white shadow-2xl backdrop-blur"
-          >
-            {text ?? FALLBACK_CAPTIONS[id]}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </div>
   );
 }
 
