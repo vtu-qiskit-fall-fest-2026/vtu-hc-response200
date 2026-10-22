@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-22T12:10:00+05:30",
+  "title": "Design System: GreenQ",
+  "extensions": {
+    "colorMeta": {
+      "enamel": { "role": "primary", "displayName": "Gauge Enamel", "canonical": "oklch(94.9% 0.008 177)", "tonalRamp": ["#080c0b", "#202524", "#3c4140", "#595f5d", "#797f7d", "#9aa09e", "#bfc6c4", "#e9f0ee"] },
+      "hot": { "role": "primary", "displayName": "Hot White", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#0b0b0b", "#242424", "#404040", "#5d5d5d", "#7d7d7d", "#9e9e9e", "#c4c4c4", "#ffffff"] },
+      "carbon": { "role": "secondary", "displayName": "Carbon Teal", "canonical": "oklch(78.5% 0.133 182)", "tonalRamp": ["#00170f", "#003529", "#005445", "#007463", "#009683", "#00b8a4", "#40e0ca", "#76fff5"] },
+      "carbon-e-mark": { "role": "secondary", "displayName": "Deep Teal E-Mark", "canonical": "oklch(51.1% 0.086 186)", "tonalRamp": ["#001411", "#00302b", "#004e47", "#006d65", "#338e85", "#58b0a7", "#7fd7cd", "#aafff7"] },
+      "water": { "role": "secondary", "displayName": "Water Blue", "canonical": "oklch(69.7% 0.160 258)", "tonalRamp": ["#01004c", "#00146e", "#003891", "#1759b5", "#3a7bda", "#5c9eff", "#81c5ff", "#aaf0ff"] },
+      "water-e-mark": { "role": "secondary", "displayName": "Deep Blue E-Mark", "canonical": "oklch(48.8% 0.217 264)", "tonalRamp": ["#140066", "#07008a", "#0222af", "#1b4bd5", "#3970fc", "#5894ff", "#7cbcff", "#b8ecff"] },
+      "amber": { "role": "tertiary", "displayName": "Baseline Amber", "canonical": "oklch(77.6% 0.148 69)", "tonalRamp": ["#2b0000", "#4c0200", "#6e2800", "#904800", "#b46900", "#d88b14", "#ffb14b", "#ffdc78"] },
+      "ground": { "role": "neutral", "displayName": "Wet Concrete", "canonical": "oklch(16.7% 0.002 197)", "tonalRamp": ["#0a0b0b", "#0e0f0f", "#121414", "#171918", "#1d201f", "#5c5e5e", "#9d9f9f", "#edefef"] },
+      "concrete": { "role": "neutral", "displayName": "Poured Concrete", "canonical": "oklch(21.1% 0.004 165)", "tonalRamp": ["#0a0c0b", "#222523", "#3e403f", "#5c5e5d", "#7b7e7d", "#9c9f9e", "#c2c5c3", "#ecefee"] },
+      "text-2": { "role": "neutral", "displayName": "Readable Grey", "canonical": "oklch(77.5% 0.010 172)", "tonalRamp": ["#070d0b", "#1f2623", "#3b413f", "#585f5d", "#787f7c", "#99a09e", "#bec6c3", "#e8f1ee"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only, uppercase enamel, max 12ch." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles, uppercase enamel." },
+      "title": { "displayName": "Title", "purpose": "Sub-panel, board and footer column titles, uppercase." },
+      "numeral": { "displayName": "Stencil Numeral", "purpose": "Measured numbers: savings readouts, gauge marks, level values, step counters; also the wordmark." },
+      "body": { "displayName": "Body", "purpose": "Reading text with tabular numerals." },
+      "lede": { "displayName": "Lede", "purpose": "One-paragraph read under each section title, text-2, max 62ch." },
+      "label": { "displayName": "Label", "purpose": "Uppercase 700 tracked labels: readout labels, segments, slider ends, table headers, badges." },
+      "mono": { "displayName": "Mono", "purpose": "Job IDs, backend names, file paths and the cost equation only." }
+    },
+    "shadows": [
+      { "name": "bay-recess", "value": "inset 0 10px 18px -12px rgba(0,0,0,0.8)", "purpose": "Every sluice bay; containers are cut into concrete." },
+      { "name": "plate-rest", "value": "0 4px 10px rgba(0,0,0,0.45)", "purpose": "Enamel job plates at rest on a bay." },
+      { "name": "plate-moved", "value": "0 0 0 2px #ffffff, 0 8px 22px rgba(0,0,0,0.6)", "purpose": "The job plate that changed bay." },
+      { "name": "thumb-lift", "value": "0 6px 18px rgba(0,0,0,0.55), 0 0 0 1px #ffffff", "purpose": "Priority slider thumb." },
+      { "name": "thumb-focus", "value": "0 0 0 4px #0e0f0f, 0 0 0 7px #ffffff", "purpose": "Keyboard focus on the slider thumb." }
+    ],
+    "motion": [
+      { "name": "ease-expo-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All CSS transitions and the gauge drawdown." },
+      { "name": "duration-ui", "value": "0.25s", "purpose": "Buttons and segmented control state changes." },
+      { "name": "duration-bay", "value": "0.4s", "purpose": "Bay background/border change on overload." },
+      { "name": "drawdown-first", "value": "2.2s, 0.6s delay", "purpose": "Gauge level first draws down from business as usual to GreenQ." },
+      { "name": "drawdown-update", "value": "0.9s", "purpose": "Gauge level on priority change." },
+      { "name": "plate-spring", "value": "spring(stiffness 140, damping 22, mass 0.9)", "purpose": "Job plates sliding between sluice bays (shared layout)." }
+    ],
+    "breakpoints": [
+      { "name": "stack", "value": "1100px" },
+      { "name": "phone", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Enamel action, one per view; hovers to hot white.",
+      "html": "<button class=\"ds-btn-primary\">See where the jobs go <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 4v15m0 0-6-6m6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; font: 600 1.05rem/1 \"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif; padding: 1rem 1.4rem; border-radius: 4px; border: 1px solid transparent; background: #e9f0ee; color: #0e0f0f; cursor: pointer; transition: background-color 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: #ffffff; transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions such as replay or running the simulator.",
+      "html": "<button class=\"ds-btn-ghost\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12a8 8 0 1 0 2.4-5.7M4 4v4.6h4.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> Replay</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 0.6rem; font: 600 0.95rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; padding: 0.75rem 1.1rem; border-radius: 4px; background: transparent; color: #e6eae8; border: 1px solid rgba(228,232,230,0.28); cursor: pointer; transition: border-color 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-btn-ghost:hover { border-color: #e9f0ee; } .ds-btn-ghost:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented-button",
+      "description": "Picks the priority setting in the proof section; active segment is enamel.",
+      "html": "<div class=\"ds-seg\"><button class=\"ds-seg-btn\">Water only</button><button class=\"ds-seg-btn is-on\">Balanced</button><button class=\"ds-seg-btn\">Carbon only</button></div>",
+      "css": ".ds-seg { display: inline-flex; border: 1px solid rgba(228,232,230,0.28); border-radius: 4px; overflow: hidden; background: #0e0f0f; } .ds-seg-btn { font: 700 1rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.85rem 1.3rem; background: transparent; color: #b0b8b5; border: 0; border-right: 1px solid rgba(228,232,230,0.28); cursor: pointer; transition: background-color 0.25s cubic-bezier(0.16,1,0.3,1), color 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-seg-btn:last-child { border-right: 0; } .ds-seg-btn:hover { color: #e9f0ee; } .ds-seg-btn.is-on { background: #e9f0ee; color: #0e0f0f; } .ds-seg-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: -3px; }"
+    },
+    {
+      "name": "Board with Sluice Bays",
+      "kind": "card",
+      "refersTo": "board",
+      "description": "A schedule board: recessed concrete bays holding enamel job plates; overload in amber.",
+      "html": "<div class=\"ds-board\"><h3 class=\"ds-board-title\">GreenQ</h3><div class=\"ds-bays\"><div class=\"ds-bay\"><div class=\"ds-job\"><span class=\"ds-job-name\">Model training</span><span class=\"ds-job-kwh\">120 kWh</span></div></div><div class=\"ds-bay ds-bay-over\"><div class=\"ds-job\"><span class=\"ds-job-name\">Batch render</span><span class=\"ds-job-kwh\">90 kWh</span></div><p class=\"ds-bay-warn\">Over capacity</p></div></div></div>",
+      "css": ".ds-board { background: #121414; border: 1px solid rgba(228,232,230,0.14); border-radius: 4px; padding: 1.2rem; color: #e6eae8; font-family: \"Atkinson Hyperlegible Next\", system-ui, sans-serif; } .ds-board-title { margin: 0 0 0.5rem; font: 700 1.7rem/1.05 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform: uppercase; letter-spacing: 0.02em; color: #e9f0ee; } .ds-bays { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .ds-bay { min-height: 8.5rem; padding: 0.7rem; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(to bottom, rgba(228,232,230,0.04), transparent 30%), #171918; border: 1px solid rgba(228,232,230,0.14); border-radius: 2px; box-shadow: inset 0 10px 18px -12px rgba(0,0,0,0.8); transition: border-color 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-bay-over { border-color: #f2a33a; background: repeating-linear-gradient(135deg, rgba(242,163,58,0.12) 0 8px, transparent 8px 18px), #171918; } .ds-bay-warn { margin: 0.4rem 0 0; color: #f2a33a; font-size: 0.82rem; font-weight: 700; } .ds-job { display: grid; grid-template-columns: 1fr auto; column-gap: 0.6rem; align-items: baseline; width: 80%; padding: 0.45rem 0.6rem; background: #e9f0ee; color: #0e0f0f; border-radius: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.45); } .ds-job:hover { background: #ffffff; box-shadow: 0 0 0 2px #ffffff, 0 8px 22px rgba(0,0,0,0.6); } .ds-job-name { font-weight: 700; font-size: 0.98rem; } .ds-job-kwh { font-size: 0.8rem; font-weight: 600; opacity: 0.75; }"
+    },
+    {
+      "name": "Savings Readout",
+      "kind": "custom",
+      "description": "Bare stencil numeral under a 6px quantity-coloured rule; never a tile.",
+      "html": "<div class=\"ds-readout\"><span class=\"ds-readout-label\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><circle cx=\"12\" cy=\"12\" r=\"3.2\" fill=\"currentColor\"/></svg>CO₂ saved</span><span class=\"ds-readout-num\">530<small>kg</small></span><span class=\"ds-readout-pct\">14% less than business as usual</span></div>",
+      "css": ".ds-readout { display: flex; flex-direction: column; gap: 0.35rem; padding-top: 1rem; border-top: 6px solid currentColor; color: #2dd4bf; max-width: 26rem; } .ds-readout-label { display: inline-flex; align-items: center; gap: 0.5rem; font: 700 1.05rem/1.2 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; } .ds-readout-num { font-family: \"Big Shoulders Stencil Display\", \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-weight: 800; font-size: 5rem; line-height: 0.95; letter-spacing: 0.01em; } .ds-readout-num small { font-family: \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-size: 0.36em; font-weight: 700; margin-left: 0.35rem; letter-spacing: 0.04em; text-transform: uppercase; } .ds-readout-pct { color: #e6eae8; font: 400 1.05rem/1.5 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; }"
+    },
+    {
+      "name": "State Grammar Legend",
+      "kind": "custom",
+      "description": "Solid enamel = real IBM hardware; hatched = simulator; dashed = baseline (amber business as usual, neutral random).",
+      "html": "<div class=\"ds-legend\"><span><i class=\"ds-sw ds-sw-solid\"></i>Real IBM hardware</span><span><i class=\"ds-sw ds-sw-hatch\"></i>Simulator</span><span><i class=\"ds-dash ds-dash-amber\"></i>Business as usual</span><span><i class=\"ds-dash ds-dash-neutral\"></i>Random guessing</span></div>",
+      "css": ".ds-legend { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; color: #b0b8b5; font: 400 0.92rem/1.4 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; } .ds-legend span { display: inline-flex; align-items: center; gap: 0.5rem; } .ds-sw { display: inline-block; width: 12px; height: 20px; border-radius: 1px; } .ds-sw-solid { background: #e9f0ee; } .ds-sw-hatch { border: 1.5px solid #e9f0ee; background: repeating-linear-gradient(45deg, #e9f0ee 0 1.5px, transparent 1.5px 4.5px); } .ds-dash { display: inline-block; width: 22px; height: 0; border-top: 3px dashed; } .ds-dash-amber { border-color: #f2a33a; } .ds-dash-neutral { border-color: #b0b8b5; }"
+    },
+    {
+      "name": "Priority Slider",
+      "kind": "input",
+      "description": "Horizontal staff from water-deep to carbon-deep; solid enamel hardware stops are badged, hatched stops are simulator; hot-white blade thumb.",
+      "html": "<div class=\"ds-prio\"><div class=\"ds-prio-staff\"></div><span class=\"ds-tick\" style=\"left:4%\"></span><span class=\"ds-tick ds-tick-hw\" style=\"left:50%\"><b class=\"ds-badge\">Real IBM hardware</b></span><span class=\"ds-tick\" style=\"left:96%\"></span><input class=\"ds-range\" type=\"range\" min=\"0\" max=\"10\" value=\"5\" aria-label=\"Priority\"></div>",
+      "css": ".ds-prio { position: relative; height: 112px; } .ds-prio-staff { position: absolute; left: 0; right: 0; top: 54px; height: 44px; background: linear-gradient(to right, #1c3f80, #1d201f 50%, #0d5c54); border: 1px solid rgba(228,232,230,0.28); border-radius: 2px; } .ds-tick { position: absolute; bottom: 14px; width: 6px; height: 18px; transform: translateX(-50%); border: 1px solid rgba(233,240,238,0.55); background: repeating-linear-gradient(45deg, rgba(233,240,238,0.55) 0 1.5px, transparent 1.5px 4px); } .ds-tick-hw { width: 10px; height: 44px; background: #e9f0ee; border-color: #e9f0ee; } .ds-badge { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); white-space: nowrap; font: 700 0.8rem/1 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: #0e0f0f; background: #e9f0ee; padding: 0.42rem 0.6rem; border-radius: 2px; } .ds-range { position: absolute; left: 0; right: 0; top: 44px; width: 100%; height: 64px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; } .ds-range::-webkit-slider-runnable-track { height: 64px; background: transparent; } .ds-range::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 64px; border-radius: 3px; background: #ffffff; border: 3px solid #0e0f0f; box-shadow: 0 6px 18px rgba(0,0,0,0.55), 0 0 0 1px #ffffff; transition: transform 0.2s cubic-bezier(0.16,1,0.3,1); } .ds-range:active::-webkit-slider-thumb { transform: scaleY(1.06); } .ds-range:focus-visible { outline: none; } .ds-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px #0e0f0f, 0 0 0 7px #ffffff; }"
+    },
+    {
+      "name": "Staff Gauge",
+      "kind": "custom",
+      "description": "Signature reservoir staff: deep-tone E-ladder on white enamel, amber dashed business-as-usual mark, hatched saved span, quantity-coloured level, and the mandatory 'not from zero' caption.",
+      "html": "<figure class=\"ds-gauge\"><svg viewBox=\"0 0 230 400\" width=\"115\" height=\"200\" aria-hidden=\"true\"><defs><pattern id=\"ds-h\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"10\" stroke=\"#2dd4bf\" stroke-width=\"3\" stroke-opacity=\"0.55\"/></pattern></defs><rect x=\"18\" y=\"20\" width=\"194\" height=\"360\" fill=\"rgba(0,0,0,0.32)\" stroke=\"rgba(228,232,230,0.14)\"/><rect x=\"92\" y=\"28\" width=\"66\" height=\"344\" fill=\"#e9f0ee\"/><g fill=\"#0f766e\"><rect x=\"97\" y=\"60\" width=\"7\" height=\"40\"/><rect x=\"97\" y=\"60\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"76\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"92\" width=\"28\" height=\"8\"/><rect x=\"146\" y=\"160\" width=\"7\" height=\"40\"/><rect x=\"125\" y=\"160\" width=\"28\" height=\"8\"/><rect x=\"125\" y=\"176\" width=\"28\" height=\"8\"/><rect x=\"125\" y=\"192\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"260\" width=\"7\" height=\"40\"/><rect x=\"97\" y=\"260\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"276\" width=\"28\" height=\"8\"/><rect x=\"97\" y=\"292\" width=\"28\" height=\"8\"/></g><rect x=\"18\" y=\"110\" width=\"194\" height=\"130\" fill=\"url(#ds-h)\"/><line x1=\"10\" x2=\"220\" y1=\"110\" y2=\"110\" stroke=\"#f2a33a\" stroke-width=\"3\" stroke-dasharray=\"12 8\"/><line x1=\"10\" x2=\"220\" y1=\"240\" y2=\"240\" stroke=\"#2dd4bf\" stroke-width=\"4\"/></svg><figcaption>kg CO₂ · scale 3,000–3,800 kg, not from zero</figcaption></figure>",
+      "css": ".ds-gauge { margin: 0; display: inline-flex; flex-direction: column; align-items: center; gap: 0.4rem; background: #0e0f0f; padding: 1rem; } .ds-gauge figcaption { color: #b0b8b5; font: 400 0.95rem/1.4 \"Atkinson Hyperlegible Next\", system-ui, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Night at the Dam",
+    "overview": "GreenQ's numbers are read off painted staff gauges, the way an engineer reads a reservoir level by torchlight: a wet-concrete near-black ground, white enamel plates with alternating E-marks, stencilled numerals, and a level line that draws down from a business-as-usual mark to the optimised mark. The point of the world is that savings are *measured*, not claimed; every quantity sits on a scale with a stated window and a stated source.\n\nDensity is presentation-grade: built to be read on a 1080p recording or a projector, so type is large, contrast is high, and each section carries one fast read. Colour is semantic, never decorative. Two enamel tones each own exactly one quantity (teal for carbon, blue for water), amber owns only the baseline and overload, and white enamel carries the evidence state. The ground is plain: no grid, no texture, no glow. Depth comes from the recessed sluice bays and the enamel plates sitting on them, not from cards floating in space.\n\nThe world refuses the dark KPI-tile dashboard with charts in cards. Readouts are bare numerals under a thick coloured rule; charts are gauges, levels and ledgers.",
+    "keyCharacteristics": [
+      "Neutral wet-concrete near-black ground; panels are flat tonal steps, hairline-ruled.",
+      "White enamel as the material of record: staff plates, job plates, hardware marks, primary action.",
+      "Condensed uppercase display and stencil numerals against a hyperlegible reading sans.",
+      "One state grammar for evidence: solid, hatched, dashed.",
+      "Single-meaning colour: teal = carbon, blue = water, amber = business as usual / overload.",
+      "Exponential ease-out motion; settled state is always readable; reduced motion respected."
+    ],
+    "rules": [
+      { "name": "The One Meaning Rule", "body": "Teal is only ever carbon and blue is only ever water. Neither colour is used for brand, emphasis, links or state.", "section": "colors" },
+      { "name": "The Amber Is the Old Way Rule", "body": "Amber is reserved for business-as-usual and overload marks. It never marks a success, a highlight, or another baseline: random guessing is a neutral dashed `text-2` stroke, not amber.", "section": "colors" },
+      { "name": "The Deep E Rule", "body": "E-marks on the white enamel staff use the deep tones (`carbon-e-mark`, `water-e-mark`), never the bright `carbon`/`water`, so the ladder reads at a distance.", "section": "colors" },
+      { "name": "The Plain Ground Rule", "body": "The ground is neutral wet-concrete near-black with no decorative grid, noise, texture or gradient wash.", "section": "colors" },
+      { "name": "The Stencil Is for Measurements Rule", "body": "The stencil face sets numbers that were measured or computed (savings, gauge marks, percentages, step counts), plus the wordmark. Words in headings use the non-stencil display cut.", "section": "typography" },
+      { "name": "The Mono Is Evidence Rule", "body": "Mono appears only on identifiers a juror could look up: job IDs, backend names, file paths, the cost equation.", "section": "typography" },
+      { "name": "The Recess, Not Float Rule", "body": "Containers are cut into the concrete (inset shadow, hairline), never lifted as glowing cards. Lift is reserved for enamel objects that move.", "section": "elevation" },
+      { "name": "The State Grammar Rule", "body": "One encoding everywhere: **solid enamel** = real IBM hardware; **hatched** (45° enamel hatch with an enamel outline) = simulator or no hardware run; **dashed** = baseline (amber dash for business as usual, neutral `text-2` dash for random guessing). Every chart, slider tick, swatch and legend uses this grammar, and each view carries a legend for it.", "section": "shapes" },
+      { "name": "The Not From Zero Rule", "body": "The gauge window does not start at zero, so every gauge caption states its window and the words \"not from zero\" (e.g. \"scale 3,000–3,800 kg, not from zero\"). No gauge ships without it.", "section": "components" }
+    ],
+    "dos": [
+      "**Do** encode evidence with the State Grammar: solid enamel for real IBM hardware, hatched for simulator, dashed for baselines, with a legend in each view.",
+      "**Do** keep teal for carbon and blue for water, and use the deep tones (`carbon-e-mark`, `water-e-mark`) for E-marks on the white staff.",
+      "**Do** caption every gauge with its window and \"not from zero\".",
+      "**Do** set measured numbers in the stencil face and identifiers in mono.",
+      "**Do** open blocks with thick rules (6px or 3px) rather than boxing them.",
+      "**Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for transitions, with a readable settled state and a reduced-motion path.",
+      "**Do** keep one hot-white accent per moment: focus, the thumb, or the plate that just moved."
+    ],
+    "donts": [
+      "**Don't** use amber for anything but business-as-usual and overload; random guessing is a neutral dashed `text-2` stroke.",
+      "**Don't** add a decorative grid, noise, texture or gradient wash to the ground.",
+      "**Don't** build dark KPI tiles or charts in cards; readouts are bare numerals under a rule, charts are gauges, levels and ledgers.",
+      "**Don't** use teal or blue for brand, links, emphasis or state.",
+      "**Don't** start a gauge at zero silently or drop its caption.",
+      "**Don't** use glyph or emoji icons; icons are authored 24px SVG strokes at one weight."
+    ]
+  }
+}
