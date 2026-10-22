@@ -298,7 +298,7 @@
       },
       {
         "name": "carbon-glow",
-        "value": "0 8px 24px -10px rgba(5,150,105,0.7)",
+        "value": "0 8px 24px -12px rgba(15,23,42,0.6)",
         "purpose": "Primary CTA only."
       },
       {

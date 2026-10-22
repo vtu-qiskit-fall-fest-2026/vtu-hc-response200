@@ -1,0 +1,357 @@
+{
+ "instance": "4 jobs x 4 options = 256 schedules",
+ "runtimes": "median of repeated runs on the demo laptop; QPU time excludes queueing",
+ "weights": [
+  {
+   "w": 0.0,
+   "rows": [
+    {
+     "method": "Business as usual",
+     "kind": "baseline",
+     "objective": 1.0,
+     "gap_pct": 20.224,
+     "kg_co2": 3726.12,
+     "litres": 12687.44,
+     "schedule": [
+      1,
+      1,
+      2,
+      3
+     ],
+     "runtime_ms": null,
+     "note": "every job at home, immediately"
+    },
+    {
+     "method": "Greedy",
+     "kind": "classical",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 0.031,
+     "note": "largest job first, cheapest slot given jobs already placed"
+    },
+    {
+     "method": "Simulated annealing",
+     "kind": "classical",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 17.071,
+     "note": "3 restarts, single-job moves"
+    },
+    {
+     "method": "Random sampling (4,000)",
+     "kind": "classical",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 22.087,
+     "note": "best of 4,000 random schedules: the same shot budget as QAOA"
+    },
+    {
+     "method": "QAOA, simulator",
+     "kind": "quantum-sim",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 464.535,
+     "note": "train + 4,000 shots; approx. ratio 0.858"
+    },
+    {
+     "method": "QAOA, IBM ibm_marrakesh",
+     "kind": "quantum-hw",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 3000,
+     "note": "job dbcq7qvi0auc73944pjg; 3 s QPU, queue not counted; approx. ratio 0.801"
+    },
+    {
+     "method": "True best (brute force)",
+     "kind": "referee",
+     "objective": 0.831779,
+     "gap_pct": 0.0,
+     "kg_co2": 3336.2,
+     "litres": 10553.15,
+     "schedule": [
+      2,
+      3,
+      1,
+      0
+     ],
+     "runtime_ms": 1.227,
+     "note": "checks all 256 schedules"
+    }
+   ]
+  },
+  {
+   "w": 0.5,
+   "rows": [
+    {
+     "method": "Business as usual",
+     "kind": "baseline",
+     "objective": 1.0,
+     "gap_pct": 16.55,
+     "kg_co2": 3726.12,
+     "litres": 12687.44,
+     "schedule": [
+      1,
+      1,
+      2,
+      3
+     ],
+     "runtime_ms": null,
+     "note": "every job at home, immediately"
+    },
+    {
+     "method": "Greedy",
+     "kind": "classical",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 0.03,
+     "note": "largest job first, cheapest slot given jobs already placed"
+    },
+    {
+     "method": "Simulated annealing",
+     "kind": "classical",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 17.256,
+     "note": "3 restarts, single-job moves"
+    },
+    {
+     "method": "Random sampling (4,000)",
+     "kind": "classical",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 23.039,
+     "note": "best of 4,000 random schedules: the same shot budget as QAOA"
+    },
+    {
+     "method": "QAOA, simulator",
+     "kind": "quantum-sim",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 423.505,
+     "note": "train + 4,000 shots; approx. ratio 0.843"
+    },
+    {
+     "method": "QAOA, IBM ibm_marrakesh",
+     "kind": "quantum-hw",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 3000,
+     "note": "job dbcpub7i0auc73943vu0; 3 s QPU, queue not counted; approx. ratio 0.798"
+    },
+    {
+     "method": "True best (brute force)",
+     "kind": "referee",
+     "objective": 0.857999,
+     "gap_pct": 0.0,
+     "kg_co2": 3196.08,
+     "litres": 10888.96,
+     "schedule": [
+      2,
+      0,
+      3,
+      1
+     ],
+     "runtime_ms": 1.249,
+     "note": "checks all 256 schedules"
+    }
+   ]
+  },
+  {
+   "w": 1.0,
+   "rows": [
+    {
+     "method": "Business as usual",
+     "kind": "baseline",
+     "objective": 1.0,
+     "gap_pct": 18.915,
+     "kg_co2": 3726.12,
+     "litres": 12687.44,
+     "schedule": [
+      1,
+      1,
+      2,
+      3
+     ],
+     "runtime_ms": null,
+     "note": "every job at home, immediately"
+    },
+    {
+     "method": "Greedy",
+     "kind": "classical",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 0.03,
+     "note": "largest job first, cheapest slot given jobs already placed"
+    },
+    {
+     "method": "Simulated annealing",
+     "kind": "classical",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 17.171,
+     "note": "3 restarts, single-job moves"
+    },
+    {
+     "method": "Random sampling (4,000)",
+     "kind": "classical",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 22.233,
+     "note": "best of 4,000 random schedules: the same shot budget as QAOA"
+    },
+    {
+     "method": "QAOA, simulator",
+     "kind": "quantum-sim",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 431.626,
+     "note": "train + 4,000 shots; approx. ratio 0.856"
+    },
+    {
+     "method": "QAOA, IBM ibm_marrakesh",
+     "kind": "quantum-hw",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 3000,
+     "note": "job dbcq829gv2cc738gq49g; 3 s QPU, queue not counted; approx. ratio 0.825"
+    },
+    {
+     "method": "True best (brute force)",
+     "kind": "referee",
+     "objective": 0.840939,
+     "gap_pct": 0.0,
+     "kg_co2": 3133.44,
+     "litres": 11484.45,
+     "schedule": [
+      0,
+      2,
+      1,
+      3
+     ],
+     "runtime_ms": 1.222,
+     "note": "checks all 256 schedules"
+    }
+   ]
+  }
+ ]
+}

@@ -78,6 +78,11 @@ export interface UiData {
     qubit_meaning: { qubit: number; job: string; bit: "when" | "where" }[];
   };
   totals: { hardware_jobs: number; quantum_seconds: number };
+  methods: {
+    instance: string;
+    runtimes: string;
+    weights: { w: number; rows: MethodRow[] }[];
+  } | null;
   sources: { cited: { figure: string; value: string; source: string }[]; illustrative: string[]; references: string[] };
 }
 
@@ -94,4 +99,16 @@ export interface SimResult {
   optimal_schedule: number[];
   kg_co2: number;
   litres: number;
+}
+
+export interface MethodRow {
+  method: string;
+  kind: "baseline" | "classical" | "quantum-sim" | "quantum-hw" | "referee";
+  objective: number;
+  gap_pct: number;
+  kg_co2: number;
+  litres: number;
+  schedule: number[];
+  runtime_ms: number | null;
+  note: string;
 }

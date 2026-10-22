@@ -40,6 +40,7 @@ export function Nav() {
   const links = [
     ["#dashboard", "Planner"],
     ["#proof", "Quantum proof"],
+    ["#methods", "Vs. classical"],
     ["#how", "How it works"],
     ["#faq", "Questions"],
   ];
@@ -128,7 +129,7 @@ export function Hero() {
           <span className="flex items-center gap-2 text-[22px] font-semibold text-water"><Droplet className="size-6" aria-hidden="true" /> −{n0(mid.saved_litres)} L water</span>
         </div>
         <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-          <a href="#dashboard" className="flex items-center gap-2 rounded-2xl bg-carbon px-5 py-3 text-[15px] font-medium text-white shadow-[0_8px_24px_-10px_rgba(5,150,105,0.7)] transition-transform hover:-translate-y-px">
+          <a href="#dashboard" className="flex items-center gap-2 rounded-2xl bg-foreground px-5 py-3 text-[15px] font-medium text-white shadow-[0_8px_24px_-12px_rgba(15,23,42,0.6)] transition-transform hover:-translate-y-px">
             Open the planner <ArrowRight className="size-4" aria-hidden="true" />
           </a>
           <PlayButton big />

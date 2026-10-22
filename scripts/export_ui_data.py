@@ -176,6 +176,9 @@ def main() -> None:
                 for j, job in enumerate(inst.jobs) for b in range(2)
             ],
         },
+        # Feature 1: every method on the same objective (scripts/run_baselines.py)
+        "methods": json.loads((ROOT / "results" / "baselines.json").read_text())
+        if (ROOT / "results" / "baselines.json").exists() else None,
         "totals": {
             "hardware_jobs": sum(len(p["hardware"]) for p in proof),
             "quantum_seconds": sum(h.get("quantum_seconds") or 0 for p in proof for h in p["hardware"]),

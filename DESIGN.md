@@ -79,7 +79,7 @@ spacing:
   container: "1150px"
 components:
   button-primary:
-    backgroundColor: "{colors.carbon}"
+    backgroundColor: "{colors.foreground}"
     textColor: "{colors.background}"
     rounded: "{rounded.xl}"
     padding: "12px 20px"
@@ -234,7 +234,7 @@ Depth is soft and ambient: wide, negative-spread shadows tinted slate (rgba(15,2
 - **Showcase float** (`box-shadow: 0 24px 60px -28px rgba(15,23,42,0.35)`): the hero miniature.
 - **App frame** (`box-shadow: 0 30px 80px -30px rgba(15,23,42,0.35)`): the planner window.
 - **Mini-card** (`box-shadow: 0 10px 30px -12px rgba(15,23,42,0.25)`): white cards inside step wells.
-- **Carbon glow** (`box-shadow: 0 8px 24px -10px rgba(5,150,105,0.7)`): the primary CTA only.
+- **Primary lift** (`box-shadow: 0 8px 24px -12px rgba(15,23,42,0.6)`): the primary CTA only. Emerald is never used for a button, because it means carbon.
 - **Widget rest / lifted** (`0 1px 2px rgba(0,0,0,0.12)` / `0 28px 60px -16px rgba(0,0,0,0.45), 0 10px 24px -8px rgba(0,0,0,0.3)`): draggable widgets, interpolated while held.
 - **Active segment** (Tailwind shadow-sm): the selected tab in a segmented control.
 
@@ -252,7 +252,7 @@ The only illustrations are two small line-drawn buildings (an evaporative coolin
 ### Buttons
 Soft, rounded and quiet; one emphasis per view.
 - **Shape:** gently rounded (16px).
-- **Primary:** carbon emerald fill, white 15px medium text, 12px × 20px, carbon glow; lifts 1px on hover. Used once, for "Open the planner".
+- **Primary:** near-black fill, white 15px medium text, 12px × 20px, primary lift; lifts 1px on hover. Used once, for "Open the planner".
 - **Dark:** near-black fill, white 14px text, 8px × 14px; hover drops to 85% opacity. The nav's "Play story".
 - **Soft:** grey well fill, ink text; hover darkens the well. The hero's "Play the 20-second story".
 - **Icon buttons:** 6px padding, 8px radius, grey icon turning ink on a white hover fill (copy job ID).
