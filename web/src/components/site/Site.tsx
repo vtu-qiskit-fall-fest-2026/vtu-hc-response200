@@ -43,6 +43,7 @@ export function Nav() {
     ["#proof", "Quantum proof"],
     ["#methods", "Vs. classical"],
     ["#scaling", "Scaling"],
+    ["#try", "Try it"],
     ["#how", "How it works"],
     ["#faq", "Questions"],
   ];

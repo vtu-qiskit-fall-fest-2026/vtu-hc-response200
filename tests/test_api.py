@@ -125,3 +125,43 @@ def test_exported_circuit_is_the_real_circuit():
         expected = q.probabilities(p["qaoa"]["gammas"], p["qaoa"]["betas"])
         # gate angles are rounded to 4 decimals in the export
         assert np.allclose(Statevector(qc).probabilities(), expected, atol=2e-3)
+
+
+JOBS5 = [
+    {"name": "ML training", "kwh": 1200, "home_site": "evap", "submitted_slot": "night"},
+    {"name": "Genomics", "kwh": 900, "home_site": "evap", "submitted_slot": "night", "residency": True},
+    {"name": "ETL", "kwh": 600, "home_site": "air", "deadline": True},
+    {"name": "Video", "kwh": 400, "home_site": "air", "submitted_slot": "night"},
+    {"name": "Backup", "kwh": 700, "home_site": "evap", "submitted_slot": "night"},
+]
+
+
+def test_custom_jobs_live_simulator():
+    r = client.post("/api/custom", json={"jobs": JOBS5, "w": 0.5})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["mode"] == "live simulator, not hardware"
+    assert d["qubits"] == 10 and d["schedules"] == 4 ** 5
+    assert d["best"]["kg_co2"] <= d["naive"]["kg_co2"] + 1e-9 or d["best"]["litres"] <= d["naive"]["litres"] + 1e-9
+    # rules are respected by the brute-force answer
+    assert d["best"]["schedule"][1]["site"] == "evap"      # residency
+    assert d["best"]["schedule"][2]["slot"] == "day"       # deadline
+    assert 0 <= d["qaoa"]["share_best10"] <= 1
+
+
+@pytest.mark.parametrize("jobs", [
+    [],                                                              # no jobs
+    JOBS5 + JOBS5[:1],                                               # too many (6)
+    [{"name": "tiny", "kwh": 10, "home_site": "evap"}],              # kWh below 50
+    [{"name": "huge", "kwh": 99999, "home_site": "air"}],            # kWh above 5,000
+    [{"name": "x", "kwh": 500, "home_site": "mars"}],                # unknown site
+    [{"name": "", "kwh": 500, "home_site": "air"}],                  # empty name
+])
+def test_custom_jobs_validation(jobs):
+    assert client.post("/api/custom", json={"jobs": jobs}).status_code == 422
+
+
+def test_custom_deadline_cannot_be_submitted_at_night():
+    bad = [{"name": "late", "kwh": 500, "home_site": "air", "submitted_slot": "night", "deadline": True}]
+    r = client.post("/api/custom", json={"jobs": bad})
+    assert r.status_code == 422 and "deadline" in r.text
