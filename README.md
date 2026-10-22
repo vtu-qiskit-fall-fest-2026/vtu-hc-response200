@@ -163,7 +163,7 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 - **Every one of the 6 hardware runs beats random sampling** on the whole distribution, by 14 to 19 standard errors, and puts 18-23% of its shots in the best 10% of schedules (random: 10%).
 - **Noise costs part of the ideal improvement:** the hardware keeps roughly half to two-thirds (48-67%) of the ideal simulator's gain over random.
 - **Error mitigation (XY4 dynamical decoupling + gate/measurement twirling) gave no consistent benefit:** approximation ratio +0.012 (w = 0), +0.008 (w = 0.5), −0.006 (w = 1).
-- Transpiled circuit on `ibm_marrakesh`: 114 two-qubit gates, depth ≈245. Each job used about 3 s of QPU time, **18 s in total**.
+- Transpiled circuit on `ibm_marrakesh`: 114 two-qubit gates, depth ≈245. Each job used about 3 s of QPU time: **18 s for these six**, 21 s including the rules run below.
 - The binary encoding needs **8 qubits / ~114 two-qubit gates**, against **16 qubits / ~227 gates** for a one-hot QUBO, where only 0.39% of outputs would be valid schedules.
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
@@ -183,6 +183,28 @@ Raw results with backend, job ID, timestamps, transpiled-circuit stats and all c
 | ![streamlit schedule](docs/images/demo_schedule.png) | ![streamlit proof](docs/images/demo_quantum_proof.png) | ![streamlit trade-off](docs/images/demo_tradeoff.png) |
 
 </details>
+
+### What if jobs are not all flexible? (deadlines, data residency, priority)
+
+Each job can carry rules (illustrative): **deadline** (must finish in the day slot), **data residency** (must stay at its home site) and **priority** (must run in the slot it was submitted to). Rules are encoded as penalty terms on each job's own qubits. Every bitstring still decodes, rule-breaking ones always cost more than any allowed schedule, and the circuit's two-qubit structure is unchanged (114 two-qubit gates).
+
+| Preset | Allowed schedules | Balanced: CO₂ saved | Balanced: water saved |
+|---|---|---|---|
+| All flexible | 256 | 530 kg | 1,798 L |
+| Mixed | 64 | 499 kg | 1,745 L |
+| Mostly rigid | 8 | 299 kg | 1,574 L |
+
+Savings shrink as fewer jobs are flexible (balanced priority; average over every choice of which jobs are flexible, the rest stay at home and on time):
+
+| Share of jobs flexible | CO₂ saved | Water saved |
+|---|---|---|
+| 0% | 0.0% | 0.0% |
+| 25% | 8.1% | 2.7% |
+| 50% | 12.3% | 6.9% |
+| 75% | 13.6% | 11.7% |
+| 100% | 14.2% | 14.2% |
+
+Shots that obey every rule (mixed preset, balanced): random guessing 25%, ideal simulator 99%, noisy simulator 92%, **IBM ibm_marrakesh 61%** (job `dbd13dk24mrc73cki6eg`, 3 s QPU). The cheapest rule-obeying hardware shot was the true best allowed schedule (39 of 4,000 shots).
 
 ### Compared with classical methods (fair baselines)
 
@@ -320,6 +342,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).
+- **Job rules are illustrative** (which jobs have deadlines, residency or priority). On real hardware only 61% of shots obeyed every rule on the mixed preset (simulator 99%), because noise flips the penalised bits; GreenQ discards rule-breaking shots.
 - **Error mitigation** (dynamical decoupling + twirling) gave no consistent gain on this circuit across our 3 paired runs.
 
 ---

@@ -73,3 +73,11 @@ Brute force as the only comparison isn't enough for a jury, so `greenq/classical
 - **Random sampling:** the best of 4,000 random schedules, the same shot budget QAOA gets. This was added deliberately, to show that "found the optimum" isn't evidence at this size.
 
 Result on the 4-job instance, all three weights: every method reaches the true best. Greedy takes 0.03 ms, annealing about 17 ms, random sampling about 23 ms, QAOA on the simulator about 0.4 s (train + sample), and IBM hardware 3 s of QPU per job (queue not counted). The UI's "Is it better than simple methods?" section states this plainly. Larger instances are compared in the scaling study.
+
+### D16. Job rules as penalties, not a new encoding (Oct 22)
+Real jobs are not all flexible, so each job can carry rules: deadline (day slot only), data residency (home site only), priority (submitted slot only).
+- **Encoding:** each disallowed option gets a penalty in that job's own 2-qubit cost table. The penalty is sized at 2 × (spread of allowed costs + all overlap costs), so any rule-breaking schedule costs more than any allowed one; a test checks this for every preset and weight. These are local Z/ZZ terms only, so the circuit's two-qubit structure and the 114-gate count are unchanged.
+- **Alternatives:** removing fixed qubits would shrink the circuit, but it needs a per-instance encoding; penalties keep one code path, and every measured bitstring still decodes (rule-breaking shots are flagged and discarded).
+- **Presets (illustrative):** all flexible (256 schedules), mixed (64), mostly rigid (8). The flexibility curve averages over every subset of flexible jobs, so it doesn't depend on which job we picked.
+- **Hardware:** one job only, on the most informative instance (mixed, balanced, raw, 4,000 shots), job `dbd13dk24mrc73cki6eg`, about 3 s. Remaining Open Plan time was 582 s before the job and 579 s after. 61% of hardware shots obeyed every rule (random 25%, ideal simulator 99%, noisy model 92%). The real device is noisier than its model, which matches the earlier runs.
+- **Code:** hardware selection everywhere (export, summary, baselines, Streamlit) now filters by preset, so the rules run never mixes into the original six.

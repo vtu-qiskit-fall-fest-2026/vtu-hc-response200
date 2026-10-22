@@ -91,6 +91,9 @@ Usually, yes, and we say so. That's why we don't use "it found the optimum" as e
 **Is QAOA better than a simple greedy rule?**
 Not on this instance. We tested it: greedy, simulated annealing and even 4,000 random guesses all find the true best, and much faster (greedy takes 0.03 ms). That's shown on the page ("Is it better than simple methods?"). The point of the project is a correct, compact quantum formulation that runs end to end on real hardware, so it can be tried on larger problems as hardware improves. It's not a speed-up today.
 
+**Real jobs have deadlines and data rules. Does it still work?**
+Yes, within limits. We added three rules a job can have: a deadline, data that must stay at its home site, and a critical slot. The "How flexible are the jobs?" switch shows the effect. Savings shrink as fewer jobs are flexible: from 14% (all flexible) to about 8% CO₂ when only one in four is. The rules go into the quantum cost as penalties. On the simulator 99% of shots obey every rule; on the real IBM machine 61% did (random guessing: 25%), and we simply discard the rest. That run is saved in the repo (job `dbd13dk24mrc73cki6eg`).
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 

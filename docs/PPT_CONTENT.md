@@ -173,6 +173,26 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 9b: What if jobs are not all flexible?
+**On slide**
+- Rules per job: deadline (day only), data residency (home site only), priority (submitted slot only). Illustrative.
+- Encoded as penalties on each job's own qubits; the circuit stays 8 qubits / 114 two-qubit gates.
+
+| Preset | Allowed schedules | Balanced: CO₂ saved | Balanced: water saved |
+|---|---|---|---|
+| All flexible | 256 | 530 kg | 1,798 L |
+| Mixed | 64 | 499 kg | 1,745 L |
+| Mostly rigid | 8 | 299 kg | 1,574 L |
+
+- Savings vs flexible share: 0% → 0, 25% → 8% CO₂, 50% → 12%, 100% → 14%.
+- Shots that obey every rule (mixed): random 25% · simulator 99% · **IBM hardware 61%** (job dbd13dk24mrc73cki6eg).
+
+**Visual:** the planner with "Mixed" selected (lock and clock icons on jobs) and the savings-vs-flexibility curve.
+
+**Say:** "Not every job can move. With realistic rules, savings shrink but don't vanish. On real hardware, 61% of shots respected every rule, against 25% for random guessing; we discard the rest."
+
+---
+
 ## Slide 10b: Compared with simple methods
 **On slide**
 - Same objective, same 256 schedules (balanced setting):
