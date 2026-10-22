@@ -302,7 +302,7 @@ GreenQ uses a language model (Groq's hosted `openai/gpt-oss-20b` by default) for
 | Writes the "Why this schedule" lines on the Schedule screen | Choose, change or suggest a schedule (brute force and QAOA do that) |
 | Answers questions on the Ask screen in at most 3 sentences, and points to the screen that shows the answer | Produce numbers: any sentence with a number that doesn't match the saved results is removed |
 | Reads a plain-English job description into the job table (then brute force + the QAOA simulator solve it, labelled *live simulator, not hardware*) | Invent a job size: a kWh figure must appear in your text, and every job passes the same validation as the form |
-| Writes the story-mode captions (pre-generated) | Claim quantum advantage: such sentences are dropped |
+| Speaks through Dewy, the mascot, in one-line bubbles | Claim quantum advantage: such sentences are dropped |
 
 How the check works ([server/llm.py](server/llm.py)): the server builds a list of named facts from `results/ui_data.json` for the current setting, sends only those facts, then splits the reply into sentences and keeps a sentence only if every number in it matches a fact (allowing ordinary rounding). The browser talks only to our FastAPI server; the API key stays in `.env` on the server and is never logged, returned or sent to the browser.
 
@@ -422,7 +422,7 @@ LLM_MODEL=openai/gpt-oss-20b
 Then pre-generate the answers the demo shows, so it also works offline:
 
 ```bash
-python scripts/build_llm_cache.py      # about 2 minutes; writes results/llm_cache.json
+python scripts/build_llm_cache.py      # several minutes (free-tier pacing); writes results/llm_cache.json with openai/gpt-oss-120b
 ```
 
 Set `GREENQ_LLM_OFFLINE=1` to force the offline path (cache and templates) even with a key.

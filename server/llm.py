@@ -98,7 +98,7 @@ def reasons(data: dict, a: int, b: int, before: list[int], after: list[int], j: 
     if site[ob["site"]]["wue"][ob["slot"]] < site[oa["site"]]["wue"][oa["slot"]]:
         out.append("air cooling saves water" if site[ob["site"]]["cooling"] == "air-cooled" else f"less cooling water at {ob['slot']}")
     if site[ob["site"]]["pue"] < site[oa["site"]]["pue"]:
-        out.append("less cooling power")
+        out.append("less cooling electricity")
     if before.count(a) > 1 and after.count(b) <= 1:
         out.append("leaves a crowded slot")
     if not out and ob["kg_co2_per_kwh"] > oa["kg_co2_per_kwh"] and ob["litres_per_kwh"] > oa["litres_per_kwh"]:
@@ -132,22 +132,29 @@ def facts(data: dict, preset: str, w: float) -> dict[str, str]:
         "saved": f"{s['saved_kg_co2']:,.0f} kg CO2 ({100 * s['saved_kg_co2'] / nv['kg_co2']:.0f}%) and {s['saved_litres']:,.0f} L water ({100 * s['saved_litres'] / nv['litres']:.0f}%)",
         "moved jobs": "; ".join(f"{m['job']}: {m['from']} -> {m['to']} ({', '.join(m['reasons'])})" for m in moves(data, preset, w)) or "none",
         "grid carbon": "; ".join(f"{t['key']} {t['carbon_kg_per_kwh']:.2f} kg CO2/kWh" for t in inst["slots"]) + " (day is cleaner thanks to solar; illustrative split of the cited 0.71 national average)",
-        "sites": "; ".join(f"{x['label']}: PUE {x['pue']:.2f}, on-site water {x['wue']['day']} L/kWh day, {x['wue']['night']} L/kWh night" for x in inst["sites"]),
+        "sites": "; ".join(f"{x['label']}: PUE {x['pue']:.2f}, on-site water {x['wue']['day']} L/kWh day, {x['wue']['night']} L/kWh night" for x in inst["sites"])
+                 + ". Site A (evaporative cooling) needs less electricity but evaporates water; Site B (air-cooled chillers) uses almost no water but more electricity",
+        "the job rules in this setting": "none, every job is flexible" if p["key"] == "flexible" else "; ".join(f"{k}: {', '.join(v)}" for k, v in p["rules"].items()),
         "schedules checked by laptop": f"all {inst['n_schedules']}",
     }
     for ww in (0.0, 1.0):
         _, e = _stop(data, preset, ww)
-        f[f"if {_label(ww)}"] = f"saves {e['saved_kg_co2']:,.0f} kg CO2 and {e['saved_litres']:,.0f} L water versus run now"
+        air = sum(1 for k in e["best"]["schedule"] if inst["options"][k]["site"] == "air")
+        f[f"if {_label(ww)}"] = (f"the best schedule saves {e['saved_kg_co2']:,.0f} kg CO2 and {e['saved_litres']:,.0f} L water versus run now; "
+                                 f"{air} of {len(inst['jobs'])} jobs then run at Site B; moves: "
+                                 + ("; ".join(f"{m['job']} {m['from']} -> {m['to']}" for m in moves(data, preset, ww)) or "none"))
     c = data["circuit"]
     hw = [h for pr in data["proof"] for h in pr["hardware"]]
     raw = next(h for h in data["proof"][1]["hardware"] if h["mitigation"] == "none")
     shares = [h["share_best10"] for h in hw]
     f["quantum circuit"] = (f"QAOA, one layer, {c['n_qubits']} qubits (a where and a when qubit per job; the textbook one-hot encoding needs "
                             f"{c['onehot_qubits']}), {raw['two_qubit_gates']} two-qubit gates after compiling")
-    f["real IBM hardware"] = (f"{data['totals']['hardware_jobs']} runs on {raw['backend']} ({data['totals']['quantum_seconds']} s of quantum time), "
-                              f"{raw['shots']:,} shots each, job IDs saved in results/hardware/")
+    f["real IBM hardware"] = (f"{data['totals']['hardware_jobs']} separate runs on {raw['backend']}, about {raw['quantum_seconds']} s of quantum time each "
+                              f"({data['totals']['quantum_seconds']} s for all runs together, not counting queueing), {raw['shots']:,} shots each, job IDs saved in results/hardware/")
     ideal = next(pr for pr in data["proof"] if pr["w"] == 0.5)["ideal"]["share_best10"]
-    f["shots in the best tenth of schedules"] = (f"IBM hardware {100 * min(shares):.0f}-{100 * max(shares):.0f}%, perfect simulator {100 * ideal:.0f}%, random guessing 10%")
+    ideals = [pr["ideal"]["share_best10"] for pr in data["proof"]]
+    f["shots in the best tenth of schedules"] = (f"IBM hardware {100 * min(shares):.0f}-{100 * max(shares):.0f}% (better than random guessing's 10%, "
+                                                 f"but below the noise-free simulator's {100 * min(ideals):.0f}-{100 * max(ideals):.0f}% because real hardware is noisy)")
     deltas = []
     for pr in data["proof"]:
         r = next(h for h in pr["hardware"] if h["mitigation"] == "none")
@@ -172,8 +179,11 @@ def facts(data: dict, preset: str, w: float) -> dict[str, str]:
     if data.get("robustness"):
         st = [x for x in data["robustness"]["studies"] if x["error_pct"] == 5]
         f["forecast error"] = "with ±5% carbon forecast error, the plan stays within 5% of the new best in " + ", ".join(f"{100 * x['within_5pct']:.0f}%" for x in st) + " of draws"
-    f["honesty"] = ("no quantum advantage is claimed; a laptop is the referee. Sites, jobs and the day/night split are illustrative; "
-                    "grid carbon (CEA) and power-plant water (NREL) are cited")
+    bf = next((r for r in (data.get("methods") or {}).get("weights", [{}])[0].get("rows", []) if r.get("kind") == "referee"), None)
+    f["speed"] = ("a laptop checks all schedules by brute force" + (f" in about {bf['runtime_ms']:.1f} ms" if bf and bf.get("runtime_ms") else "")
+                  + "; the quantum computer is slower at this size, so no quantum advantage is claimed")
+    f["honesty"] = ("grid carbon (CEA), power-plant water (NREL) and state water stress (WRI Aqueduct) are cited; "
+                    "the sites, the jobs and the day/night carbon split are illustrative")
     return f
 
 
@@ -306,6 +316,7 @@ RULES = ("You explain results from GreenQ, a demo that schedules data-centre job
          "to cut CO2 and water. Use ONLY the facts given. Do not invent or compute new numbers: copy numbers exactly as "
          "written in the facts, or use none. Never suggest a different schedule. Never claim quantum advantage. "
          "If the facts don't answer the question, say \"I don't know from GreenQ's saved results.\" "
+         "Never relate, compare or combine two numbers unless a fact states that relation. Don't call a percentage a 'success rate'. "
          "Plain words for a non-expert, short sentences.")
 
 
@@ -567,7 +578,6 @@ def build_cache(data: dict, presets=("flexible", "mixed", "rigid"), weights=(0.0
                 if a:
                     cache["ask"][f"{_key(p, w)}|{_norm(q)}"] = a
                 time.sleep(pause)
-    n = generate_narration(cfg, data)
-    if n:
-        cache["narration"] = n
+    # Story captions stay hand-written (web/src/lib/story.ts): generated ones were
+    # less accurate in review. generate_narration() is kept for experiments.
     return cache

@@ -137,3 +137,13 @@ Forecast error is modelled as a uniform independent error on each slot's grid ca
 - **Guardrails:** Dewy never states a number on its own; tour lines are under 10 words and number-free (tested); AI answers it speaks are the grounded ones, with their badge. The Bible Strong swap stays optional and is not done; if it ever is, the README and About must credit the author and repo and state AGPL-3.0.
 - **Rate limits:** Groq's free tier returned HTTP 429 when the slider swept quickly. The server now cools down for the `retry-after` time and serves the cache or a template meanwhile; the explanation request waits 0.7 s for the slider to settle, and the cache builder retries.
 
+### D27. Reviewing the AI answers: sharper facts, a larger model for saved answers, hand-written captions (Oct 23)
+- **What we found:** the first generated cache (gpt-oss-20b) passed the number check but had wrong *words*. It said the air-cooled site uses less cooling power (it's the reverse), that 18–23% "matches" the simulator's 34%, that "IBM hardware takes 21 s" (that's all 7 runs together), and "all facts cited". A number check can't catch these.
+- **Fixes:**
+  - The facts now spell out the relations the model kept getting wrong: what each site trades, about 3 s per run, why hardware scores below the simulator, which inputs are cited and which are illustrative, and what moves when only water or only carbon matters.
+  - The prompt forbids relating two numbers unless a fact states the relation.
+  - The template reason "less cooling power" became "less cooling electricity".
+  - Saved answers are generated with `openai/gpt-oss-120b`; live answers keep the faster 20b model.
+- **Review rule:** we read every cached entry before committing it, and drop any entry that is wrong (it then falls back to the hand-written template, labelled TEMPLATE). We never hand-edit model text and still label it AI.
+- **Story captions** stay hand-written (`web/src/lib/story.ts`); the generated ones were less accurate.
+

@@ -95,7 +95,7 @@ export function whyLines(data: UiData, from: number[], to: number[]) {
     const reasons: string[] = [];
     if (slotOf(b.slot).carbon_kg_per_kwh < slotOf(a.slot).carbon_kg_per_kwh) reasons.push(`cleaner ${b.slot} grid`);
     if (sb.wue[b.slot] < sa.wue[a.slot]) reasons.push(sb.cooling === "air-cooled" ? "air cooling saves water" : `less cooling water at ${b.slot}`);
-    if (sb.pue < sa.pue) reasons.push("less cooling power");
+    if (sb.pue < sa.pue) reasons.push("less cooling electricity");
     if (crowded(from, from[i]) && !crowded(to, to[i])) reasons.push("leaves a crowded slot");
     if (b.kg_co2_per_kwh > a.kg_co2_per_kwh && b.litres_per_kwh > a.litres_per_kwh && reasons.length === 0) reasons.push("makes room for a bigger job");
     if (reasons.length === 0) reasons.push("balances carbon and water");
