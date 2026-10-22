@@ -124,7 +124,7 @@ def main() -> None:
             "hardware": [],
         }
         for r in hw_runs:
-            if r.get("w_carbon") == w and r.get("status") == "DONE":
+            if r.get("w_carbon") == w and r.get("preset", "flexible") == "flexible" and r.get("status") == "DONE":
                 entry["hardware"].append({
                     "backend": r["backend"], "job_id": r["job_id"], "mitigation": r["mitigation"],
                     "completed_utc": r.get("completed_utc"), "quantum_seconds": r.get("quantum_seconds"),

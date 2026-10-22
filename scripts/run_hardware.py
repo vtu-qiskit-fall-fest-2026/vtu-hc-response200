@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from greenq import ibm, runner                       # noqa: E402
 from greenq.encoding import Encoding                  # noqa: E402
 from greenq.model import Instance                     # noqa: E402
+from greenq import data as D                          # noqa: E402
 from greenq.qaoa import GreenQAOA                     # noqa: E402
 
 HW_DIR = runner.RESULTS / "hardware"
@@ -52,7 +53,8 @@ def wait_and_finish(service, job_id: str, timeout: int) -> None:
             return
         time.sleep(15)
     result = job.result()
-    enc = Encoding(Instance(), record["w_carbon"])
+    rules = D.FLEX_PRESETS[record.get("preset", "flexible")]["rules"]
+    enc = Encoding(Instance(constraints=rules), record["w_carbon"])
     record["status"] = "DONE"
     try:
         record["quantum_seconds"] = job.usage()
@@ -79,6 +81,7 @@ def main() -> None:
     ap.add_argument("--timeout", type=int, default=1800, help="seconds to wait for results")
     ap.add_argument("--fetch", default=None, help="job id to collect instead of submitting")
     ap.add_argument("--min-remaining", type=float, default=60, help="refuse to submit below this many QPU seconds")
+    ap.add_argument("--preset", default="flexible", choices=list(D.FLEX_PRESETS), help="job rules (Feature 2)")
     args = ap.parse_args()
 
     service = ibm.get_service()
@@ -92,10 +95,11 @@ def main() -> None:
     if remaining is not None and remaining < args.min_remaining:
         raise SystemExit("Not enough QPU time left; refusing to submit.")
 
-    sim_file = runner.RESULTS / "sim" / f"qaoa_w{args.w}_p{args.reps}.json"
+    suffix = "" if args.preset == "flexible" else f"_{args.preset}"
+    sim_file = runner.RESULTS / "sim" / f"qaoa_w{args.w}_p{args.reps}{suffix}.json"
     sim = json.loads(sim_file.read_text())
     params = sim["qaoa"]
-    enc = Encoding(Instance(), args.w)
+    enc = Encoding(Instance(constraints=D.FLEX_PRESETS[args.preset]["rules"]), args.w)
     q = GreenQAOA(enc, reps=args.reps)
     circuit = q.bind(params["gammas"], params["betas"])
 
@@ -114,6 +118,7 @@ def main() -> None:
             "backend": backend.name, "job_id": job.job_id(), "status": "SUBMITTED",
             "mitigation": mode, "mitigation_options": opts, "circuit": stats,
             "trained_on": str(sim_file.relative_to(runner.ROOT)),
+            "preset": args.preset,
         })
         path = runner.save(record, record_path(backend.name, job.job_id()))
         print(f"submitted {mode}: job {job.job_id()} -> {path.relative_to(runner.ROOT)}")

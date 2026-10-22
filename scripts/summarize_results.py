@@ -48,7 +48,7 @@ def main() -> None:
         m = analyze(uniform, enc)
         print(f"| Random guessing | | {m['approx_ratio']:.3f} | 10.0% | ≈{4000 / len(cost):.0f}/4000 | | |")
         for r in runs:
-            if r["w_carbon"] == w and r.get("status") == "DONE":
+            if r["w_carbon"] == w and r.get("preset", "flexible") == "flexible" and r.get("status") == "DONE":
                 label = f"IBM {r['backend']} ({'raw' if r['mitigation'] == 'none' else 'DD + twirling'})"
                 print(row(label, r["counts"], enc, f"`{r['job_id']}`"))
         sim = ROOT / "results" / "sim" / f"qaoa_w{w}_p1.json"

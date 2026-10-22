@@ -132,3 +132,25 @@ JOBS = [
 # the overflow runs on less efficient backup capacity. Modelled as an extra
 # fraction of the pair's energy, charged at the average footprint of all options.
 CONGESTION_FRACTION = 0.15
+
+# ILLUSTRATIVE (Feature 2): how flexible the jobs are. Rules per job key:
+#   deadline  - must finish in the day slot; residency - data stays at home site;
+#   priority  - critical, runs in the slot it was submitted to.
+FLEX_PRESETS = {
+    "flexible": {"label": "All flexible", "rules": {}},
+    "mixed": {
+        "label": "Mixed",
+        "rules": {
+            "genome": {"residency"},           # patient data stays at Site A
+            "etl": {"deadline"},               # report due before night
+        },
+    },
+    "rigid": {
+        "label": "Mostly rigid",
+        "rules": {
+            "genome": {"residency", "priority"},
+            "etl": {"deadline", "residency"},
+            "train": {"priority"},
+        },
+    },
+}

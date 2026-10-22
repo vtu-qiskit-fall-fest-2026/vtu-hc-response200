@@ -42,6 +42,9 @@ class Encoding:
         # objective contributions in blended (dimensionless) units
         self.local_cost = inst.local @ wt                        # shape (jobs, options)
         self.pair_cost = {ij: float(v @ wt) for ij, v in inst.pair.items()}
+        # Bigger than the whole spread of allowed costs, so penalties dominate.
+        spread = float(np.sum(self.local_cost.max(axis=1) - self.local_cost.min(axis=1)))
+        self.rule_penalty = 2.0 * (spread + sum(self.pair_cost.values()))
 
     # ------------------------------------------------------------ decoding
     def qubits_of(self, job: int) -> list[int]:
@@ -81,6 +84,12 @@ class Encoding:
     def _local_table(self) -> np.ndarray:
         table = np.full((self.inst.n_jobs, 2 ** self.bits), INVALID_PENALTY)
         table[:, : self.inst.n_options] = self.local_cost
+        # Feature 2: an option that breaks a job's rule costs a penalty large
+        # enough that any rule-breaking schedule is worse than every allowed one.
+        for j, ok in enumerate(self.inst.allowed):
+            for k in range(self.inst.n_options):
+                if k not in ok:
+                    table[j, k] += self.rule_penalty
         return table
 
     # ------------------------------------------------------------ Hamiltonian

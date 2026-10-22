@@ -33,6 +33,11 @@ class Instance:
     sites: list[D.Site] = field(default_factory=lambda: list(D.SITES))
     slots: list[D.Slot] = field(default_factory=lambda: list(D.SLOTS))
     congestion: float = D.CONGESTION_FRACTION
+    # Feature 2: per-job rules, keyed by job key. Values are sets drawn from
+    #   "deadline"  - must finish in the day slot (cannot move to night)
+    #   "residency" - data must stay at the job's home site
+    #   "priority"  - critical: must run in the slot it was submitted to
+    constraints: dict[str, set[str]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         # Option index k = site_index * n_slots + slot_index.
@@ -53,6 +58,8 @@ class Instance:
             (i, j): self.congestion * (self.energy[i] + self.energy[j]) * mean_unit
             for i, j in combinations(range(self.n_jobs), 2)
         }
+        # allowed[j] = option indices job j may use under its rules
+        self.allowed = [self._allowed_for(j) for j in self.jobs]
         self.naive = self.naive_schedule()
         self.naive_footprint = self.footprint(self.naive)
 
@@ -73,6 +80,24 @@ class Instance:
     def option_label(self, k: int) -> str:
         s, t = self.options[k]
         return f"{s.label} - {t.label}"
+
+    def _allowed_for(self, job: D.Job) -> list[int]:
+        rules = self.constraints.get(job.key, set())
+        ok = []
+        for k, (s, t) in enumerate(self.options):
+            if "deadline" in rules and t.key == "night":
+                continue
+            if "residency" in rules and s.key != job.home_site:
+                continue
+            if "priority" in rules and t.key != job.submitted_slot:
+                continue
+            ok.append(k)
+        if not ok:
+            raise ValueError(f"rules leave no option for job {job.key}")
+        return ok
+
+    def feasible(self, schedule: tuple[int, ...]) -> bool:
+        return all(k in self.allowed[j] for j, k in enumerate(schedule))
 
     def naive_schedule(self) -> tuple[int, ...]:
         """Business as usual: run every job at its home site, as soon as submitted."""

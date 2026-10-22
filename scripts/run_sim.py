@@ -16,6 +16,7 @@ from greenq.classical import brute_force, naive          # noqa: E402
 from greenq.encoding import Encoding                      # noqa: E402
 from greenq.metrics import analyze                        # noqa: E402
 from greenq.model import Instance                         # noqa: E402
+from greenq import data as D                              # noqa: E402
 from greenq.qaoa import GreenQAOA                         # noqa: E402
 from greenq import runner                                 # noqa: E402
 
@@ -26,9 +27,10 @@ def main() -> None:
     ap.add_argument("--reps", type=int, default=1)
     ap.add_argument("--shots", type=int, default=4000)
     ap.add_argument("--no-noisy", action="store_true")
+    ap.add_argument("--preset", default="flexible", choices=list(D.FLEX_PRESETS), help="job rules (Feature 2)")
     args = ap.parse_args()
 
-    inst = Instance()
+    inst = Instance(constraints=D.FLEX_PRESETS[args.preset]["rules"])
     enc = Encoding(inst, args.w)
     best, worst = brute_force(inst, args.w)
     base = naive(inst, args.w)
@@ -44,6 +46,7 @@ def main() -> None:
 
     circuit = q.bind(res.gammas, res.betas)
     record = runner.base_record("simulator", enc, params, args.shots)
+    record["preset"] = args.preset
     record["classical"] = {
         "optimal_schedule": list(best.schedule), "optimal_objective": best.objective,
         "optimal_kg_co2": best.kg_co2, "optimal_litres": best.litres,
@@ -73,7 +76,8 @@ def main() -> None:
         print(f"noisy ({fake.name}, {record['noisy']['circuit']['two_qubit_gates']} 2q gates): "
               f"approx ratio {m['approx_ratio']:.3f}, P(opt) {m['p_optimal']:.4f}")
 
-    path = runner.RESULTS / "sim" / f"qaoa_w{args.w}_p{args.reps}.json"
+    suffix = "" if args.preset == "flexible" else f"_{args.preset}"
+    path = runner.RESULTS / "sim" / f"qaoa_w{args.w}_p{args.reps}{suffix}.json"
     runner.save(record, path)
     print("saved", path.relative_to(runner.ROOT))
 

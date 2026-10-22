@@ -69,7 +69,7 @@ def main() -> None:
             row("Random sampling (4,000)", rs, best, t_rs, "best of 4,000 random schedules: the same shot budget as QAOA", "classical"),
             row("QAOA, simulator", qsim, best, t_q, f"train + 4,000 shots; approx. ratio {m['approx_ratio']:.3f}", "quantum-sim"),
         ]
-        raw = next(h for h in hw if h.get("w_carbon") == w and h.get("mitigation") == "none" and h.get("status") == "DONE")
+        raw = next(h for h in hw if h.get("w_carbon") == w and h.get("preset", "flexible") == "flexible" and h.get("mitigation") == "none" and h.get("status") == "DONE")
         mh = analyze(raw["counts"], enc)
         qhw = evaluate(inst, tuple(mh["best_sampled_schedule"]), w)
         rows.append(row(f"QAOA, IBM {raw['backend']}", qhw, best, (raw.get("quantum_seconds") or 0) * 1000,

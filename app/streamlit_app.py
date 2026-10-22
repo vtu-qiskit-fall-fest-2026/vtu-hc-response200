@@ -158,7 +158,7 @@ with st.sidebar:
                     help="0 = save water only, 100 = cut carbon only, 50 = both equally")
     st.caption(f"💧 water {100 - pct}%  ·  🏭 carbon {pct}%")
     w = pct / 100
-    hw_for_w = [r for r in hardware_runs() if abs(r["w_carbon"] - w) < 1e-9]
+    hw_for_w = [r for r in hardware_runs() if abs(r["w_carbon"] - w) < 1e-9 and r.get("preset", "flexible") == "flexible"]
     sources = (["IBM quantum computer (saved run)"] if hw_for_w else []) + ["Quantum simulator (live)"]
     source = st.radio("Quantum result from", sources)
     if not hw_for_w:

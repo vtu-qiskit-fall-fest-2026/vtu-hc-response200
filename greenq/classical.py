@@ -35,7 +35,7 @@ def evaluate(inst: Instance, schedule: tuple[int, ...], w_carbon: float) -> Resu
 def brute_force(inst: Instance, w_carbon: float = 0.5) -> tuple[Result, Result]:
     """Return (best, worst) schedules by exhaustive search."""
     best = worst = None
-    for sched in product(range(inst.n_options), repeat=inst.n_jobs):
+    for sched in product(*inst.allowed):  # only schedules that obey every job's rules
         val = inst.objective(sched, w_carbon)
         if best is None or val < best[1]:
             best = (sched, val)
@@ -72,7 +72,7 @@ def greedy(inst: Instance, w_carbon: float = 0.5) -> Result:
         def added(k: int) -> float:
             extra = sum(pair[(min(i, j), max(i, j))] for i in range(inst.n_jobs) if sched[i] == k)
             return local[j, k] + extra
-        sched[j] = min(range(inst.n_options), key=added)
+        sched[j] = min(inst.allowed[j], key=added)
     return evaluate(inst, tuple(sched), w_carbon)  # type: ignore[arg-type]
 
 
@@ -100,14 +100,16 @@ def simulated_annealing(inst: Instance, w_carbon: float = 0.5, steps: int | None
     scale = float(np.ptp(local)) or 1.0
     best_s, best_c = None, math.inf
     for _ in range(restarts):
-        s = [int(x) for x in rng.integers(0, m, n)]
+        s = [int(rng.choice(inst.allowed[j])) for j in range(n)]
         c = cost(s)
         t0, t1 = 0.5 * scale, 0.002 * scale
         for step in range(steps):
             temp = t0 * (t1 / t0) ** (step / max(steps - 1, 1))
             j = int(rng.integers(n))
-            k = int(rng.integers(m - 1))
-            k = k + 1 if k >= s[j] else k            # a different option
+            choices = [k for k in inst.allowed[j] if k != s[j]]
+            if not choices:
+                continue
+            k = int(rng.choice(choices))             # a different allowed option
             d = delta(s, j, k)
             if d <= 0 or rng.random() < math.exp(-d / temp):
                 s[j] = k
@@ -125,6 +127,8 @@ def random_sampling(inst: Instance, w_carbon: float = 0.5, samples: int = 4000, 
     best = None
     for s in rng.integers(0, inst.n_options, size=(samples, inst.n_jobs)):
         sched = tuple(int(x) for x in s)
+        if not inst.feasible(sched):
+            continue  # a random guess that breaks a rule is discarded
         val = inst.objective(sched, w_carbon)
         if best is None or val < best[1]:
             best = (sched, val)
