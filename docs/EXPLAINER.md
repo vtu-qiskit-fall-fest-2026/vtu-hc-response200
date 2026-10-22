@@ -101,19 +101,15 @@ The search space grows as 4^jobs. Qubits grow linearly (2 per job), but circuit 
 The circuit in `greenq/qaoa.py`, built with Qiskit's `QAOAAnsatz` from our own Hamiltonian, transpiled for the real device and run with `SamplerV2` on IBM hardware. Job IDs are in `results/hardware/`.
 
 ## 9. The demo UI (what each part shows, and what to say)
-Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results, so it needs no internet and no IBM account.
+Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results (`results/ui_data.json`), so it needs no internet and no IBM account. Press **Play story** for a 20-second guided run; scrolling or clicking pauses it.
 
-**Page, top to bottom**
-1. **Headline.** "Same jobs, smarter placement. Less carbon. Less water." plus the two savings (530 kg CO₂, 1,798 L water).
-2. **Dashboard.** Live widgets you can drag around:
-   - **CO₂ saved / Water saved:** before vs GreenQ.
-   - **Priority slider:** water ↔ carbon. The three stops marked **IBM** ran on real IBM hardware; the others are checked by brute force.
-   - **Where each job runs:** toggle *Business as usual* / *GreenQ* and watch the jobs move; a red bay is overloaded.
-   - **Quantum vs random:** share of shots in the best 10% of schedules (random 10%, IBM hardware about 19-21%, perfect simulator about 33%), with the note that error mitigation gave no consistent gain.
-   - **IBM hardware runs:** the real job IDs.
-   - **Qubits used, Best schedule, Error mitigation, The referee:** one fact each.
-3. **How it works.** Encode (2 qubits per job) → Run (QAOA on IBM) → Check (laptop as referee).
-4. **Honest answers.** Five short questions the jury will ask.
-5. **Footer.** What's cited, what's real, what's illustrative, plus sources.
+| Part | What it shows | One line to say |
+|---|---|---|
+| Hero | Headline, the two savings, and a small looping animation of the 4 jobs moving | "Same jobs, smarter placement: 530 kg CO₂ and 1,798 L water saved in this example." |
+| What matters more? | Big slider (21 settings; the 3 marked **IBM** ran on real hardware), savings at that setting, and the trade-off curve (CO₂ saved vs water saved) | "Carbon and water pull against each other; the curve is every possible compromise." |
+| Two data centres | Site A (cooling tower, evaporative) and Site B (chillers, air-cooled), each with a day and a night lane and that slot's grid carbon. Job blocks are sized by energy. Toggle *Business as usual* / *GreenQ* to watch them move; the reasons are listed underneath. | "Business as usual piles two big jobs onto Site A at night. GreenQ spreads them to cleaner, drier slots, and here is why each one moved." |
+| Savings / Real IBM runs | Before vs after bars; all 6 hardware job IDs with copy buttons | "Every hardware shot is saved in the repo with its job ID." |
+| The quantum part, shown | The real 8-qubit circuit (H, cost layer with γ, mixer with β, measure; each wire is a job's where/when bit), the histogram (random vs simulator vs IBM), and four honest facts | "The real hardware lands in the best tenth of schedules about twice as often as random. Error mitigation didn't help consistently. No advantage claimed." |
+| How it works / Honest answers / Footer | 3 steps, 5 FAQ answers, cited vs illustrative, sources | "A laptop is our referee." |
 
-**One line per part, for the video:** "Same jobs, smarter placement" → "move the slider and the plan changes; the IBM stops are real hardware" → "toggle and watch the jobs move off the overloaded site" → "the quantum computer lands in the best schedules about twice as often as random" → "a laptop is our referee; no quantum advantage claimed".
+**Where each number comes from:** savings and schedules come from brute force over all 256 schedules (`scripts/export_ui_data.py`); the circuit is exported from the real cost operator, and a test rebuilds it and checks it matches; the histograms come from the saved counts in `results/sim/` and `results/hardware/`.

@@ -74,7 +74,7 @@
 
 ![GreenQ demo: landing page](docs/images/ui_hero.png)
 
-*The web demo at 1920×1080: one headline, the savings, and a live dashboard just below.*
+*The web demo at 1920×1080: the headline, the savings, and a looping miniature of the jobs moving. Press **Play story** for a 20-second guided run.*
 
 ---
 
@@ -168,9 +168,13 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
 
-| Dashboard (drag to rearrange; slider stops marked "IBM" ran on real hardware) | How it works |
+| Two data centres: jobs move from business as usual to GreenQ | The real 8-qubit circuit we ran (drawn from the exported gates) |
 |---|---|
-| ![dashboard](docs/images/ui_dashboard.png) | ![how it works](docs/images/ui_how.png) |
+| ![two data centres](docs/images/ui_dashboard.png) | ![circuit](docs/images/ui_circuit.png) |
+
+| Quantum vs random vs simulator, with the honest strip |
+|---|
+| ![quantum proof](docs/images/ui_proof.png) |
 
 <details><summary>Fallback Streamlit demo screenshots</summary>
 

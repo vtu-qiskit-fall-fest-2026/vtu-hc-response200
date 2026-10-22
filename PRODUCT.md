@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-React + Vite frontend, built to static files and served by a FastAPI backend (one command starts everything). Chosen by the user. The quantum core (`greenq/`) is independent Python; the UI only reads saved result files and may optionally call the simulator through FastAPI. The Streamlit app (`app/streamlit_app.py`) stays as a fallback until the new UI is verified.
+React + Vite frontend, built to static files and served by a FastAPI backend (one command starts everything). Chosen by the user. The quantum core (`greenq/`) is independent Python; the UI only reads saved result files and may optionally call the simulator through FastAPI. The Streamlit app (`app/streamlit_app.py`) remains as a no-Node fallback.
 
 ## Users
 
@@ -61,4 +61,4 @@ A binary "where + when" qubit encoding (2 qubits per job, so every measured bits
 
 ## Accessibility & Inclusion
 
-Projector and video legibility: high contrast on dark, large type. Carbon and water must be distinguishable by label and shape, not only by green vs blue. Respect reduced-motion preferences.
+Projector and video legibility: light theme with dark text (body contrast ≥ 4.5:1), large numbers, few words; checked at 1920×1080, 1366×768 and phone width. Carbon and water must be distinguishable by label and icon shape (leaf vs droplet), not only by green vs blue. Respect reduced-motion preferences.

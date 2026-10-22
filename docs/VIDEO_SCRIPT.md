@@ -1,63 +1,45 @@
 # GreenQ demo video script (3 to 4 minutes)
 
-For: whoever records the YouTube demo. The viewers are the hackathon jury, so it must also make sense on a projector in the finals.
+For: whoever records the YouTube demo. The viewers are the hackathon jury, so it must also work on a projector in the finals.
 
-**Setup before recording**
-- Start the demo with `python -m server` and open http://127.0.0.1:8000. It runs fully offline from saved results, so there is no waiting on IBM.
-- Reload the page just before recording so the gauges play their drawdown on camera.
-- Browser full screen at **1920×1080**, zoom 100%, dark theme. Close other tabs and notifications.
-- Record the screen plus a voice-over (OBS or the macOS screen recorder, `Cmd+Shift+5`). Speak slowly. Each block below is about 25-40 seconds.
-- Total narration is about 500 words, roughly 3.5 minutes at a calm pace.
-- Upload to YouTube (Unlisted is fine unless the organisers say otherwise), then paste the link into the README and slide 12.
+**Setup**
+- `python -m server` in the project folder, then open http://127.0.0.1:8000 in a full-screen browser at **1920×1080**, zoom 100%. It runs offline from saved results.
+- Record screen + voice (OBS, or `Cmd+Shift+5` on macOS). Speak slowly.
+- The easiest take: press **Play story** in the top-right and narrate over it, then scroll through the rest by hand. Scrolling or clicking pauses the story.
+- Narration is about 480 words, roughly 3.5 minutes.
 
 ---
 
-### 0:00-0:20 · Hook (Headline section)
-**Screen:** the opening headline, "Same jobs, smarter placement.", with the two big numbers. Let the two gauges finish dropping from the amber BUSINESS AS USUAL tag to the GreenQ level.
+### 0:00-0:20 · Headline (hero)
+**Screen:** the top of the page; the small animation shows the jobs moving.
 
-**Say:**
-"Data centres burn electricity and evaporate cooling water. Many of their jobs are flexible: they could run at a different site or at a different time. GreenQ uses a quantum algorithm to decide where and when, and in our example it saves 530 kilograms of CO₂ and about 1,800 litres of water, with the same jobs."
+**Say:** "Data centres burn electricity and evaporate cooling water. Many of their jobs are flexible: they could run at another site, or at another time. GreenQ uses a quantum algorithm to decide where and when. In our example the same four jobs emit 530 kilograms less CO₂ and use about 1,800 litres less water."
 
-### 0:20-0:55 · The problem (Schedule board, left side)
-**Screen:** the business-as-usual board. Point the cursor at Site A at night, where two jobs are stacked and the cell is marked overloaded.
+### 0:20-1:05 · The two data centres (press Play story)
+**Screen:** the story scrolls to the planner. First *Business as usual*, then the job blocks slide to *GreenQ*.
 
-**Say:**
-"Here's business as usual. Each job runs at its home site the moment it arrives. We have two sites: Site A uses evaporative cooling, which saves electricity but uses water. Site B is air-cooled: almost no water on site, but more electricity, and in India most electricity comes from coal plants that also consume water. An evening batch burst puts two big jobs on Site A overnight, on a coal-heavy grid, and overloads it."
+**Say:** "Here are two data centres. Site A uses evaporative cooling: less electricity, more water. Site B is air-cooled: almost no water on site, but more electricity. Each has a day slot, when India's grid is cleaner thanks to solar, and a night slot. Business as usual runs every job at home the moment it arrives, and two big jobs pile onto Site A at night. GreenQ moves them. The ML job goes to Site B in the day, and the others spread out. The counters show the result, and underneath, the reason each job moved."
 
-### 0:55-1:25 · GreenQ's schedule (Schedule board, both sides)
-**Screen:** scroll so both boards are in view; the jobs slide into their GreenQ bays (use **Replay the move** to show it again). Pause on the result.
+### 1:05-1:45 · The trade-off (story sweeps the slider)
+**Screen:** the slider sweeps to *Carbon only*, then *Water only*; the dot moves along the trade-off curve and the blocks re-place.
 
-**Say:**
-"GreenQ moves the ML training job to the air-cooled site during the day, when solar makes the grid cleaner, and spreads the other jobs out so nothing is overloaded. Total: 14 percent less carbon and 14 percent less water. We checked this against every one of the 256 possible schedules, and it is the true best one."
+**Say:** "Carbon and water pull against each other. Favour carbon and the plan changes; favour water and it changes again. This curve is every compromise. The three stops marked IBM, water only, balanced and carbon only, were run on a real IBM quantum computer."
 
-### 1:25-2:05 · The trade-off (slider)
-**Screen:** drag the slider slowly from SAVE WATER to CUT CARBON. Stop on the three solid stops badged **REAL IBM HARDWARE**; point at the job IDs in the line under the slider.
+### 1:45-2:40 · The quantum part (story scrolls to the circuit, then the histogram)
+**Screen:** the circuit, then the histogram and the four facts.
 
-**Say:**
-"Carbon and water pull in different directions, so we added a priority slider. Favour water and the jobs move one way; favour carbon and they move another. Five different schedules are best somewhere along this slider. The three marked positions, water only, balanced and carbon only, were run on a real IBM quantum computer, and their results are saved in our repository with the job IDs."
+**Say:** "This is the actual circuit we ran: eight qubits, two per job, a 'where' and a 'when'. The textbook method needs sixteen. Hadamards start with all 256 schedules at once; the green cost layer adds each schedule's carbon-and-water cost; the blue mixer makes cheap schedules interfere into the lead. Each shot reads out one schedule. Random guessing puts 10 percent of its shots in the best tenth. IBM's Marrakesh processor put 18 to 23 percent there, and a perfect simulator about 30. So the hardware works, noise costs part of the gain, and error mitigation gave no consistent improvement."
 
-### 2:05-2:50 · Is the quantum part real? (Quantum proof panel)
-**Screen:** the "Is the quantum part real?" section: the best-tenth bars (solid = hardware, hatched = simulator, dashed = random), then scroll to the job ledger and the four honest notes.
+### 2:40-3:10 · Proof it is real (scroll up to the panels)
+**Screen:** the Real IBM runs panel; point at the job IDs.
 
-**Say:**
-"How do we know the quantum part is doing real work? Each shot of the circuit outputs one complete schedule. Random guessing puts 10 percent of its shots in the best tenth of schedules. IBM's Marrakesh processor put about 19 to 21 percent there, roughly twice as many, and a perfect simulator about 33 percent. So the real hardware works, and noise costs part of the gain. We also tried error mitigation, and honestly it gave no consistent improvement. We ran six hardware jobs and used 18 seconds of quantum time."
+**Say:** "We ran six jobs on IBM hardware, eighteen seconds of quantum time, and every result is saved in our repository with its job ID."
 
-### 2:50-3:25 · How it works (four steps)
-**Screen:** the "How it works" section.
-
-**Say:**
-"How it works, in four steps. One: every job gets two qubits, a 'where' qubit and a 'when' qubit, so every measurement is a valid schedule. That uses half the qubits of the textbook approach. Two: we turn the carbon-plus-water cost into a Hamiltonian, and our tests prove it matches the classical cost on every schedule. Three: a QAOA circuit, built in Qiskit, uses interference to make cheap schedules more likely; we train its two angles on a simulator. Four: the trained circuit runs on IBM hardware, and we grade the answer against brute force."
-
-### 3:25-3:50 · Honesty and close (footer)
-**Screen:** the honesty footer, then back to the headline.
-
-**Say:**
-"To be clear: at this size a normal computer solves the problem instantly, and we use it as our referee. We don't claim a quantum advantage. The grid carbon and power-plant water figures are cited; the site and job figures are illustrative and labelled. What we've shown is a correct, compact quantum formulation of a real sustainability problem, validated end to end on real IBM hardware. That's GreenQ, by Team Response200. Thanks for watching."
+### 3:10-3:40 · Honest close (scroll to How it works, Honest answers, footer)
+**Say:** "To be clear: at this size a laptop checks all 256 schedules instantly, and we use it as our referee. We claim no quantum advantage. The grid carbon and power-plant water figures are cited; the sites and jobs are illustrative. What we show is a correct, compact quantum formulation of a real sustainability problem, tested on real IBM hardware. That's GreenQ, by Team Response200."
 
 ---
 
-**Checklist after recording**
-- [ ] Every number spoken matches the screen (530 kg, ~1,800 L, 14%, 19-21%, 10%, 33%, 6 jobs, 18 s)
-- [ ] The "real IBM hardware" badge is visible on screen while it's mentioned
-- [ ] Video is 3-4 minutes, 1080p, audio is clear
-- [ ] YouTube link added to README (Submission Checklist + Links) and PPT slide 12
+**Checklist:** every number spoken matches the screen (530 kg, ~1,800 L, 8 vs 16 qubits, 10%, 18–23%, 6 jobs, 18 s) · 3–4 minutes at 1080p · YouTube link added to README and PPT slide 12.
+
+_Note: if later features add new panels (for example "Methods compared" or "How it scales"), this script is updated to match what ships._
