@@ -315,6 +315,10 @@ vtu-hc-response200/
 │   ├── run_sim.py            # train + simulate  -> results/sim/
 │   ├── run_hardware.py       # run on IBM hardware -> results/hardware/
 │   ├── summarize_results.py  # results tables from saved counts
+│   ├── run_baselines.py      # greedy, annealing, random sampling vs QAOA -> results/baselines.json
+│   ├── run_scaling.py        # 4-11 jobs (8-22 qubits) scaling study -> results/scaling.json
+│   ├── run_cities.py         # water-stress city presets -> results/cities.json
+│   ├── run_robustness.py     # forecast-error robustness -> results/robustness.json
 │   └── export_ui_data.py     # saved results -> results/ui_data.json for the UI
 ├── server/                   # FastAPI: /api/data, optional /api/simulate, serves web/dist
 ├── web/                      # React + Vite demo UI (source; built into web/dist)

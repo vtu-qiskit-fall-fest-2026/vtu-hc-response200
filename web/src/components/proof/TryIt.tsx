@@ -89,7 +89,7 @@ function YourJobs() {
 
   const input = "w-full rounded-lg bg-muted px-2 py-1.5 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring";
   return (
-    <div className="rounded-3xl bg-white p-6 ring-1 ring-border">
+    <div className="min-w-0 rounded-3xl bg-white p-6 ring-1 ring-border">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="text-[20px] font-semibold tracking-tight">Try your own jobs</h3>
         <span className="rounded-full bg-amber-50 px-3 py-1 text-[12px] font-semibold text-amber-900 ring-1 ring-amber-200">Live simulator, not hardware</span>
@@ -202,7 +202,7 @@ function AnnualImpact() {
   const megalitres = (kwh * lPerKwh * waterSaving) / 1e6;
   const input = "w-28 rounded-lg bg-muted px-2 py-1.5 text-[14px] font-semibold tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-ring";
   return (
-    <div className="flex flex-col rounded-3xl bg-white p-6 ring-1 ring-border">
+    <div className="flex min-w-0 flex-col rounded-3xl bg-white p-6 ring-1 ring-border">
       <h3 className="flex items-center gap-2 text-[20px] font-semibold tracking-tight"><Calculator className="size-5" aria-hidden="true" /> What could it be worth?</h3>
       <p className="mt-1 text-[13px] text-muted-foreground">Scales our measured saving to a fleet you describe. Every input is an assumption, not data from a real deployment.</p>
       <div className="mt-4 space-y-3 rounded-2xl bg-amber-50/70 p-4 ring-1 ring-amber-200">
@@ -224,7 +224,7 @@ function AnnualImpact() {
         <div className="rounded-2xl bg-water-soft/60 p-4"><p className="flex items-center gap-1 text-[12px] font-semibold text-water"><Droplet className="size-3.5" aria-hidden="true" /> Water per year</p>
           <p className="mt-1 text-[28px] leading-none font-semibold text-blue-800 tabular-nums">{megalitres.toFixed(1)} ML</p></div>
       </div>
-      <p className="mt-4 rounded-xl bg-muted/70 p-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
+      <p className="mt-4 rounded-xl bg-muted/70 p-3 font-mono text-[11px] leading-relaxed break-words text-muted-foreground">
         saved/yr = fleet GWh × 10⁶ × flexible share × (footprint per kWh, business as usual) × measured saving
         <br />CO₂: {gwh} × 10⁶ × {flex}% × {kgPerKwh.toFixed(3)} kg × {pct(co2Saving, 1)} = {n0(tonnes)} t
         <br />Water: {gwh} × 10⁶ × {flex}% × {lPerKwh.toFixed(3)} L × {pct(waterSaving, 1)} = {megalitres.toFixed(1)} ML
