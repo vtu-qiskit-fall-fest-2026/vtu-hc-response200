@@ -1,0 +1,52 @@
+{
+  "target": "ibm_hardware",
+  "created_utc": "2026-10-22T05:29:18Z",
+  "w_carbon": 0.5,
+  "n_jobs": 4,
+  "n_options": 4,
+  "n_qubits": 8,
+  "shots": 4000,
+  "qaoa": {
+    "reps": 1,
+    "gammas": [
+      0.32110434207623145
+    ],
+    "betas": [
+      2.87701476412391
+    ],
+    "cvar_alpha": 0.25,
+    "scale": 0.02246892656723276
+  },
+  "backend": "ibm_marrakesh",
+  "job_id": "dbcpub8c77vs7386pv9g",
+  "status": "SUBMITTED",
+  "mitigation": "dd_twirl",
+  "mitigation_options": {
+    "dynamical_decoupling": "XY4",
+    "twirling": "gates+measure"
+  },
+  "circuit": {
+    "depth": 247,
+    "two_qubit_gates": 114,
+    "two_qubit_depth": 76,
+    "ops": {
+      "sx": 244,
+      "rz": 182,
+      "cz": 114,
+      "measure": 8,
+      "x": 1,
+      "barrier": 1
+    },
+    "physical_qubits": [
+      129,
+      118,
+      109,
+      110,
+      111,
+      98,
+      91,
+      92
+    ]
+  },
+  "trained_on": "results/sim/qaoa_w0.5_p1.json"
+}
