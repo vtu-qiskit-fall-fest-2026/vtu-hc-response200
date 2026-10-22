@@ -35,7 +35,8 @@ export function Gauge({ tone, title, unit, min, max, major, naive, value }: Prop
   const hatchH = useTransform(level, (v) => Math.max(0, y(v) - y(naive)));
   const readout = useTransform(level, (v) => n0(v));
   const savedText = useTransform(level, (v) => `−${n0(naive - v)}`);
-  const savedY = useTransform(level, (v) => (y(v) + y(naive)) / 2 + 8);
+  const savedY = useTransform(level, (v) => (y(v) + y(naive)) / 2 + 12);
+  const savedPlateY = useTransform(level, (v) => (y(v) + y(naive)) / 2 - 24);
 
   useEffect(() => {
     if (prefersReducedMotion()) {
@@ -93,13 +94,19 @@ export function Gauge({ tone, title, unit, min, max, major, naive, value }: Prop
 
         {/* business-as-usual mark */}
         <line x1="10" x2={W - 10} y1={y(naive)} y2={y(naive)} className="gauge__naive" />
-        <g transform={`translate(10 ${y(naive) - 30})`} className="gauge__tag">
+        <g transform={`translate(10 ${y(naive) - 30})`} className="gauge__tag gauge__tag--long">
           <rect width="172" height="24" rx="2" />
           <text x="8" y="17">BUSINESS AS USUAL</text>
+        </g>
+        <g transform={`translate(10 ${y(naive) - 42})`} className="gauge__tag gauge__tag--short">
+          <rect width="150" height="36" rx="2" />
+          <text x="10" y="27">AS USUAL</text>
         </g>
 
         {/* saved span between the marks */}
         <motion.rect x="18" width={W - 36} y={y(naive)} height={hatchH} fill={`url(#hatch-${uid})`} />
+        {/* saved amount as a dark painted plate on the staff */}
+        <motion.rect x={STAFF_X + STAFF_W / 2 - 62} y={savedPlateY} width={124} height={48} rx={3} className="gauge__savedplate" stroke={color} />
         <motion.text x={STAFF_X + STAFF_W / 2} y={savedY} textAnchor="middle" className="gauge__saved">
           {savedText}
         </motion.text>
