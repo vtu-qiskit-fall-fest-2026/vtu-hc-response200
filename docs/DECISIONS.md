@@ -94,3 +94,8 @@ Real jobs are not all flexible, so each job can carry rules: deadline (day slot 
 - **Weighting:** weight = score ÷ 5, applied to on-site cooling water; power-plant water uses India's national score. The objective normalises water by business as usual, so any common scale factor cancels; only the ratio between sites matters.
 - **Grid carbon:** it stays the CEA national average, because India runs one synchronous national grid and CEA publishes one baseline. We didn't invent state carbon intensities.
 - **Result:** the plan changes at 6 of 21 settings for Delhi + Kolkata, 2 for Mumbai + Hyderabad, and 0 for Chennai + Bengaluru. No hardware was used.
+
+### D19. Live custom jobs and the annual-impact calculator (Oct 22)
+- **`POST /api/custom`:** accepts 1–5 jobs (validated: name 1–40 characters, 50–5,000 kWh, known site and slot, and a day deadline can't arrive at night). It solves them by brute force and with QAOA p=1, using a coarse grid (12) + COBYLA. The 4,000 shots are drawn from the exact output distribution of the circuit; the fast simulator is tested equal to Qiskit's Statevector. Qiskit's StatevectorSampler took about 8 s at 10 qubits, and this takes about 0.1 s. The response and the UI say "live simulator, not hardware". The offline demo doesn't depend on it.
+- **Annual impact:** a what-if calculator, not a result. Its inputs (fleet GWh, flexible share) are visibly labelled assumptions; it multiplies them by the measured saving and the business-as-usual footprint per kWh of the example, and shows the formula.
+- **Fix:** `index.html` still declared `color-scheme: dark` from the old UI, which made unticked checkboxes render dark; it's now light.

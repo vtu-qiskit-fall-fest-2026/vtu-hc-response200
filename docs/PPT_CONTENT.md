@@ -245,6 +245,14 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 10d: Try it, and what it could be worth
+**On slide**
+- Live demo: enter up to 5 jobs (or a CSV) → best plan + QAOA simulator result in about 0.1 s (*live simulator, not hardware*).
+- What-if: fleet energy × flexible share × footprint per kWh × measured saving. Example with **assumed** 100 GWh/yr and 20% flexible: about 3,420 t CO₂ and 11.6 ML water per year.
+- Every input is labelled an assumption; no deployment claims.
+
+---
+
 ## Slide 11: Data honesty and limitations
 **On slide**
 - **Cited:** grid carbon 0.710 kg/kWh (CEA v21.0, FY 2024-25); fossil-only 0.961 (CEA); coal plant water 2.60 L/kWh (Macknick et al. 2012, NREL)

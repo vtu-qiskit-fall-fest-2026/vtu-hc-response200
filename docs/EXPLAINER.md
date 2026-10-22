@@ -100,6 +100,9 @@ We measured it up to 11 jobs (22 qubits) on simulators. The quantum circuit keep
 **Isn't a litre a litre?**
 Not really. Water is scarcer in some places. We weight each site's water by the official water-stress score of its state (WRI Aqueduct 4.0). For Delhi (extremely high stress) paired with Kolkata (medium-high), GreenQ moves more water-heavy work to Kolkata. For city pairs with similar stress, the plan doesn't change. The cities and the weighting rule are illustrative; the scores are cited.
 
+**Can I try my own jobs? What's it worth?**
+Yes. "Try it yourself" lets you type up to five jobs (or upload a CSV) and solves them live on a simulator, clearly marked as not hardware. The calculator next to it scales our measured 14% saving to a fleet size you choose. Those inputs are assumptions, the formula is shown, and we don't claim any real deployment.
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 

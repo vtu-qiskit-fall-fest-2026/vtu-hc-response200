@@ -206,6 +206,14 @@ Savings shrink as fewer jobs are flexible (balanced priority; average over every
 
 Shots that obey every rule (mixed preset, balanced): random guessing 25%, ideal simulator 99%, noisy simulator 92%, **IBM ibm_marrakesh 61%** (job `dbd13dk24mrc73cki6eg`, 3 s QPU). The cheapest rule-obeying hardware shot was the true best allowed schedule (39 of 4,000 shots).
 
+### What could it be worth? (annual impact, assumptions only)
+
+The page includes a calculator that scales the **measured** saving (14.2% CO₂, 14.2% water at balanced priority, all flexible) to a fleet you describe:
+
+`saved per year = fleet IT energy (GWh) × 10⁶ × flexible share × footprint per kWh under business as usual (1.20 kg CO₂, 4.09 L) × measured saving`
+
+Default inputs are **assumptions**, not data: 100 GWh/year, 20% flexible. They give about 3,420 t CO₂ and 11.6 ML of water a year. The result is only as good as those assumptions, and we make no claim about any real deployment.
+
 ### Does the location matter? Regional water stress
 
 A litre is weighted by the **baseline water stress of the state** each site is in (WRI Aqueduct 4.0, 2023; provincial ranking, total demand; score 0–5). Power-plant water uses India's national score (4.11). The weight is score ÷ 5, an illustrative mapping. Grid carbon stays the CEA national average, because India runs one national grid, so we don't invent regional carbon figures. `python scripts/run_cities.py` → `results/cities.json`.
@@ -339,6 +347,8 @@ Then open **http://127.0.0.1:8000**. The first run builds the web UI automatical
 
 The demo reads only saved results (`results/ui_data.json`, exported from `results/hardware/` and `results/sim/`), so it works offline and never waits for a quantum queue. The optional "Re-run this setting on the local simulator" button calls the local Qiskit simulator through the server; nothing depends on it.
 
+**Try your own jobs (live):** the "Try it yourself" section sends up to 5 jobs to `POST /api/custom` and solves them by brute force plus the QAOA simulator (about 0.1 s). It is labelled *live simulator, not hardware* and needs the server running; everything else on the page works from saved results. CSV columns: `name, kWh, home site (A/B), arrives (day/night), day deadline (yes/no), stays local (yes/no)`.
+
 **Fallback (no Node.js):** `streamlit run app/streamlit_app.py` starts the earlier Streamlit version of the demo.
 
 **Frontend development:** run `python -m server` in one terminal and `cd web && npm run dev` in another (Vite proxies `/api` to the server).
@@ -372,6 +382,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - **No quantum advantage is claimed.** 256 schedules are solved instantly by brute force, which is how we grade the quantum result. Greedy, simulated annealing and even random sampling also reach the true best at this size, and they are faster (see Results). Our claim is a correct, compact formulation, validated end to end on real hardware with measured accuracy.
 - **Small instance on hardware.** Hardware runs use 4 jobs (8 qubits). The scaling study goes to 22 qubits on simulators only; one QAOA layer then needs about 1,000 two-qubit gates, beyond what current devices run reliably. The noisy device model was optimistic compared with the real chip.
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
+- **The annual-impact figure is a what-if calculator**, built on assumed fleet size and flexible share; it is not a measurement.
 - **Water stress is state-level, not city-level**, and the score → weight mapping (÷5) is our choice.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).
