@@ -72,9 +72,9 @@
 
 **Why this works:** the quantum and classical sides provably solve the same problem (tests check the Hamiltonian equals the classical cost on all 256 schedules), and a brute-force baseline grades every quantum result against the true optimum. At this size a classical computer is faster: **we make no claim of quantum advantage.**
 
-![GreenQ demo: headline and staff gauges](docs/images/ui_hero.png)
+![GreenQ demo: landing page](docs/images/ui_hero.png)
 
-*The web demo at 1920×1080: kg CO₂ and litres saved, read off two staff gauges that draw down from the business-as-usual mark to the GreenQ level.*
+*The web demo at 1920×1080: one headline, the savings, and a live dashboard just below.*
 
 ---
 
@@ -168,9 +168,9 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
 
-| Where each job runs (slider stops marked "Real IBM hardware") | Is the quantum part real? |
+| Dashboard (drag to rearrange; slider stops marked "IBM" ran on real hardware) | How it works |
 |---|---|
-| ![schedule board](docs/images/ui_board.png) | ![quantum proof](docs/images/ui_proof.png) |
+| ![dashboard](docs/images/ui_dashboard.png) | ![how it works](docs/images/ui_how.png) |
 
 <details><summary>Fallback Streamlit demo screenshots</summary>
 
@@ -191,7 +191,7 @@ Raw results with backend, job ID, timestamps, transpiled-circuit stats and all c
 | Hardware access | qiskit-ibm-runtime 0.50 (`SamplerV2`, job mode, IBM Quantum Open Plan) |
 | Simulation | Exact statevector (training), Qiskit Aer 0.18 via fake IBM backends (noise) |
 | Optimisation | CVaR objective, SciPy COBYLA |
-| Demo UI | React 19 + Vite 8 (TypeScript), Motion for animation, self-hosted fonts (Big Shoulders, Atkinson Hyperlegible Next, JetBrains Mono) |
+| Demo UI | React 19 + Vite 8 (TypeScript), Tailwind CSS 4 with shadcn-style tokens, Motion, Lucide icons, self-hosted Inter and JetBrains Mono |
 | Demo server | FastAPI + Uvicorn (serves the built UI and `/api/data`) |
 | Fallback demo | Streamlit + Plotly (`app/streamlit_app.py`) |
 | Tests | pytest: model, Hamiltonian, QAOA, API, and a headless Streamlit app test |
@@ -306,7 +306,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 
 ## 🙏 Credits & References
 
-**Libraries:** [Qiskit](https://github.com/Qiskit/qiskit), [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), [Qiskit IBM Runtime](https://github.com/Qiskit/qiskit-ibm-runtime), [NumPy](https://numpy.org), [SciPy](https://scipy.org), [pandas](https://pandas.pydata.org), [Matplotlib](https://matplotlib.org), [pylatexenc](https://github.com/phfaist/pylatexenc), [FastAPI](https://fastapi.tiangolo.com), [Uvicorn](https://www.uvicorn.org), [React](https://react.dev), [Vite](https://vite.dev), [Motion](https://motion.dev), [Fontsource](https://fontsource.org) (Big Shoulders by Patric King, Atkinson Hyperlegible Next by the Braille Institute, JetBrains Mono; all SIL Open Font License), [Streamlit](https://streamlit.io), [Plotly](https://plotly.com/python/), [python-dotenv](https://github.com/theskumar/python-dotenv), [pytest](https://pytest.org).
+**Libraries:** [Qiskit](https://github.com/Qiskit/qiskit), [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), [Qiskit IBM Runtime](https://github.com/Qiskit/qiskit-ibm-runtime), [NumPy](https://numpy.org), [SciPy](https://scipy.org), [pandas](https://pandas.pydata.org), [Matplotlib](https://matplotlib.org), [pylatexenc](https://github.com/phfaist/pylatexenc), [FastAPI](https://fastapi.tiangolo.com), [Uvicorn](https://www.uvicorn.org), [React](https://react.dev), [Vite](https://vite.dev), [Motion](https://motion.dev), [Tailwind CSS](https://tailwindcss.com), [Lucide](https://lucide.dev) icons (ISC), [Fontsource](https://fontsource.org) (Inter and JetBrains Mono, SIL Open Font License), [Streamlit](https://streamlit.io), [Plotly](https://plotly.com/python/), [python-dotenv](https://github.com/theskumar/python-dotenv), [pytest](https://pytest.org).
 **Hardware:** IBM Quantum Platform (Open Plan), device `ibm_marrakesh`.
 
 **Data sources**
@@ -321,6 +321,8 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - E. Farhi, J. Goldstone, S. Gutmann, *A Quantum Approximate Optimization Algorithm*, arXiv:1411.4028 (2014).
 - P. Barkoutsos et al., *Improving Variational Quantum Optimization using CVaR*, Quantum 4, 256 (2020).
 - L. Zhou et al., *Quantum Approximate Optimization Algorithm: Performance, Mechanism, and Implementation on Near-Term Devices*, Phys. Rev. X 10, 021067 (2020) (INTERP initialisation for p > 1).
+
+**UI:** the dashboard grid is the [21st.dev](https://21st.dev) community component `draggable-widget-grid` (in `web/src/components/ui/`, integrated unchanged); the GreenQ widgets inside it are our own. The page's visual style is inspired by the [Waymark template](https://waymark-template.vercel.app/); no code or assets were copied from it.
 
 **Tools:** development was assisted by Claude Code (Anthropic); commits it co-authored are marked in the git history.
 

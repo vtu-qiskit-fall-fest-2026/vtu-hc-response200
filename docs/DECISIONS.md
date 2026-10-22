@@ -57,3 +57,11 @@ Chosen by the user from a design round: savings are read off painted river staff
 - **Fonts:** self-hosted (Big Shoulders stencil for numerals, Atkinson Hyperlegible Next for reading on projectors), so it works offline.
 
 Rejected: a generic dark KPI dashboard (the brief asked to avoid it), a railway departure board (familiar, and its amber identity fights the fixed teal/blue), and a nixie counter and jacquard loom (less clear in one minute).
+
+### D14. Redesign: light, simple, Waymark-inspired, with a draggable dashboard (Oct 22)
+The user found the dark staff-gauge UI heavy and hard to understand, and asked for a simpler, premium look modelled on the Waymark template, with the 21st.dev draggable-widget-grid as the dashboard.
+- **Rebuilt as:** a light page (white, soft greys, emerald = carbon, blue = water), Tailwind v4 with shadcn-style tokens, Inter. A floating nav, a centred two-line headline, the dashboard in an app window, three "how it works" cards and an FAQ instead of long text.
+- **Dashboard:** uses the 21st.dev component unchanged; the 10 widgets are ours and read the same saved data. Controls inside widgets stop pointer events so they don't start a drag. Phones get one column.
+- **Not copied:** Waymark's look was recreated in our own code, not copied (hackathon rules forbid copied solutions); it is credited as inspiration.
+- **Unchanged:** the quantum core, API and data. Honesty lines were kept: hardware stops marked, mitigation "no consistent gain", illustrative data labelled, no advantage claim. Hero copy says "emits less CO₂ and uses less water", not "less energy", because the air-cooled site can use more electricity.
+- **Supersedes:** D13 (staff gauge).

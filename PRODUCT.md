@@ -42,7 +42,7 @@ A binary "where + when" qubit encoding (2 qubits per job, so every measured bits
 
 - Name: GreenQ, by Team Response200 (ID VTU-QFF-HC-0137). Text wordmark only; no logo exists.
 - No IBM, Qiskit or VTU logos (avoid implying endorsement); naming IBM hardware in text is factual.
-- User-specified: dark theme, green/teal for carbon, blue for water, large type, smooth but restrained motion. Avoid a generic dashboard look.
+- User-specified (Oct 22, replaces the earlier dark brief): light, simple, premium UI modelled on the Waymark template (https://waymark-template.vercel.app/) and a draggable widget dashboard built on the 21st.dev draggable-widget-grid; very little text. Green/emerald for carbon, blue for water. Recreate the style; never copy its code or assets.
 - Small team credit in the footer.
 
 ## Evidence on Hand

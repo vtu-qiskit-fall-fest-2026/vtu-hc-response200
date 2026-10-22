@@ -101,15 +101,19 @@ The search space grows as 4^jobs. Qubits grow linearly (2 per job), but circuit 
 The circuit in `greenq/qaoa.py`, built with Qiskit's `QAOAAnsatz` from our own Hamiltonian, transpiled for the real device and run with `SamplerV2` on IBM hardware. Job IDs are in `results/hardware/`.
 
 ## 9. The demo UI (what each part shows, and what to say)
-Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results, so no internet or IBM account is needed.
+Start it with `python -m server` and open http://127.0.0.1:8000. It reads only saved results, so it needs no internet and no IBM account.
 
-| Part | What it shows | One line to say |
-|---|---|---|
-| Headline + two gauges | kg CO₂ and litres saved against business as usual. The gauge level drops from the amber mark (business as usual) to the GreenQ mark. | "Same jobs, smarter placement: 530 kg of CO₂ and about 1,800 litres of water saved in this example." |
-| Where each job runs | Two boards (sites × day/night). Left is business as usual, right is GreenQ; jobs slide into their new bays. Amber hatching = an overloaded bay. | "Business as usual piles two big jobs onto one site at night; GreenQ spreads them to cleaner, drier slots." |
-| Priority slider | Water ↔ carbon. The three solid stops marked "Real IBM hardware" ran on ibm_marrakesh. Hatched stops show the best schedule found by checking all 256. | "Move it and the best schedule changes; the three marked stops were run on a real quantum computer." |
-| Is the quantum part real? | Share of shots in the best 10% of schedules (random 10%, hardware 18-23%, ideal simulator 28-34%), where all shots landed, the job ledger with IDs, and four honest notes. | "Twice as good as random guessing on real hardware; noise costs part of the gain; error mitigation didn't help consistently." |
-| How it works | Four steps: 2 qubits per job → cost Hamiltonian → QAOA interference → hardware + brute-force check. | Read the four headings. |
-| Footer | No quantum advantage claimed; what's cited vs illustrative; sources; team. | "A laptop is faster at this size, and we use it as the referee." |
+**Page, top to bottom**
+1. **Headline.** "Same jobs, smarter placement. Less carbon. Less water." plus the two savings (530 kg CO₂, 1,798 L water).
+2. **Dashboard.** Live widgets you can drag around:
+   - **CO₂ saved / Water saved:** before vs GreenQ.
+   - **Priority slider:** water ↔ carbon. The three stops marked **IBM** ran on real IBM hardware; the others are checked by brute force.
+   - **Where each job runs:** toggle *Business as usual* / *GreenQ* and watch the jobs move; a red bay is overloaded.
+   - **Quantum vs random:** share of shots in the best 10% of schedules (random 10%, IBM hardware about 19-21%, perfect simulator about 33%), with the note that error mitigation gave no consistent gain.
+   - **IBM hardware runs:** the real job IDs.
+   - **Qubits used, Best schedule, Error mitigation, The referee:** one fact each.
+3. **How it works.** Encode (2 qubits per job) → Run (QAOA on IBM) → Check (laptop as referee).
+4. **Honest answers.** Five short questions the jury will ask.
+5. **Footer.** What's cited, what's real, what's illustrative, plus sources.
 
-**Solid vs hatched vs dashed:** solid white = real IBM hardware, hatched = simulator (or no hardware run), dashed amber = random guessing or business as usual. If asked "is this real hardware?", point at the solid marks and the job IDs.
+**One line per part, for the video:** "Same jobs, smarter placement" → "move the slider and the plan changes; the IBM stops are real hardware" → "toggle and watch the jobs move off the overloaded site" → "the quantum computer lands in the best schedules about twice as often as random" → "a laptop is our referee; no quantum advantage claimed".
