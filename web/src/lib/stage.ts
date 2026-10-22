@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /** The slide canvas. Every screen is laid out for this size, then scaled. */
 export const DESIGN_W = 1600;
@@ -24,4 +24,15 @@ export function useStageScale() {
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
   }, []);
+}
+
+/** True on phones and small windows (no scaling; screens stack and scroll). */
+export function useCompact() {
+  const [c, setC] = useState(isCompact);
+  useEffect(() => {
+    const on = () => setC(isCompact());
+    window.addEventListener("resize", on);
+    return () => window.removeEventListener("resize", on);
+  }, []);
+  return c;
 }

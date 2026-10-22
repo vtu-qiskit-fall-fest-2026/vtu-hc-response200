@@ -90,7 +90,7 @@ export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean
 export function FooterBar({ captionText }: { captionText: string | null }) {
   const { screen, go, caption } = useApp();
   return (
-    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border px-8 text-[13px] text-muted-foreground">
+    <footer className="flex h-[60px] shrink-0 items-center gap-6 border-t border-border px-8 max-sm:gap-2 max-sm:px-3 text-[13px] text-muted-foreground">
       <div className="flex min-w-0 flex-1 items-center gap-6" aria-live="polite">
         <AnimatePresence mode="wait" initial={false}>
           {caption ? (
@@ -106,7 +106,7 @@ export function FooterBar({ captionText }: { captionText: string | null }) {
             </motion.p>
           ) : (
             <motion.div key="bar" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex min-w-0 flex-1 items-center gap-6">
-              <span className="truncate font-medium text-foreground">Team Response200 · VTU Qiskit Fall Fest 2026 · Track 6</span>
+              <span className="truncate font-medium text-foreground max-sm:hidden">Team Response200 · VTU Qiskit Fall Fest 2026 · Track 6</span>
               <div className="flex flex-1 items-center justify-center gap-1.5" aria-label={`Screen ${screen + 1} of ${SCREENS.length}`}>
                 {SCREENS.map((s, i) => (
                   <button key={s.key} onClick={() => go(i)} aria-label={`Go to ${s.label}`} className="group py-2">
@@ -118,7 +118,7 @@ export function FooterBar({ captionText }: { captionText: string | null }) {
           )}
         </AnimatePresence>
       </div>
-      <span className="shrink-0 rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200">Not quantum advantage · a laptop is the referee</span>
+      <span className="shrink-0 rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200 max-sm:text-[11px]">Not quantum advantage<span className="max-sm:hidden"> · a laptop is the referee</span></span>
       {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · F</span>}
     </footer>
   );

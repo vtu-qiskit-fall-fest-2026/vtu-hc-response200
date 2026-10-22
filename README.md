@@ -75,7 +75,7 @@
 
 ![GreenQ demo: start screen](docs/images/ui_start.png)
 
-*The demo at 1920×1080. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About); each fits one screen with no scrolling. Press **P** for a 35-second guided story, arrows or 1–6 to move, **F** for full screen.*
+*The Start screen at 1920×1080: a background slideshow of five drawn scenes (servers, cooling water, grid carbon, a quantum computer, a greener data hall) whose captions match a three-step strip, the two savings, and the run now → run smart mini scene. Six screens in a sidebar (Start, Schedule, Quantum, Compare, Ask, About); each fits one screen with no scrolling. Press **P** for a 35-second guided story, arrows or 1–6 to move, **F** for full screen.*
 
 ---
 
@@ -479,6 +479,8 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - L. Zhou et al., *Quantum Approximate Optimization Algorithm: Performance, Mechanism, and Implementation on Near-Term Devices*, Phys. Rev. X 10, 021067 (2020) (INTERP initialisation for p > 1).
 
 **UI:** the v2 dashboard used the [21st.dev](https://21st.dev) community component `draggable-widget-grid` (kept unchanged in `web/src/components/ui/`); the v3 slide screens place the same GreenQ widgets in fixed layouts, because a drag grid can't fit a no-scroll slide. The page's visual style is inspired by the [Waymark template](https://waymark-template.vercel.app/); no code or assets were copied from it.
+
+**Images:** the five Start-screen background scenes (server racks, cooling towers, power grid, a generic dilution-refrigerator "chandelier", a green data hall) are SVG illustrations drawn by Team Response200 for this app, in `web/src/components/slides/StartScenes.tsx`. No photos, stock images, AI-generated images or logos (IBM, Qiskit, VTU) are used anywhere in the app.
 
 **Tools:** development was assisted by Claude Code (Anthropic); commits it co-authored are marked in the git history.
 

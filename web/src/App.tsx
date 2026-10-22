@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppContext, BALANCED, useUiData, type AppState, type View } from "@/lib/data";
 import { useStory, type CaptionId } from "@/lib/story";
-import { useStageScale } from "@/lib/stage";
+import { isCompact, useCompact, useStageScale } from "@/lib/stage";
 import { SCREENS, loadScreen, saveScreen } from "@/lib/screens";
 import { useSlideKeys } from "@/lib/keys";
 import { useNarration } from "@/lib/llm";
@@ -46,7 +46,8 @@ function SlideApp({ data }: { data: UiData }) {
   const [dir, setDir] = useState(1);
   const [caption, setCaption] = useState<CaptionId | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
-  const [sideOpen, setSideOpen] = useState(true);
+  const [sideOpen, setSideOpen] = useState(() => !isCompact());
+  const compact = useCompact();
   const narration = useNarration();
   const cur = useRef(screen);
 
@@ -99,7 +100,7 @@ function SlideApp({ data }: { data: UiData }) {
       <div className="flex h-dvh w-full overflow-hidden bg-background text-foreground">
         <Sidebar open={sideOpen} setOpen={setSideOpen} />
         <div className="relative flex min-w-0 flex-1 flex-col">
-          <main className="min-h-0 flex-1 overflow-hidden px-10 pt-8 pb-7" aria-label={SCREENS[screen].label}>
+          <main className={`min-h-0 flex-1 overflow-hidden ${compact ? "px-4 pt-4 pb-4" : "px-10 pt-8 pb-7"}`} aria-label={SCREENS[screen].label}>
             <Stage screen={screen} dir={dir}>
               <Current />
             </Stage>

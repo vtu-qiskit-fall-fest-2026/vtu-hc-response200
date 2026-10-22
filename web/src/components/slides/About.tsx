@@ -53,6 +53,7 @@ export function AboutScreen() {
                   <span><b className="font-semibold">State water stress</b> 0–5 <span className="text-muted-foreground">· WRI Aqueduct 4.0</span></span>
                 </li>
               )}
+              <li className="text-[13px] text-muted-foreground">Start-screen illustrations: drawn as SVG by Team Response200 for this app (no photos, no logos).</li>
               <li className="flex items-start gap-2 text-[14px]">
                 <Badge kind="illustrative" />
                 <span className="text-muted-foreground">{data.sources.illustrative.map((x) => x.split(/ \(|,/)[0]).join(" · ")}</span>

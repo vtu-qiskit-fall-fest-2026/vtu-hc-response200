@@ -120,3 +120,9 @@ Forecast error is modelled as a uniform independent error on each slot's grid ca
 - **Why this model:** on Groq, strict `json_schema` structured outputs are supported by `openai/gpt-oss-20b` and `openai/gpt-oss-120b` (checked in Groq's docs on Oct 22). The 20b model is the faster one, and the explanations are short. We send `reasoning_effort: low` and temperature 0.2. Other models fall back to JSON-object mode.
 - **Time limits:** 8–12 s timeouts. Live answers are memoised in memory, and the cache script paces its requests for the free tier.
 
+### D24. Start screen: our own SVG scenes instead of photos (Oct 22)
+- **Why:** the Start slide must explain the project in five seconds, so it got a background slideshow (servers → cooling water → grid carbon → quantum computer → greener data hall) whose captions drive a three-step strip.
+- **SVG, not photos:** we drew the scenes ourselves rather than downloading licensed photos. There are no licences or authors to track, they are sharp at any size, they add only a few KB to the JavaScript bundle (no image files, nothing to preload), they work offline, and they carry no brand marks. In particular there is no IBM marketing photo of their hardware: the quantum scene is a generic gold dilution-refrigerator "chandelier".
+- **Readability:** text sits on 85% white glass cards over a white gradient. We measured the contrast of every text colour against the actual card pixels in all five scenes; the lowest was 4.4:1 for the grey second headline line, so it was darkened to 60% ink (5.2:1).
+- **Honest chips:** "Real IBM quantum runs: 7" is counted from the data (6 at the three priority settings + 1 with job rules), not typed in.
+

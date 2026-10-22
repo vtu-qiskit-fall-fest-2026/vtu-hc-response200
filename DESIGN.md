@@ -227,7 +227,7 @@ A near-monochrome light palette with two strictly semantic accents and two signa
 
 | Screen | Body |
 |---|---|
-| 1 Start | 76px two-tone headline, two 64px count-up savings, Play; the mini scene on the right |
+| 1 Start | full-bleed background slideshow under a left glass card (60px two-tone headline, one sub-line, two 58px count-up savings with ILLUSTRATIVE badges, Play + Explore, two trust chips); right: the scene caption chip on top and the mini scene below; bottom: a three-step strip |
 | 2 Schedule | left card: run now / run smart, job rules, job chips, the two sites, tickers; right column (440px): priority slider, trade-off curve, why-this-schedule |
 | 3 Quantum | top: circuit card; bottom: histogram (1.35fr) and facts + 7 job IDs (1fr) |
 | 4 Compare | one card with five tabs: Methods, Scaling, Job rules, Cities, Forecasts |
@@ -298,6 +298,13 @@ Two grey site panels, each with its building illustration, PUE and water figures
 
 ### Quantum Proof
 A white circuit card drawn in SVG: grey wires, ink H gates and measurement boxes, emerald Rz/ZZ gates over a pale emerald cost band, blue Rx gates over a pale blue mixer band. Beside a histogram of ten deciles (best tenth tinted pale emerald), three series follow the Three Provenances Rule, with grey well fact tiles holding one big number and one sentence each.
+
+### Start screen: slideshow, overlay and glass
+- **Scenes:** five SVG illustrations drawn by us (`StartScenes.tsx`), light pastel style, no photos or logos. Each is drawn on the 1600×900 canvas and fitted into the top-right window (translate 523,30 · scale 0.62) that stays visible between the text card and the mini scene.
+- **Order and captions (≤ 4 words):** Servers never sleep → Cooling drinks water → Grid carbon changes hourly → A quantum computer decides → Smarter placement, less impact. Scenes 1–3 light step 1 *Jobs arrive*, scene 4 lights step 2 *Quantum computer chooses*, scene 5 lights step 3 *Footprint drops*; clicking a step jumps to its first scene.
+- **Overlay rule:** a left-to-right white gradient (85% → 55% → 25%) over the images, and all text sits on glass cards (white 85%, backdrop blur, white hairline ring). Measured contrast on every scene: headline 19.5:1, grey second line 5.2:1, sub-line 10.9:1. Text never sits directly on an image; only the caption chip does, and it's white on 85% ink.
+- **Motion:** a 1.2 s cross-fade every 5.5 s; the active scene zooms 1.00 → 1.05 (Ken Burns) and nothing else moves behind the text. Paused while the pointer is over the visible image and during story mode. Reduced motion: scene 1 as a still, no fade or zoom.
+- **Phone width:** the sidebar starts collapsed; cards stack (text, caption, mini scene, steps) and the screen scrolls.
 
 ### Honest answers
 A two-column definition list on the About screen: a 15px semibold question, then one grey line.

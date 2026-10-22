@@ -11,12 +11,17 @@ For: whoever records the YouTube demo. The viewers are the hackathon jury, so it
 
 ---
 
-### 0:00-0:20 · 1 Start
-**Screen:** the headline and the two numbers counting up; the mini scene switches from *Run now* to *Run smart*.
+### 0:00-0:25 · 1 Start (let the background slideshow run; keep the mouse off the picture)
+**Screen:** the headline, the two numbers counting up, the mini scene switching from *Run now* to *Run smart*. Behind it the scenes change every 5.5 s, and the step strip at the bottom follows them.
 
-**Say:** "Data centres burn electricity and evaporate cooling water. Many of their jobs are flexible: they could run at another site, or at another time. GreenQ decides where and when, using a quantum algorithm. In our example, the same four jobs emit 530 kilograms less CO₂ and use about 1,800 litres less water."
+**Say, one line per caption:**
+- *Servers never sleep:* "Data centres run around the clock."
+- *Cooling drinks water:* "Many cool their servers by evaporating water."
+- *Grid carbon changes hourly:* "And the electricity is cleaner at some hours than others."
+- *A quantum computer decides:* "GreenQ moves flexible jobs to a smarter place and time, and a real IBM quantum computer helped choose."
+- *Smarter placement, less impact:* "Same four jobs: 530 kilograms less CO₂ and about 1,800 litres less water, checked against all 256 possible schedules."
 
-### 0:20-1:05 · 2 Schedule (press **→**)
+### 0:25-1:05 · 2 Schedule (press **→**)
 **Screen:** *Run now* first, then the jobs move to *Run smart*; lines show where each job went; "Why this schedule" fills in.
 
 **Say:** "Site A cools with water: less electricity, more water. Site B is air-cooled: almost no water on site, but more electricity. Each has a day slot, when India's grid is cleaner thanks to solar, and a night slot. Run now starts every job at home the moment it arrives, and two big jobs pile onto Site A at night. Run smart spreads them out. On the right, GreenQ says why each job moved."
