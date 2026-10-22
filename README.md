@@ -206,6 +206,18 @@ Savings shrink as fewer jobs are flexible (balanced priority; average over every
 
 Shots that obey every rule (mixed preset, balanced): random guessing 25%, ideal simulator 99%, noisy simulator 92%, **IBM ibm_marrakesh 61%** (job `dbd13dk24mrc73cki6eg`, 3 s QPU). The cheapest rule-obeying hardware shot was the true best allowed schedule (39 of 4,000 shots).
 
+### Does the location matter? Regional water stress
+
+A litre is weighted by the **baseline water stress of the state** each site is in (WRI Aqueduct 4.0, 2023; provincial ranking, total demand; score 0–5). Power-plant water uses India's national score (4.11). The weight is score ÷ 5, an illustrative mapping. Grid carbon stays the CEA national average, because India runs one national grid, so we don't invent regional carbon figures. `python scripts/run_cities.py` → `results/cities.json`.
+
+| City pair (Site A evaporative + Site B air-cooled) | Aqueduct 4.0 state scores (0–5) | Balanced: water saved (raw / stress-weighted) | CO₂ saved | Plan changes vs unweighted |
+|---|---|---|---|---|
+| Delhi NCR + Kolkata | NCT of Delhi 4.75 · West Bengal 2.53 | 2,080 L / 1,847 | 429 kg | 6 of 21 settings |
+| Mumbai + Hyderabad | Maharashtra 4.20 · Telangana 3.92 | 1,798 L / 1,486 | 530 kg | 2 of 21 settings |
+| Chennai + Bengaluru | Tamil Nadu 4.15 · Karnataka 3.73 | 1,798 L / 1,483 | 530 kg | 0 of 21 settings |
+
+**Plain reading:** only Delhi NCR + Kolkata changes the plan. Delhi is extremely high stress and Kolkata medium-high, so water-heavy work moves to Kolkata: 2,080 L saved instead of 1,798, at the cost of 429 kg CO₂ saved instead of 530. Where both states are similarly stressed, the plan stays the same. QAOA on the simulator found the true best for every preset.
+
 ### How it scales (measured, simulator)
 
 `python scripts/run_scaling.py` → `results/scaling.json`. Same 2 sites × 2 slots and balanced priority; jobs beyond the 4 demo jobs are illustrative (seeded). Only measured sizes are shown; nothing is extrapolated.
@@ -360,6 +372,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - **No quantum advantage is claimed.** 256 schedules are solved instantly by brute force, which is how we grade the quantum result. Greedy, simulated annealing and even random sampling also reach the true best at this size, and they are faster (see Results). Our claim is a correct, compact formulation, validated end to end on real hardware with measured accuracy.
 - **Small instance on hardware.** Hardware runs use 4 jobs (8 qubits). The scaling study goes to 22 qubits on simulators only; one QAOA layer then needs about 1,000 two-qubit gates, beyond what current devices run reliably. The noisy device model was optimistic compared with the real chip.
 - **Illustrative data.** Grid carbon (CEA) and power-plant water (NREL) are cited. Site PUE/WUE, the day/night carbon split, job sizes and the overload penalty are illustrative values chosen within published ranges, and are labelled in the code, the UI and here. Indirect water is approximated as fossil share × coal-plant water use.
+- **Water stress is state-level, not city-level**, and the score → weight mapping (÷5) is our choice.
 - **One grid region, two time slots.** Real deployments would use live regional carbon and weather data.
 - **Training is classical.** γ and β are trained on an exact simulator, and only the trained circuit runs on hardware (Open Plan budget: 10 min per 28 days, no Session mode).
 - **Job rules are illustrative** (which jobs have deadlines, residency or priority). On real hardware only 61% of shots obeyed every rule on the mixed preset (simulator 99%), because noise flips the penalised bits; GreenQ discards rule-breaking shots.
@@ -378,6 +391,7 @@ Each hardware job uses about 3 seconds of quantum time. The script refuses to su
 - Uptime Institute, *Global Data Center Survey 2024*: average PUE 1.56.
 - University of Arizona, *Water-energy tradeoffs in data centers: a case study in hot-arid climates*: air-cooled site ~13% higher PUE, 66% lower source WUE.
 - Equinix, *What is Water Usage Effectiveness (WUE)?*: WUE from ~0 (air-cooled) to ~2.5 L/kWh (evaporative).
+- Kuzma, S., M.F.P. Bierkens, S. Lakshman, T. Luo, L. Saccoccia, E.H. Sutanudjaja and R. Van Beek (2023), *Aqueduct 4.0: Updated decision-relevant global water risk indicators*, Technical Note, World Resources Institute, [doi:10.46830/writn.23.00061](https://doi.org/10.46830/writn.23.00061). Country and provincial rankings file `Aqueduct40_rankings_download_Y2023M07D05.xlsx`, baseline water stress, CC BY 4.0. Used for state-level water-stress scores.
 - The Green Grid, *WUE: a green grid data center sustainability metric* (WP #35, 2011).
 
 **Algorithms**

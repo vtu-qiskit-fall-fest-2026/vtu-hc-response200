@@ -97,6 +97,9 @@ Yes, within limits. We added three rules a job can have: a deadline, data that m
 **Does it scale?**
 We measured it up to 11 jobs (22 qubits) on simulators. The quantum circuit keeps finding good schedules in the ideal case, but it gets big fast: 114 two-qubit gates at 8 qubits, about 1,000 at 22. On a noisy model of the IBM chip the advantage over random shrinks as it grows, and the real chip was noisier than the model. So today's hardware handles our small case, and larger ones need better hardware or smarter circuits. A classical computer still solves all these sizes in under a second, and we say so.
 
+**Isn't a litre a litre?**
+Not really. Water is scarcer in some places. We weight each site's water by the official water-stress score of its state (WRI Aqueduct 4.0). For Delhi (extremely high stress) paired with Kolkata (medium-high), GreenQ moves more water-heavy work to Kolkata. For city pairs with similar stress, the plan doesn't change. The cities and the weighting rule are illustrative; the scores are cited.
+
 **Why QAOA?**
 It's designed for exactly this: minimising a cost written as Z-terms. It's shallow enough for today's hardware, and it's a standard, well-studied Qiskit workflow.
 

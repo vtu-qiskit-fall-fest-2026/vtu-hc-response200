@@ -28,6 +28,9 @@ For: whoever records the YouTube demo. The viewers are the hackathon jury, so it
 ### 1:40-1:55 · Not every job is flexible (click "Mixed" on the planner)
 **Say:** "Real jobs have rules. A lock means the data must stay at its home site; a clock means a deadline. With these rules, savings shrink but don't vanish. On the real IBM machine, 61 percent of shots respected every rule, against 25 percent for random guessing."
 
+### 1:55-2:05 · Location matters (scroll to "Does the location matter?")
+**Say:** "A litre in Delhi costs more than a litre in Kolkata. Using WRI's water-stress scores, the plan shifts water-heavy work to the less-stressed city, but only when the difference is large."
+
 ### 1:45-2:40 · The quantum part (story scrolls to the circuit, then the histogram)
 **Screen:** the circuit, then the histogram and the four facts.
 

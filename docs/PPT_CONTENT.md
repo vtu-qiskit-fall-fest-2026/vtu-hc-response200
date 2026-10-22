@@ -193,6 +193,23 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Slide 9c: Does the location matter? (water stress)
+**On slide**
+- A litre in a water-stressed state counts for more. Weight = WRI Aqueduct 4.0 state baseline water stress score ÷ 5 (scores cited, mapping illustrative).
+
+| City pair (Site A evaporative + Site B air-cooled) | Aqueduct 4.0 state scores (0–5) | Balanced: water saved (raw / stress-weighted) | CO₂ saved | Plan changes vs unweighted |
+|---|---|---|---|---|
+| Delhi NCR + Kolkata | NCT of Delhi 4.75 · West Bengal 2.53 | 2,080 L / 1,847 | 429 kg | 6 of 21 settings |
+| Mumbai + Hyderabad | Maharashtra 4.20 · Telangana 3.92 | 1,798 L / 1,486 | 530 kg | 2 of 21 settings |
+| Chennai + Bengaluru | Tamil Nadu 4.15 · Karnataka 3.73 | 1,798 L / 1,483 | 530 kg | 0 of 21 settings |
+
+- Only Delhi + Kolkata changes the plan (water-heavy work moves to Kolkata).
+- Grid carbon stays the CEA national average (one national grid).
+
+**Visual:** the "Does the location matter?" cards.
+
+---
+
 ## Slide 10b: Compared with simple methods
 **On slide**
 - Same objective, same 256 schedules (balanced setting):

@@ -88,3 +88,9 @@ Real jobs are not all flexible, so each job can carry rules: deadline (day slot 
 - **Metric:** the chart uses "share of shots in the best 10%" rather than the approximation ratio. Random guessing's ratio drifts upward with size, while its best-10% share stays at exactly 10%, so the comparison stays readable.
 - **Calibration:** the real hardware point (8 qubits) is plotted next to the noise model, so the model's optimism is visible.
 - **Findings:** greedy misses from 5 jobs and annealing from 8. Exhaustive search is still fast at 22 qubits. No advantage claimed.
+
+### D18. Water stress from WRI Aqueduct 4.0 state scores; no regional carbon (Oct 22)
+- **Source:** Aqueduct 4.0 (2023), provincial baseline water stress with total-demand weighting, downloaded from WRI (CC BY 4.0). Cities map to their state's score: Delhi → NCT of Delhi 4.75, Mumbai → Maharashtra 4.20, Chennai → Tamil Nadu 4.15, Hyderabad → Telangana 3.92, Bengaluru → Karnataka 3.74, Kolkata → West Bengal 2.53. India's score is 4.11. City-level values weren't available in a citable form, so we use state level and label the city mapping as illustrative.
+- **Weighting:** weight = score ÷ 5, applied to on-site cooling water; power-plant water uses India's national score. The objective normalises water by business as usual, so any common scale factor cancels; only the ratio between sites matters.
+- **Grid carbon:** it stays the CEA national average, because India runs one synchronous national grid and CEA publishes one baseline. We didn't invent state carbon intensities.
+- **Result:** the plan changes at 6 of 21 settings for Delhi + Kolkata, 2 for Mumbai + Hyderabad, and 0 for Chennai + Bengaluru. No hardware was used.
