@@ -1,11 +1,9 @@
-import { useEffect, useRef } from "react";
-import { LayoutGroup, animate, motion, useMotionValue, useTransform } from "motion/react";
-import { ArrowDown, ArrowRight, Clock, Droplet, Leaf, Lock, Moon, Star, Sun } from "lucide-react";
-import { JOB_STYLE, useApp, whyLines } from "@/lib/data";
+import { LayoutGroup, motion } from "motion/react";
+import { CountUp } from "@/components/slides/ui";
+import { ArrowDown, Clock, Droplet, Leaf, Lock, Moon, Star, Sun } from "lucide-react";
+import { JOB_STYLE, useApp } from "@/lib/data";
 import { n0, prefersReducedMotion } from "@/format";
 import type { Rule, UiData } from "@/types";
-
-const noDrag = { onPointerDown: (e: React.PointerEvent) => e.stopPropagation() };
 
 export function Illustrative({ className = "" }: { className?: string }) {
   return (
@@ -81,8 +79,10 @@ export function JobBlock({ data, j, moved, compact = false, layoutPrefix, rules 
   return (
     <motion.div
       layoutId={`${layoutPrefix}-${job.key}`}
-      transition={reduced ? { duration: 0 } : { type: "spring", visualDuration: 0.7, bounce: 0.18 }}
-      className={`relative flex min-w-0 shrink-0 flex-col justify-center rounded-lg ${st.cls} ${st.text} ${compact ? "h-5 px-1" : "h-[58px] px-2.5"}`}
+      data-job={j}
+      animate={moved && !reduced ? { boxShadow: ["0 0 0 0px rgba(16,185,129,0)", "0 0 0 7px rgba(16,185,129,0.5)", "0 0 0 0px rgba(16,185,129,0)"] } : { boxShadow: "0 0 0 0px rgba(16,185,129,0)" }}
+      transition={reduced ? { duration: 0 } : { layout: { type: "spring", visualDuration: 0.7, bounce: 0.18 }, boxShadow: { duration: 1.1, delay: 0.55 } }}
+      className={`relative flex min-w-0 shrink-0 flex-col justify-center rounded-lg ${st.cls} ${st.text} ${compact ? "h-7 px-1" : "h-[58px] px-2.5"}`}
       style={{ width: `calc(${(job.it_energy_kwh / maxLaneLoad(data)) * 100}% - 4px)` }}
       title={`${job.label}: ${n0(job.it_energy_kwh)} kWh`}
     >
@@ -105,135 +105,69 @@ export function JobBlock({ data, j, moved, compact = false, layoutPrefix, rules 
   );
 }
 
-/* --------------------------------------------------------------- count-up */
+/* --------------------------------------------------------------- board */
 
-function CountUp({ to, from }: { to: number; from: number }) {
-  const mv = useMotionValue(from);
-  const text = useTransform(mv, (v) => n0(v));
-  useEffect(() => {
-    if (prefersReducedMotion()) return void mv.set(to);
-    const c = animate(mv, to, { duration: 1.1, ease: [0.16, 1, 0.3, 1] });
-    return () => c.stop();
-  }, [to, mv]);
-  return <motion.span>{text}</motion.span>;
-}
-
-/* --------------------------------------------------------------- scene */
-
-export function SceneWidget() {
-  const { data, stop, view, setView, preset } = useApp();
+/** Two sites x two slots, with the jobs placed by the current view. */
+export function Board() {
+  const { data, stop, view, preset } = useApp();
   const { sites, slots, jobs, options } = data.instance;
   const schedule = view === "greenq" ? stop.best.schedule : data.naive.schedule;
-  const now = view === "greenq" ? stop.best : data.naive;
-  const ref = useRef<HTMLDivElement>(null);
-
-  // First time the scene is on screen, show business as usual, then let the jobs move.
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
-    const io = new IntersectionObserver((es) => {
-      if (es.some((e) => e.isIntersecting)) {
-        setTimeout(() => setView("greenq"), 1000);
-        io.disconnect();
-      }
-    }, { threshold: 0.45 });
-    io.observe(ref.current);
-    return () => io.disconnect();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const why = view === "greenq" ? whyLines(data, data.naive.schedule, stop.best.schedule) : [];
-  const dCo2 = now.kg_co2 - data.naive.kg_co2;
-  const dWater = now.litres - data.naive.litres;
-
   return (
-    <section ref={ref} className="flex h-full flex-col gap-4 p-5">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-[20px] font-semibold tracking-tight">Two data centres, two time slots</h3>
-        <div className="flex rounded-full bg-muted p-1" role="tablist" aria-label="Which schedule" {...noDrag}>
-          {(["before", "greenq"] as const).map((v) => (
-            <button
-              key={v}
-              role="tab"
-              aria-selected={view === v}
-              onClick={() => setView(v)}
-              className={`rounded-full px-4 py-1.5 text-[14px] font-semibold transition-colors ${view === v ? "bg-white text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              {v === "before" ? "Business as usual" : "GreenQ"}
-            </button>
-          ))}
-        </div>
-      </header>
-
-      <LayoutGroup id="scene">
-        <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 md:grid-cols-2">
-          {sites.map((s) => (
-            <div key={s.key} className="flex min-w-0 flex-col gap-2 rounded-2xl bg-muted/70 p-3">
-              <div className="flex items-center gap-3">
-                {s.cooling === "evaporative" ? <CoolingTower className="h-14 w-[76px] shrink-0" /> : <ChillerBuilding className="h-14 w-[76px] shrink-0" />}
-                <div className="min-w-0">
-                  <p className="text-[16px] font-semibold">{s.label.split(" (")[0]} <span className="font-normal text-muted-foreground">· {s.cooling === "evaporative" ? "evaporative cooling" : "air-cooled chillers"}</span></p>
-                  <p className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
-                    <span>PUE {s.pue.toFixed(2)}</span>
-                    <span className="flex items-center gap-1"><Droplet className="size-3 text-water" aria-hidden="true" /> {s.wue.day}/{s.wue.night} L/kWh on site (day/night)</span>
-                    <Illustrative />
-                  </p>
-                </div>
+    <LayoutGroup id="scene">
+      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+        {sites.map((s) => (
+          <div key={s.key} className="flex min-w-0 flex-col gap-3 rounded-2xl bg-muted/70 p-4">
+            <div className="flex items-center gap-3">
+              {s.cooling === "evaporative" ? <CoolingTower className="h-14 w-[76px] shrink-0" /> : <ChillerBuilding className="h-14 w-[76px] shrink-0" />}
+              <div className="min-w-0">
+                <p className="text-[19px] font-semibold">{s.label.split(" (")[0]}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-[14px] text-muted-foreground">
+                  <Droplet className="size-3.5 text-water" aria-hidden="true" />
+                  {s.cooling === "evaporative" ? "water cooling" : "air cooling"}
+                </p>
               </div>
-              {slots.map((t) => {
-                const k = options.find((o) => o.site === s.key && o.slot === t.key)!.index;
-                const here = jobs.map((_, j) => j).filter((j) => schedule[j] === k);
-                const over = here.length > 1;
-                return (
-                  <div key={t.key} className={`flex min-h-[86px] flex-col gap-1.5 rounded-xl bg-white p-2.5 ring-1 transition-colors ${over ? "ring-2 ring-rose-300" : "ring-border"}`}>
-                    <div className="flex items-center justify-between gap-2 text-[12px]">
-                      <span className="flex items-center gap-1.5 font-semibold">
-                        {t.key === "day" ? <Sun className="size-3.5 text-amber-500" aria-hidden="true" /> : <Moon className="size-3.5 text-indigo-500" aria-hidden="true" />}
-                        {t.key === "day" ? "Day" : "Night"}
-                        {over && <span className="rounded-md bg-rose-50 px-1.5 py-0.5 text-[11px] font-semibold text-rose-700">Overloaded</span>}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-muted-foreground" title={data.instance.slot_note}>
-                        grid {t.carbon_kg_per_kwh.toFixed(2)} kg CO₂/kWh
-                        <span className="h-1.5 w-14 rounded-full bg-muted">
-                          <span className="block h-full rounded-full bg-carbon/70" style={{ width: `${(t.carbon_kg_per_kwh / 1) * 100}%` }} />
-                        </span>
-                      </span>
-                    </div>
-                    <div className="flex min-h-[58px] flex-1 items-center gap-1">
-                      {here.map((j) => (
-                        <JobBlock key={jobs[j].key} data={data} j={j} moved={view === "greenq" && data.naive.schedule[j] !== k} layoutPrefix="scene" rules={preset.rules[jobs[j].key] ?? []} />
-                      ))}
-                      {here.length === 0 && <span className="text-[12px] text-muted-foreground">free</span>}
-                    </div>
-                  </div>
-                );
-              })}
             </div>
-          ))}
-        </div>
-      </LayoutGroup>
-
-      <div className="grid gap-3 md:grid-cols-[auto_auto_1fr] md:items-center">
-        <Ticker icon="carbon" now={now.kg_co2} before={data.naive.kg_co2} delta={dCo2} unit="kg CO₂" />
-        <Ticker icon="water" now={now.litres} before={data.naive.litres} delta={dWater} unit="L water" />
-        <ul className="min-w-0 space-y-1 text-[12px] text-muted-foreground md:pl-2">
-          {preset.key !== "flexible" && (
-            <li className="flex flex-wrap items-center gap-x-3 gap-y-1 font-medium text-foreground">
-              {(Object.keys(RULE_ICON) as Rule[]).filter((r) => Object.values(preset.rules).some((rs) => rs.includes(r))).map((r) => {
-                const { Icon, label } = RULE_ICON[r];
-                return <span key={r} className="flex items-center gap-1"><Icon className="size-3.5" aria-hidden="true" /> {label}</span>;
-              })}
-              <Illustrative />
-            </li>
-          )}
-          {view === "before" ? (
-            <li>Each job runs at its home site the moment it arrives. Jobs and sizes are <span className="font-semibold text-amber-800">illustrative</span>.</li>
-          ) : (
-            why.map((w) => (
-              <li key={w.job} className="flex gap-1.5"><ArrowRight className="mt-0.5 size-3 shrink-0" aria-hidden="true" /><span>{w.text}</span></li>
-            ))
-          )}
-        </ul>
+            {slots.map((t) => {
+              const k = options.find((o) => o.site === s.key && o.slot === t.key)!.index;
+              const here = jobs.map((_, j) => j).filter((j) => schedule[j] === k);
+              const over = here.length > 1;
+              return (
+                <div key={t.key} data-lane={k} className={`flex min-h-0 flex-1 flex-col gap-2 rounded-xl bg-white p-3 ring-1 transition-colors ${over ? "ring-2 ring-rose-300" : "ring-border"}`}>
+                  <div className="flex items-center justify-between gap-2 text-[14px]">
+                    <span className="flex items-center gap-1.5 font-semibold">
+                      {t.key === "day" ? <Sun className="size-4 text-amber-500" aria-hidden="true" /> : <Moon className="size-4 text-indigo-500" aria-hidden="true" />}
+                      {t.key === "day" ? "Day" : "Night"}
+                      {over && <span className="rounded-md bg-rose-50 px-1.5 py-0.5 text-[12px] font-semibold text-rose-700">Crowded</span>}
+                    </span>
+                    <span className="flex items-center gap-2 text-muted-foreground" title={`Grid carbon ${t.carbon_kg_per_kwh.toFixed(2)} kg CO₂/kWh`}>
+                      <Leaf className="size-3.5 text-carbon" aria-hidden="true" />
+                      {t.carbon_kg_per_kwh < Math.max(...slots.map((x) => x.carbon_kg_per_kwh)) ? "cleaner grid" : "dirtier grid"}
+                    </span>
+                  </div>
+                  <div className="flex min-h-[58px] flex-1 items-center gap-1">
+                    {here.map((j) => (
+                      <JobBlock key={jobs[j].key} data={data} j={j} moved={view === "greenq" && data.naive.schedule[j] !== k} layoutPrefix="scene" rules={preset.rules[jobs[j].key] ?? []} />
+                    ))}
+                    {here.length === 0 && <span className="text-[13px] text-muted-foreground">free</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
-    </section>
+    </LayoutGroup>
+  );
+}
+
+export function Tickers() {
+  const { data, stop, view } = useApp();
+  const now = view === "greenq" ? stop.best : data.naive;
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      <Ticker icon="carbon" now={now.kg_co2} before={data.naive.kg_co2} delta={now.kg_co2 - data.naive.kg_co2} unit="kg CO₂" />
+      <Ticker icon="water" now={now.litres} before={data.naive.litres} delta={now.litres - data.naive.litres} unit="L water" />
+    </div>
   );
 }
 
@@ -250,7 +184,7 @@ function Ticker({ icon, now, before, delta, unit }: { icon: "carbon" | "water"; 
         </p>
         <p className={`mt-1 flex items-center gap-1 text-[12px] font-semibold ${delta < 0 ? (carbon ? "text-carbon" : "text-water") : "text-muted-foreground"}`}>
           {delta < 0 ? <ArrowDown className="size-3" aria-hidden="true" /> : null}
-          {delta < 0 ? `${n0(-delta)} less than business as usual` : "business as usual"}
+          {delta < 0 ? `${n0(-delta)} less than run now` : "run now"}
         </p>
       </div>
     </div>

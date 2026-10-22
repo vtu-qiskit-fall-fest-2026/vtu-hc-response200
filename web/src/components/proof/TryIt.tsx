@@ -1,11 +1,12 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, Calculator, Droplet, Leaf, Loader2, Play, Plus, Trash2, Upload } from "lucide-react";
 import { useApp } from "@/lib/data";
 import { n0, pct, priorityLabel } from "@/format";
 
 /* ------------------------------------------------------------------ live jobs */
 
-interface JobIn { name: string; kwh: number; home_site: "evap" | "air"; submitted_slot: "day" | "night"; deadline: boolean; residency: boolean }
+export type { ParsedJob as JobIn } from "@/lib/llm";
+import type { ParsedJob as JobIn } from "@/lib/llm";
 interface Place { site: "evap" | "air"; slot: "day" | "night" }
 interface LiveResult {
   mode: string; sampling: string; qubits: number; schedules: number;
@@ -33,10 +34,10 @@ function parseCsv(text: string): JobIn[] {
   return out.slice(0, MAX_JOBS);
 }
 
-function YourJobs() {
+export function YourJobs({ initial, autoRun = false }: { initial?: JobIn[]; autoRun?: boolean }) {
   const { data } = useApp();
   const [jobs, setJobs] = useState<JobIn[]>(() =>
-    data.instance.jobs.map((j) => ({ name: j.label, kwh: j.it_energy_kwh, home_site: j.home_site as "evap" | "air", submitted_slot: j.submitted_slot as "day" | "night", deadline: false, residency: false })),
+    initial ?? data.instance.jobs.map((j) => ({ name: j.label, kwh: j.it_energy_kwh, home_site: j.home_site as "evap" | "air", submitted_slot: j.submitted_slot as "day" | "night", deadline: false, residency: false })),
   );
   const [w, setW] = useState(0.5);
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
@@ -87,14 +88,13 @@ function YourJobs() {
     setState("idle");
   };
 
+  useEffect(() => {
+    if (autoRun && problems.length === 0) void run();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const input = "w-full rounded-lg bg-muted px-2 py-1.5 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring";
   return (
-    <div className="min-w-0 rounded-3xl bg-white p-6 ring-1 ring-border">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-[20px] font-semibold tracking-tight">Try your own jobs</h3>
-        <span className="rounded-full bg-amber-50 px-3 py-1 text-[12px] font-semibold text-amber-900 ring-1 ring-amber-200">Live simulator, not hardware</span>
-      </div>
-      <p className="mt-1 text-[13px] text-muted-foreground">Up to {MAX_JOBS} jobs on the same two sites. Solved by checking every schedule and by the QAOA circuit on a simulator.</p>
+    <div className="min-w-0">
 
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-[640px] text-left text-[12px]">
@@ -147,10 +147,10 @@ function YourJobs() {
 
       <div aria-live="polite">
         {state === "error" && (
-          <p className="mt-4 flex items-start gap-2 rounded-xl bg-rose-50 p-3 text-[13px] text-rose-800"><AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {message}</p>
+          <p className="mt-4 flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-[13px] text-amber-900"><AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {message}</p>
         )}
         {state === "done" && result && (
-          <div className="mt-5 grid gap-4 md:grid-cols-[1.2fr_1fr]">
+          <div className="mt-4 grid grid-cols-[1.2fr_1fr] gap-4">
             <ul className="space-y-1.5 text-[13px]">
               {jobs.map((j, i) => {
                 const a = result.naive.schedule[i], b = result.best.schedule[i];
@@ -173,9 +173,7 @@ function YourJobs() {
                   <p className="mt-1 text-[22px] font-semibold text-blue-800 tabular-nums">{n0(result.naive.litres - result.best.litres)} L</p></div>
               </div>
               <p className="rounded-xl bg-muted/70 p-3 text-[12px] text-muted-foreground">
-                {result.qubits} qubits, {n0(result.schedules)} schedules. QAOA on the simulator {result.qaoa.found_optimum ? "found" : "missed"} the true best;{" "}
-                {pct(result.qaoa.share_best10)} of shots in the best tenth (random {pct(result.qaoa.share_best10_random)})
-                {result.qaoa.share_obeying_rules < 1 ? `; ${pct(result.qaoa.share_obeying_rules)} obeyed every rule` : ""}. {result.sampling}.
+                {result.qubits} qubits · simulator {result.qaoa.found_optimum ? "found" : "missed"} the best · {pct(result.qaoa.share_best10)} of shots in best tenth (random {pct(result.qaoa.share_best10_random)})
               </p>
             </div>
           </div>
@@ -187,7 +185,7 @@ function YourJobs() {
 
 /* ------------------------------------------------------------------ annual impact */
 
-function AnnualImpact() {
+export function AnnualImpact() {
   const { data } = useApp();
   const totalKwh = data.instance.jobs.reduce((a, j) => a + j.it_energy_kwh, 0);
   const kgPerKwh = data.naive.kg_co2 / totalKwh;
@@ -202,10 +200,9 @@ function AnnualImpact() {
   const megalitres = (kwh * lPerKwh * waterSaving) / 1e6;
   const input = "w-28 rounded-lg bg-muted px-2 py-1.5 text-[14px] font-semibold tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-ring";
   return (
-    <div className="flex min-w-0 flex-col rounded-3xl bg-white p-6 ring-1 ring-border">
-      <h3 className="flex items-center gap-2 text-[20px] font-semibold tracking-tight"><Calculator className="size-5" aria-hidden="true" /> What could it be worth?</h3>
-      <p className="mt-1 text-[13px] text-muted-foreground">Scales our measured saving to a fleet you describe. Every input is an assumption, not data from a real deployment.</p>
-      <div className="mt-4 space-y-3 rounded-2xl bg-amber-50/70 p-4 ring-1 ring-amber-200">
+    <div className="flex min-w-0 flex-col">
+      <h3 className="flex items-center gap-2 text-[17px] font-semibold tracking-tight"><Calculator className="size-5" aria-hidden="true" /> Scaled to a fleet you describe</h3>
+      <div className="mt-3 space-y-3 rounded-2xl bg-amber-50/70 p-4 ring-1 ring-amber-200">
         <label className="flex items-center justify-between gap-3 text-[13px]">
           <span><b className="text-[10px] tracking-wide text-amber-800 uppercase">Assumption</b><br />Fleet IT energy per year (GWh)</span>
           <input className={input} type="number" min={1} max={100000} value={gwh} onChange={(e) => setGwh(Math.max(0, Number(e.target.value)))} />
@@ -229,24 +226,6 @@ function AnnualImpact() {
         <br />CO₂: {gwh} × 10⁶ × {flex}% × {kgPerKwh.toFixed(3)} kg × {pct(co2Saving, 1)} = {n0(tonnes)} t
         <br />Water: {gwh} × 10⁶ × {flex}% × {lPerKwh.toFixed(3)} L × {pct(waterSaving, 1)} = {megalitres.toFixed(1)} ML
       </p>
-      <p className="mt-auto pt-3 text-[11px] text-muted-foreground">Illustrative. Real fleets differ in sites, grids, cooling and how flexible their jobs are; fewer flexible jobs means less saving (see the planner&rsquo;s flexibility curve).</p>
     </div>
-  );
-}
-
-export function TryIt() {
-  return (
-    <section id="try" className="scroll-mt-24 px-4 pb-24">
-      <div className="mx-auto max-w-[1150px]">
-        <h2 className="text-center text-[36px] leading-tight font-semibold tracking-[-0.03em] sm:text-[44px]">
-          Try it yourself.
-          <span className="block text-foreground/45">Your jobs, and what it could be worth.</span>
-        </h2>
-        <div className="mt-10 grid gap-5 lg:grid-cols-[1.45fr_1fr]">
-          <YourJobs />
-          <AnnualImpact />
-        </div>
-      </div>
-    </section>
   );
 }

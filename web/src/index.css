@@ -68,3 +68,7 @@
 .prio-range--big::-moz-range-track { height: 10px; }
 .prio-range--big::-webkit-slider-thumb { margin-top: -9px; width: 28px; height: 28px; }
 .prio-range--big::-moz-range-thumb { width: 28px; height: 28px; }
+
+/* Phones and small windows: no scaling, screens scroll instead (lib/stage.ts). */
+html[data-compact="1"] main { overflow-y: auto; }
+html[data-compact="1"] body { overflow: auto; }
