@@ -85,6 +85,7 @@ export interface UiData {
   };
   scaling: Scaling | null;
   cities: Cities | null;
+  robustness: Robustness | null;
   methods: {
     instance: string;
     runtimes: string;
@@ -175,3 +176,10 @@ export interface CityPreset {
   qaoa_sim_balanced: { share_best10: number; approx_ratio: number; found_optimum: boolean; optimum_hits: number };
 }
 export interface Cities { source: string; mapping: string; india: { score: number; label: string }; presets: CityPreset[] }
+
+export interface RobustnessStudy {
+  error_pct: number; w: number; draws: number; seed: number;
+  within_5pct: number; still_best: number; worst_regret_pct: number; mean_regret_pct: number;
+  histogram: { label: string; share: number }[];
+}
+export interface Robustness { note: string; studies: RobustnessStudy[] }

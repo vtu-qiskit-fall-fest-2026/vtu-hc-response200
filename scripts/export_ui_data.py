@@ -236,6 +236,9 @@ def main() -> None:
         "methods": json.loads((ROOT / "results" / "baselines.json").read_text())
         if (ROOT / "results" / "baselines.json").exists() else None,
         "flex": flex_section(hw_runs),
+        # Feature 6: robustness to carbon forecast error (scripts/run_robustness.py)
+        "robustness": json.loads((ROOT / "results" / "robustness.json").read_text())
+        if (ROOT / "results" / "robustness.json").exists() else None,
         # Feature 4: regional water stress presets (scripts/run_cities.py)
         "cities": json.loads((ROOT / "results" / "cities.json").read_text())
         if (ROOT / "results" / "cities.json").exists() else None,

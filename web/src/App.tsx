@@ -7,6 +7,7 @@ import { MethodsCompared } from "@/components/proof/Methods";
 import { HowItScales } from "@/components/proof/Scaling";
 import { Cities } from "@/components/proof/Cities";
 import { TryIt } from "@/components/proof/TryIt";
+import { Robustness } from "@/components/proof/Robustness";
 import { DashboardBand, Faq, Footer, Hero, HowItWorks, Nav } from "@/components/site/Site";
 import type { FlexPreset, UiData } from "@/types";
 
@@ -59,6 +60,7 @@ function Page({ data }: { data: UiData }) {
           <Dashboard />
         </DashboardBand>
         <Cities />
+        <Robustness />
         <QuantumProof />
         <MethodsCompared />
         <HowItScales />

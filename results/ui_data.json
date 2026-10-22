@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-10-22T14:18:36Z",
+ "generated_utc": "2026-10-22T14:26:22Z",
  "instance": {
   "sites": [
    {
@@ -3427,6 +3427,203 @@
    }
   ],
   "note": "Rules and presets are illustrative. Rule-breaking schedules are penalised in the Hamiltonian; shares count shots that obey every rule."
+ },
+ "robustness": {
+  "note": "Uniform independent error on each slot's grid carbon intensity; the chosen plan is fixed from the forecast; regret is measured against the brute-force best plan for each draw.",
+  "studies": [
+   {
+    "error_pct": 5,
+    "w": 0.0,
+    "draws": 200,
+    "seed": 50,
+    "within_5pct": 1.0,
+    "still_best": 0.92,
+    "worst_regret_pct": 0.367,
+    "mean_regret_pct": 0.0131,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.92
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.08
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.0
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.0
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   },
+   {
+    "error_pct": 5,
+    "w": 0.5,
+    "draws": 200,
+    "seed": 55,
+    "within_5pct": 1.0,
+    "still_best": 0.765,
+    "worst_regret_pct": 0.685,
+    "mean_regret_pct": 0.047,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.765
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.235
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.0
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.0
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   },
+   {
+    "error_pct": 5,
+    "w": 1.0,
+    "draws": 200,
+    "seed": 60,
+    "within_5pct": 1.0,
+    "still_best": 0.97,
+    "worst_regret_pct": 0.145,
+    "mean_regret_pct": 0.0022,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.97
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.03
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.0
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.0
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   },
+   {
+    "error_pct": 10,
+    "w": 0.0,
+    "draws": 200,
+    "seed": 100,
+    "within_5pct": 1.0,
+    "still_best": 0.79,
+    "worst_regret_pct": 2.25,
+    "mean_regret_pct": 0.1714,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.79
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.135
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.06
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.015
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   },
+   {
+    "error_pct": 10,
+    "w": 0.5,
+    "draws": 200,
+    "seed": 105,
+    "within_5pct": 1.0,
+    "still_best": 0.635,
+    "worst_regret_pct": 1.845,
+    "mean_regret_pct": 0.2508,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.635
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.265
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.1
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.0
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   },
+   {
+    "error_pct": 10,
+    "w": 1.0,
+    "draws": 200,
+    "seed": 110,
+    "within_5pct": 1.0,
+    "still_best": 0.735,
+    "worst_regret_pct": 0.932,
+    "mean_regret_pct": 0.0969,
+    "histogram": [
+     {
+      "label": "still the best",
+      "share": 0.735
+     },
+     {
+      "label": "< 1% worse",
+      "share": 0.265
+     },
+     {
+      "label": "1-2% worse",
+      "share": 0.0
+     },
+     {
+      "label": "2-5% worse",
+      "share": 0.0
+     },
+     {
+      "label": "> 5% worse",
+      "share": 0.0
+     }
+    ]
+   }
+  ]
  },
  "cities": {
   "source": "Kuzma, S., M.F.P. Bierkens, S. Lakshman, T. Luo, L. Saccoccia, E.H. Sutanudjaja and R. Van Beek (2023), Aqueduct 4.0: Updated decision-relevant global water risk indicators, Technical Note, World Resources Institute, doi:10.46830/writn.23.00061. Provincial baseline water stress (total demand), CC BY 4.0.",
