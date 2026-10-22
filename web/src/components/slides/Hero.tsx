@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "motion/react";
 import { Droplet, Leaf, Moon, Sun } from "lucide-react";
 import { JOB_STYLE, useApp } from "@/lib/data";
 import { n0, prefersReducedMotion } from "@/format";
@@ -43,8 +43,8 @@ function place(data: UiData, schedule: number[]) {
   return jobs.map((j, i) => {
     const o = options[schedule[i]];
     const site = SITES[o.site as "evap" | "air"];
-    const w = Math.max(48, (j.it_energy_kwh / maxLoad) * (site.w - 56));
-    const x = site.x + 48 + (used[schedule[i]] ?? 0);
+    const w = Math.max(64, (j.it_energy_kwh / maxLoad) * (site.w - 120));
+    const x = site.x + 104 + (used[schedule[i]] ?? 0);
     used[schedule[i]] = (used[schedule[i]] ?? 0) + w + 6;
     return { x, y: LANE_Y[o.slot as "day" | "night"] + (LANE_H - BLOCK_H) / 2, w };
   });
@@ -83,10 +83,10 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
   const smart = phase >= 2 && phase <= 3;
   const fired = useRef(false);
   useEffect(() => {
-    if (phase !== 3) { fired.current = false; return; }
+    if (phase !== 3 || reduced) { fired.current = false; return; }
     const t = window.setTimeout(() => { if (!fired.current) { fired.current = true; onSavedShown?.(); } }, 1700);
     return () => window.clearTimeout(t);
-  }, [phase, onSavedShown]);
+  }, [phase, onSavedShown, reduced]);
 
   // QAOA two-qubit links, taken from the real exported circuit
   const links = useMemo(() => {
@@ -134,6 +134,7 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
           </motion.g>
         ))}
         <g transform="translate(36 150)">
+          <text x={13} y={-14} textAnchor="middle" fontSize={15} fontWeight={700} fill="#475569">CO₂</text>
           <rect x={0} y={0} width={26} height={300} rx={13} fill="#ffffff" stroke="#cbd5e1" strokeWidth={2} />
           <motion.rect x={5} width={16} rx={8} initial={false}
             animate={{ y: phase <= 1 ? 30 : 190, height: phase <= 1 ? 265 : 105, fill: phase <= 1 ? "#f43f5e" : "#10b981" }} transition={T(1.4)} />
@@ -162,7 +163,7 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
             ))}
           </motion.g>
           <path d="M420 498 q 9 -14 0 -26 q -9 12 0 26" fill="#3b82f6" />
-          <text x={300} y={372} textAnchor="middle" fontSize={22} fontWeight={700} fill="#0b0b0f">A</text>
+          <text x={225} y={368} textAnchor="middle" fontSize={20} fontWeight={700} fill="#0b0b0f">Site A <tspan fontWeight={500} fill="#475569">· water cooling</tspan></text>
         </g>
 
         {/* Site B: air-cooled building with rooftop fans */}
@@ -186,7 +187,7 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
               </motion.g>
             </g>
           ))}
-          <text x={1080} y={340} textAnchor="middle" fontSize={22} fontWeight={700} fill="#0b0b0f">B</text>
+          <text x={1080} y={340} textAnchor="middle" fontSize={20} fontWeight={700} fill="#0b0b0f">Site B <tspan fontWeight={500} fill="#475569">· air cooling</tspan></text>
         </g>
 
         <g data-tour="jobs">
@@ -198,6 +199,8 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
               {t === "day"
                 ? <Sun x={SITES[s].x + 12} y={LANE_Y[t] + 23} width={24} height={24} color="#f59e0b" />
                 : <Moon x={SITES[s].x + 12} y={LANE_Y[t] + 23} width={24} height={24} color="#6366f1" />}
+              <text x={SITES[s].x + 42} y={LANE_Y[t] + 33} fontSize={17} fontWeight={600} fill="#334155">{t === "day" ? "Day" : "Night"}</text>
+              <text x={SITES[s].x + 42} y={LANE_Y[t] + 52} fontSize={12} fill="#64748b">{t === "day" ? "cleaner" : "dirtier"}</text>
             </g>
           )),
         )}
@@ -232,6 +235,10 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
           <motion.g initial={false} animate={phase === 1 && !reduced ? { opacity: [0, 1, 0.3, 1, 0.6, 1] } : { opacity: 1 }} transition={{ duration: 1.4, delay: 0.4 }}>
             <Badge x={CHIP.x} y={CHIP.y - 136} text="REAL IBM RUN" dark />
           </motion.g>
+          <motion.g initial={false} animate={{ opacity: 1 }}>
+            <text x={CHIP.x} y={CHIP.y + 124} textAnchor="middle" fontSize={17} fontWeight={700} fill="#0b0b0f">Quantum computer</text>
+            <text x={CHIP.x} y={CHIP.y + 146} textAnchor="middle" fontSize={14} fill="#475569">QAOA · {data.circuit.n_qubits} qubits</text>
+          </motion.g>
         </motion.g>
 
         {/* packet paths: drawn while the jobs move */}
@@ -256,30 +263,56 @@ export function Hero({ phase, onSavedShown }: { phase: Phase; onSavedShown?: () 
               animate={arc ? { x: [a.x, (a.x + b.x) / 2, b.x], y: [a.y, Math.min(a.y, b.y) - 170, b.y] } : { x: to.x, y: to.y }}
               transition={reduced || phase === 0 ? { duration: 0 } : { duration: 1.5, delay: 0.25 + i * 0.12, ease: [0.45, 0, 0.2, 1] }}>
               <motion.rect height={BLOCK_H} rx={10} fill={HEX[i]} initial={false} animate={{ width: to.w }} transition={{ duration: 0 }} />
-              <text x={12} y={33} fontSize={17} fontWeight={700} fill={i === 1 ? "#451a03" : "#ffffff"}>{JOB_STYLE[i].short.split(" ")[0]}</text>
+              <text x={10} y={32} fontSize={14} fontWeight={700} fill={i === 1 ? "#451a03" : "#ffffff"}>{JOB_STYLE[i].short.split(" ")[0]}</text>
             </motion.g>
           );
         })}
 
+        {/* what the steam is */}
+        <motion.text x={366} y={226} textAnchor="end" fontSize={14} fill="#475569" initial={false} animate={{ opacity: phase <= 1 ? 1 : 0 }} transition={T(0.8)}>water lost as steam</motion.text>
+
+        {/* one short caption per step */}
+        <AnimatePresence mode="wait">
+          <motion.g key={phase === 4 ? 3 : phase} initial={{ opacity: 0, y: reduced ? 0 : -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={T(0.4)}>
+            {(() => {
+              const text = [
+                "Run now: every job runs at home, when it arrives",
+                `A quantum computer searches all ${data.instance.n_schedules} plans`,
+                "Run smart: jobs move to a better place and time",
+                "Same jobs, less carbon and less water",
+                "Same jobs, less carbon and less water",
+              ][phase];
+              const w = text.length * 10.6 + 70;
+              return (
+                <g transform={`translate(${VW / 2 - w / 2} 26)`}>
+                  <rect width={w} height={42} rx={21} fill="#0b0b0f" opacity={0.88} />
+                  <text x={22} y={27} fontSize={15} fontWeight={700} fill="#34d399">{Math.min(phase, 3) + 1}/4</text>
+                  <text x={62} y={27} fontSize={18} fontWeight={600} fill="#ffffff">{text}</text>
+                </g>
+              );
+            })()}
+          </motion.g>
+        </AnimatePresence>
+
         {/* savings, counted up from the data */}
         <motion.g initial={false} {...show(phase === 3, 0.6)}>
           <g transform="translate(330 96)">
-            <rect width={340} height={150} rx={22} fill="#ffffff" opacity={0.92} stroke="#d1fae5" strokeWidth={2} />
+            <rect width={360} height={150} rx={22} fill="#ffffff" opacity={0.92} stroke="#d1fae5" strokeWidth={2} />
             <Leaf x={24} y={34} width={52} height={52} color="#059669" />
             <text x={92} y={84} fontSize={64} fontWeight={700} fill="#047857" style={{ fontVariantNumeric: "tabular-nums" }}>
-              −<SvgCount to={mid.saved_kg_co2} run={phase === 3} />
+              <SvgCount to={mid.saved_kg_co2} run={phase === 3} />
             </text>
-            <text x={94} y={118} fontSize={20} fontWeight={600} fill="#065f46">kg CO₂</text>
-            <Badge x={260} y={102} text="ILLUSTRATIVE" />
+            <text x={94} y={118} fontSize={20} fontWeight={600} fill="#065f46">kg CO₂ less</text>
+            <Badge x={292} y={104} text="ILLUSTRATIVE" />
           </g>
           <g transform="translate(710 96)">
-            <rect width={340} height={150} rx={22} fill="#ffffff" opacity={0.92} stroke="#dbeafe" strokeWidth={2} />
+            <rect width={360} height={150} rx={22} fill="#ffffff" opacity={0.92} stroke="#dbeafe" strokeWidth={2} />
             <Droplet x={24} y={34} width={52} height={52} color="#2563eb" />
             <text x={92} y={84} fontSize={64} fontWeight={700} fill="#1d4ed8" style={{ fontVariantNumeric: "tabular-nums" }}>
-              −<SvgCount to={mid.saved_litres} run={phase === 3} />
+              <SvgCount to={mid.saved_litres} run={phase === 3} />
             </text>
-            <text x={94} y={118} fontSize={20} fontWeight={600} fill="#1e3a8a">L water</text>
-            <Badge x={260} y={102} text="ILLUSTRATIVE" />
+            <text x={94} y={118} fontSize={20} fontWeight={600} fill="#1e3a8a">L water less</text>
+            <Badge x={292} y={104} text="ILLUSTRATIVE" />
           </g>
         </motion.g>
       </motion.g>
