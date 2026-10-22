@@ -72,7 +72,9 @@
 
 **Why this works:** the quantum and classical sides provably solve the same problem (tests check the Hamiltonian equals the classical cost on all 256 schedules), and a brute-force baseline grades every quantum result against the true optimum. At this size a classical computer is faster: **we make no claim of quantum advantage.**
 
-![GreenQ demo](docs/images/demo_schedule.png)
+![GreenQ demo: headline and staff gauges](docs/images/ui_hero.png)
+
+*The web demo at 1920×1080: kg CO₂ and litres saved, read off two staff gauges that draw down from the business-as-usual mark to the GreenQ level.*
 
 ---
 
@@ -166,9 +168,17 @@ Full plain-language walkthrough: [docs/EXPLAINER.md](docs/EXPLAINER.md). Design 
 
 Raw results with backend, job ID, timestamps, transpiled-circuit stats and all counts: [results/hardware/](results/hardware/). Simulator results: [results/sim/](results/sim/).
 
-| Quantum proof view | Carbon vs water trade-off |
+| Where each job runs (slider stops marked "Real IBM hardware") | Is the quantum part real? |
 |---|---|
-| ![quantum proof](docs/images/demo_quantum_proof.png) | ![trade-off](docs/images/demo_tradeoff.png) |
+| ![schedule board](docs/images/ui_board.png) | ![quantum proof](docs/images/ui_proof.png) |
+
+<details><summary>Fallback Streamlit demo screenshots</summary>
+
+| Schedule | Quantum proof | Trade-off |
+|---|---|---|
+| ![streamlit schedule](docs/images/demo_schedule.png) | ![streamlit proof](docs/images/demo_quantum_proof.png) | ![streamlit trade-off](docs/images/demo_tradeoff.png) |
+
+</details>
 
 ---
 
