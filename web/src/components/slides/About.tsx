@@ -16,7 +16,7 @@ export function AboutScreen() {
         <div className="grid grid-cols-3 gap-5">
           {steps(data).map((s, i) => (
             <motion.div key={s.label} initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduced ? 0 : i * 0.12, duration: 0.4 }}>
-              <div className={`flex h-[190px] items-center justify-center rounded-3xl p-5 ${s.tint}`}>{s.art}</div>
+              <div className={`flex h-[150px] items-center justify-center overflow-hidden rounded-3xl p-4 ${s.tint}`}>{s.art}</div>
               <p className="mt-3 text-[13px] font-medium text-muted-foreground">{s.label}</p>
               <h2 className="text-[20px] font-semibold tracking-tight">{s.title}</h2>
               <p className="mt-1 text-[14px] text-muted-foreground">{s.text}</p>
@@ -56,23 +56,23 @@ export function AboutScreen() {
               Sources
               <Info>Full references and licences are in the README. Built with Qiskit; not affiliated with IBM.</Info>
             </h2>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-2 space-y-1.5">
               {data.sources.cited.map((c) => (
-                <li key={c.figure} className="flex items-start gap-2 text-[14px]">
+                <li key={c.figure} className="flex min-w-0 items-center gap-2 text-[13px]" title={c.source}>
                   <Badge kind="cited" />
-                  <span><b className="font-semibold">{c.figure}</b> {c.value} <span className="text-muted-foreground">· {c.source.split(" (")[0]}</span></span>
+                  <span className="truncate"><b className="font-semibold">{c.figure}</b> {c.value} <span className="text-muted-foreground">· {c.source.split(" (")[0]}</span></span>
                 </li>
               ))}
               {data.cities && (
-                <li className="flex items-start gap-2 text-[14px]">
+                <li className="flex min-w-0 items-center gap-2 text-[13px]">
                   <Badge kind="cited" />
-                  <span><b className="font-semibold">State water stress</b> 0–5 <span className="text-muted-foreground">· WRI Aqueduct 4.0</span></span>
+                  <span className="truncate"><b className="font-semibold">State water stress</b> 0–5 <span className="text-muted-foreground">· WRI Aqueduct 4.0</span></span>
                 </li>
               )}
               <li className="text-[13px] text-muted-foreground">Start animation and Dewy the mascot: drawn by Team Response200 (no photos, no logos). Mascot idea inspired by Saksham Gupta&rsquo;s guide <i>Make Your Own Mascot</i>.</li>
-              <li className="flex items-start gap-2 text-[14px]">
+              <li className="flex min-w-0 items-start gap-2 text-[13px]">
                 <Badge kind="illustrative" />
-                <span className="text-muted-foreground">{data.sources.illustrative.map((x) => x.split(/ \(|,/)[0]).join(" · ")}</span>
+                <span className="line-clamp-2 text-muted-foreground">{data.sources.illustrative.map((x) => x.split(/ \(|,/)[0]).join(" · ")}</span>
               </li>
             </ul>
           </Card>

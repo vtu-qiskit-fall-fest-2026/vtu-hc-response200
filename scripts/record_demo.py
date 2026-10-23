@@ -103,7 +103,7 @@ def main() -> int:
         ffmpeg = shutil.which("ffmpeg")
         if ffmpeg:
             subprocess.run([ffmpeg, "-loglevel", "error", "-y", "-ss", f"{offset:.3f}", "-i", str(raw), "-t", f"{total:.3f}",
-                            "-c:v", "libvpx-vp9", "-b:v", "3M", "-an", str(webm)], check=True)
+                            "-c:v", "libvpx-vp9", "-b:v", "3M", "-deadline", "good", "-cpu-used", "5", "-row-mt", "1", "-an", str(webm)], check=True)
             mp4 = webm.with_suffix(".mp4")
             subprocess.run([ffmpeg, "-loglevel", "error", "-y", "-i", str(webm), "-c:v", "libx264", "-pix_fmt", "yuv420p",
                             "-crf", "18", "-r", "30", "-an", str(mp4)], check=True)
