@@ -149,7 +149,7 @@ function Describe() {
         className="min-h-0 w-full flex-1 resize-none rounded-2xl bg-muted p-4 text-[15px] leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-ring" />
       <div className="flex items-center justify-between gap-3">
         <p className="text-[12px] text-muted-foreground">The model only fills in the table. The schedule is solved by brute force and the simulator.</p>
-        <button disabled={state === "busy" || text.trim().length < 8} onClick={go}
+        <button data-demo="read-jobs" disabled={state === "busy" || text.trim().length < 8} onClick={go}
           className="flex shrink-0 items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-[15px] font-medium text-white disabled:opacity-40">
           {state === "busy" ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Wand2 className="size-4" aria-hidden="true" />} Read my jobs
         </button>

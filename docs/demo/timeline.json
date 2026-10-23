@@ -1,0 +1,1514 @@
+{
+  "version": 1,
+  "words_per_second": 2.4,
+  "pause_per_step": 0.5,
+  "chapter_titles": {
+    "problem": "Problem and idea",
+    "schedule": "The schedule",
+    "tradeoff": "Carbon vs water",
+    "quantum": "Quantum proof",
+    "ask": "Ask GreenQ",
+    "methods": "Methods compared",
+    "scaling": "Scaling and job rules",
+    "jobs": "Your own jobs",
+    "about": "How it is built",
+    "closing": "Closing"
+  },
+  "presets": {
+    "standard": {
+      "total": 182.0,
+      "chapters": [
+        {
+          "id": "problem",
+          "title": "Problem and idea",
+          "start": 0.0,
+          "duration": 20.0
+        },
+        {
+          "id": "schedule",
+          "title": "The schedule",
+          "start": 20.0,
+          "duration": 33.0
+        },
+        {
+          "id": "tradeoff",
+          "title": "Carbon vs water",
+          "start": 53.0,
+          "duration": 23.0
+        },
+        {
+          "id": "quantum",
+          "title": "Quantum proof",
+          "start": 76.0,
+          "duration": 38.0
+        },
+        {
+          "id": "ask",
+          "title": "Ask GreenQ",
+          "start": 114.0,
+          "duration": 25.0
+        },
+        {
+          "id": "methods",
+          "title": "Methods compared",
+          "start": 139.0,
+          "duration": 9.0
+        },
+        {
+          "id": "scaling",
+          "title": "Scaling and job rules",
+          "start": 148.0,
+          "duration": 9.0
+        },
+        {
+          "id": "jobs",
+          "title": "Your own jobs",
+          "start": 157.0,
+          "duration": 5.0
+        },
+        {
+          "id": "about",
+          "title": "How it is built",
+          "start": 162.0,
+          "duration": 8.0
+        },
+        {
+          "id": "closing",
+          "title": "Closing",
+          "start": 170.0,
+          "duration": 12.0
+        }
+      ],
+      "steps": [
+        {
+          "id": "problem-1",
+          "chapter": "problem",
+          "start": 0.0,
+          "duration": 6.5,
+          "narration": "Data centres burn electricity and evaporate water to keep servers cool.",
+          "captions": [
+            "Data centres burn electricity and evaporate water to keep servers cool."
+          ],
+          "mood": "waking",
+          "spotlight": null,
+          "align": "[data-tour=jobs]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "reset"
+            },
+            {
+              "at": 0.1,
+              "do": "hero",
+              "restart": true
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "problem-2",
+          "chapter": "problem",
+          "start": 6.5,
+          "duration": 6.5,
+          "narration": "Many jobs are flexible: they could run at another site, or later.",
+          "captions": [
+            "Many jobs are flexible: they could run at another site, or later."
+          ],
+          "mood": "curious",
+          "spotlight": null,
+          "align": null,
+          "look": "[data-tour=jobs]",
+          "actions": [],
+          "quotes": {}
+        },
+        {
+          "id": "problem-3",
+          "chapter": "problem",
+          "start": 13.0,
+          "duration": 7.0,
+          "narration": "GreenQ picks a smarter place and time for each job, with a quantum algorithm.",
+          "captions": [
+            "GreenQ picks a smarter place and time for each job, with a",
+            "quantum algorithm."
+          ],
+          "mood": "excited",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 3.6,
+              "do": "hero",
+              "hold": 3
+            },
+            {
+              "at": 4.4,
+              "do": "dewy",
+              "mood": "celebrate"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-1",
+          "chapter": "schedule",
+          "start": 20.0,
+          "duration": 7.0,
+          "narration": "Our example: four jobs, two data centres, a day slot and a night slot.",
+          "captions": [
+            "Our example: four jobs, two data centres, a day slot and a",
+            "night slot."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=schedule]",
+          "align": "[data-widget=schedule]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 1
+            },
+            {
+              "at": 0,
+              "do": "state",
+              "view": "before",
+              "idx": 10,
+              "preset": "flexible"
+            },
+            {
+              "at": 0,
+              "do": "hero",
+              "hold": null
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-2",
+          "chapter": "schedule",
+          "start": 27.0,
+          "duration": 8.0,
+          "narration": "Run now: every job starts at home, the moment it arrives. Site A gets crowded at night.",
+          "captions": [
+            "Run now: every job starts at home, the moment it arrives.",
+            "Site A gets crowded at night."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": "[data-lane=\"1\"]",
+          "actions": [
+            {
+              "at": 1.0,
+              "do": "hover",
+              "target": "[data-lane=\"1\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-3",
+          "chapter": "schedule",
+          "start": 35.0,
+          "duration": 7.0,
+          "narration": "Now we press run smart. The jobs move to cleaner time slots and drier cooling.",
+          "captions": [
+            "Now we press run smart. The jobs move to cleaner time slots",
+            "and drier cooling."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.3,
+              "do": "click",
+              "target": "[aria-label=\"Which schedule\"] [data-value=\"greenq\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-4",
+          "chapter": "schedule",
+          "start": 42.0,
+          "duration": 6.0,
+          "narration": "Same jobs: 530 kilograms less CO2 and 1,798 litres less water.",
+          "captions": [
+            "Same jobs: 530 kilograms less CO2 and 1,798 litres less water."
+          ],
+          "mood": "celebrate",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.4,
+              "do": "hover",
+              "target": "[data-widget=schedule] .grid-cols-2:last-child"
+            }
+          ],
+          "quotes": {
+            "saved_kg": {
+              "value": "530",
+              "from": "sweep[w=0.5].saved_kg_co2"
+            },
+            "saved_l": {
+              "value": "1,798",
+              "from": "sweep[w=0.5].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "schedule-5",
+          "chapter": "schedule",
+          "start": 48.0,
+          "duration": 5.0,
+          "narration": "Dewy explains each move, for example the training job.",
+          "captions": [
+            "Dewy explains each move, for example the training job."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=why]",
+          "align": "[data-widget=why]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0.4,
+              "do": "dewy",
+              "say": "ML model training: A night → B day, cleaner grid, air cooling saves water.",
+              "badge": "ai",
+              "ms": 4800
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "tradeoff-1",
+          "chapter": "tradeoff",
+          "start": 53.0,
+          "duration": 8.0,
+          "narration": "Carbon and water pull against each other. We drag from cutting carbon to saving water.",
+          "captions": [
+            "Carbon and water pull against each other.",
+            "We drag from cutting carbon to saving water."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=priority]",
+          "align": "[data-widget=priority]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "state",
+              "view": "greenq",
+              "idx": 10,
+              "screen": 1
+            },
+            {
+              "at": 0.6,
+              "do": "slide",
+              "to": 20,
+              "dur": 2.6
+            },
+            {
+              "at": 4.0,
+              "do": "slide",
+              "to": 0,
+              "dur": 3.6
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "tradeoff-2",
+          "chapter": "tradeoff",
+          "start": 61.0,
+          "duration": 8.0,
+          "narration": "With carbon only we save 593 kilograms of CO2; with water only, 2,134 litres of water.",
+          "captions": [
+            "With carbon only we save 593 kilograms of CO2;",
+            "with water only, 2,134 litres of water."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=tradeoff]",
+          "align": null,
+          "look": "[data-widget=tradeoff]",
+          "actions": [
+            {
+              "at": 0.2,
+              "do": "slide",
+              "to": 20,
+              "dur": 2.4
+            },
+            {
+              "at": 4.6,
+              "do": "slide",
+              "to": 0,
+              "dur": 2.4
+            }
+          ],
+          "quotes": {
+            "carbon_only_kg": {
+              "value": "593",
+              "from": "sweep[w=1].saved_kg_co2"
+            },
+            "water_only_l": {
+              "value": "2,134",
+              "from": "sweep[w=0].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "tradeoff-3",
+          "chapter": "tradeoff",
+          "start": 69.0,
+          "duration": 7.0,
+          "narration": "This curve shows every compromise. The three IBM marks ran on a real quantum computer.",
+          "captions": [
+            "This curve shows every compromise. The three IBM marks ran on a",
+            "real quantum computer."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=priority]",
+          "align": null,
+          "look": "#prio-slider",
+          "actions": [
+            {
+              "at": 0.3,
+              "do": "slide",
+              "to": 10,
+              "dur": 2.0
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "quantum-1",
+          "chapter": "quantum",
+          "start": 76.0,
+          "duration": 8.0,
+          "narration": "Here is the real circuit: 8 qubits, one where and one when for each job.",
+          "captions": [
+            "Here is the real circuit: 8 qubits, one where and one when",
+            "for each job."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=circuit]",
+          "align": "[data-widget=circuit]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 2
+            },
+            {
+              "at": 0,
+              "do": "state",
+              "idx": 10
+            }
+          ],
+          "quotes": {
+            "qubits": {
+              "value": "8",
+              "from": "circuit.n_qubits"
+            }
+          }
+        },
+        {
+          "id": "quantum-2",
+          "chapter": "quantum",
+          "start": 84.0,
+          "duration": 8.0,
+          "narration": "Every measured answer is a valid schedule. The usual method needs 16 qubits.",
+          "captions": [
+            "Every measured answer is a valid schedule.",
+            "The usual method needs 16 qubits."
+          ],
+          "mood": "working",
+          "spotlight": "[data-widget=circuit]",
+          "align": null,
+          "look": null,
+          "actions": [],
+          "quotes": {
+            "onehot": {
+              "value": "16",
+              "from": "circuit.onehot_qubits"
+            }
+          }
+        },
+        {
+          "id": "quantum-3",
+          "chapter": "quantum",
+          "start": 92.0,
+          "duration": 7.5,
+          "narration": "It ran on IBM's Marrakesh computer: 114 qubit links, 7 runs, every job ID saved.",
+          "captions": [
+            "It ran on IBM's Marrakesh computer:",
+            "114 qubit links, 7 runs, every job ID saved."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=facts]",
+          "align": "[data-widget=facts]",
+          "look": null,
+          "actions": [],
+          "quotes": {
+            "gates": {
+              "value": "114",
+              "from": "proof[w=0.5].hardware[raw].two_qubit_gates"
+            },
+            "runs": {
+              "value": "7",
+              "from": "totals.hardware_jobs"
+            }
+          }
+        },
+        {
+          "id": "quantum-4",
+          "chapter": "quantum",
+          "start": 99.5,
+          "duration": 8.0,
+          "narration": "Random guessing puts 10 percent of answers in the best tenth. IBM's computer put 18 to 23 percent.",
+          "captions": [
+            "Random guessing puts 10 percent of answers in the best tenth.",
+            "IBM's computer put 18 to 23 percent."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=histogram]",
+          "align": null,
+          "look": "[data-widget=histogram]",
+          "actions": [],
+          "quotes": {
+            "random": {
+              "value": "10",
+              "from": "best tenth of schedules = 10% under random guessing"
+            },
+            "hw_lo": {
+              "value": "18",
+              "from": "min(proof[*].hardware[*].share_best10)"
+            },
+            "hw_hi": {
+              "value": "23",
+              "from": "max(proof[*].hardware[*].share_best10)"
+            }
+          }
+        },
+        {
+          "id": "quantum-5",
+          "chapter": "quantum",
+          "start": 107.5,
+          "duration": 6.5,
+          "narration": "A perfect simulator reaches 28 to 34 percent. Noise-reduction tricks did not help consistently.",
+          "captions": [
+            "A perfect simulator reaches 28 to 34 percent.",
+            "Noise-reduction tricks did not help consistently."
+          ],
+          "mood": "idle",
+          "spotlight": "[data-widget=facts]",
+          "align": null,
+          "look": "[data-widget=facts]",
+          "actions": [],
+          "quotes": {
+            "ideal_lo": {
+              "value": "28",
+              "from": "min(proof[*].ideal.share_best10)"
+            },
+            "ideal_hi": {
+              "value": "34",
+              "from": "max(proof[*].ideal.share_best10)"
+            }
+          }
+        },
+        {
+          "id": "ask-1",
+          "chapter": "ask",
+          "start": 114.0,
+          "duration": 3.5,
+          "narration": "Now we ask GreenQ a question.",
+          "captions": [
+            "Now we ask GreenQ a question."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=chat]",
+          "align": "input[aria-label=\"Your question\"]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 4
+            },
+            {
+              "at": 0.6,
+              "do": "type",
+              "target": "input[aria-label=\"Your question\"]",
+              "text": "What is GreenQ and what are its advantages?",
+              "cps": 30
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-2",
+          "chapter": "ask",
+          "start": 117.5,
+          "duration": 8.0,
+          "narration": "The answer comes only from our saved results, and every number is checked against the data.",
+          "captions": [
+            "The answer comes only from our saved results, and every number is",
+            "checked against the data."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "enter",
+              "target": "input[aria-label=\"Your question\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-3",
+          "chapter": "ask",
+          "start": 125.5,
+          "duration": 3.5,
+          "narration": "Then the honest question.",
+          "captions": [
+            "Then the honest question."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.1,
+              "do": "type",
+              "target": "input[aria-label=\"Your question\"]",
+              "text": "Is it better than a normal computer?",
+              "cps": 30
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-4",
+          "chapter": "ask",
+          "start": 129.0,
+          "duration": 10.0,
+          "narration": "The answer is no, not at this size. A laptop is faster, so we use it as our referee.",
+          "captions": [
+            "The answer is no, not at this size.",
+            "A laptop is faster, so we use it as our referee."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "enter",
+              "target": "input[aria-label=\"Your question\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "methods-1",
+          "chapter": "methods",
+          "start": 139.0,
+          "duration": 9.0,
+          "narration": "Against simple methods like greedy and annealing, all find the best plan here, and faster.",
+          "captions": [
+            "Against simple methods like greedy and annealing, all find the best plan",
+            "here, and faster."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=methods]",
+          "align": "[data-widget=methods]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 3
+            },
+            {
+              "at": 0.4,
+              "do": "click",
+              "target": "[aria-label=\"Comparison\"] [data-value=\"methods\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "scaling-1",
+          "chapter": "scaling",
+          "start": 148.0,
+          "duration": 4.5,
+          "narration": "Bigger problems: 114 to 1,010 qubit links.",
+          "captions": [
+            "Bigger problems: 114 to 1,010 qubit links."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=scaling]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 3
+            },
+            {
+              "at": 0.2,
+              "do": "click",
+              "target": "[aria-label=\"Comparison\"] [data-value=\"scaling\"]"
+            }
+          ],
+          "quotes": {
+            "gates": {
+              "value": "114",
+              "from": "proof[w=0.5].hardware[raw].two_qubit_gates"
+            },
+            "gates_max": {
+              "value": "1,010",
+              "from": "scaling.sizes[-1].two_qubit_gates"
+            }
+          }
+        },
+        {
+          "id": "scaling-2",
+          "chapter": "scaling",
+          "start": 152.5,
+          "duration": 4.5,
+          "narration": "With job rules, savings shrink but remain.",
+          "captions": [
+            "With job rules, savings shrink but remain."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=rules]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.2,
+              "do": "click",
+              "target": "[aria-label=\"Comparison\"] [data-value=\"rules\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "jobs-1",
+          "chapter": "jobs",
+          "start": 157.0,
+          "duration": 5.0,
+          "narration": "You can also describe your own jobs in plain English.",
+          "captions": [
+            "You can also describe your own jobs in plain English."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=try]",
+          "align": "[data-widget=try]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 4
+            },
+            {
+              "at": 0.9,
+              "do": "click",
+              "target": "[data-demo=read-jobs]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "about-1",
+          "chapter": "about",
+          "start": 162.0,
+          "duration": 8.0,
+          "narration": "Built with Qiskit on IBM Quantum, Python, FastAPI and React. Groq writes explanations only.",
+          "captions": [
+            "Built with Qiskit on IBM Quantum, Python, FastAPI and React.",
+            "Groq writes explanations only."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=tech]",
+          "align": "[data-widget=tech]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 5
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "closing-1",
+          "chapter": "closing",
+          "start": 170.0,
+          "duration": 5.5,
+          "narration": "Same jobs: 530 kilograms less CO2, 1,798 litres less water.",
+          "captions": [
+            "Same jobs: 530 kilograms less CO2, 1,798 litres less water."
+          ],
+          "mood": "celebrate",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 0
+            },
+            {
+              "at": 0,
+              "do": "hero",
+              "hold": 3
+            }
+          ],
+          "quotes": {
+            "saved_kg": {
+              "value": "530",
+              "from": "sweep[w=0.5].saved_kg_co2"
+            },
+            "saved_l": {
+              "value": "1,798",
+              "from": "sweep[w=0.5].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "closing-2",
+          "chapter": "closing",
+          "start": 175.5,
+          "duration": 6.5,
+          "narration": "Sites are illustrative and we claim no quantum advantage. Next: bigger problems, real data.",
+          "captions": [
+            "Sites are illustrative and we claim no quantum advantage.",
+            "Next: bigger problems, real data."
+          ],
+          "mood": "proud",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 5.0,
+              "do": "spot",
+              "target": null
+            }
+          ],
+          "quotes": {}
+        }
+      ]
+    },
+    "short": {
+      "total": 130.0,
+      "chapters": [
+        {
+          "id": "problem",
+          "title": "Problem and idea",
+          "start": 0.0,
+          "duration": 15.0
+        },
+        {
+          "id": "schedule",
+          "title": "The schedule",
+          "start": 15.0,
+          "duration": 25.0
+        },
+        {
+          "id": "tradeoff",
+          "title": "Carbon vs water",
+          "start": 40.0,
+          "duration": 18.0
+        },
+        {
+          "id": "quantum",
+          "title": "Quantum proof",
+          "start": 58.0,
+          "duration": 30.0
+        },
+        {
+          "id": "ask",
+          "title": "Ask GreenQ",
+          "start": 88.0,
+          "duration": 18.0
+        },
+        {
+          "id": "methods",
+          "title": "Methods compared",
+          "start": 106.0,
+          "duration": 8.0
+        },
+        {
+          "id": "scaling",
+          "title": "Scaling and job rules",
+          "start": 114.0,
+          "duration": 6.0
+        },
+        {
+          "id": "closing",
+          "title": "Closing",
+          "start": 120.0,
+          "duration": 10.0
+        }
+      ],
+      "steps": [
+        {
+          "id": "problem-1",
+          "chapter": "problem",
+          "start": 0.0,
+          "duration": 5.0,
+          "narration": "Data centres burn electricity and evaporate water to cool servers.",
+          "captions": [
+            "Data centres burn electricity and evaporate water to cool servers."
+          ],
+          "mood": "waking",
+          "spotlight": null,
+          "align": "[data-tour=jobs]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "reset"
+            },
+            {
+              "at": 0.1,
+              "do": "hero",
+              "restart": true
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "problem-2",
+          "chapter": "problem",
+          "start": 5.0,
+          "duration": 5.0,
+          "narration": "Many jobs could run at another site, or later.",
+          "captions": [
+            "Many jobs could run at another site, or later."
+          ],
+          "mood": "curious",
+          "spotlight": null,
+          "align": null,
+          "look": "[data-tour=jobs]",
+          "actions": [],
+          "quotes": {}
+        },
+        {
+          "id": "problem-3",
+          "chapter": "problem",
+          "start": 10.0,
+          "duration": 5.0,
+          "narration": "GreenQ picks a smarter place and time with quantum computing.",
+          "captions": [
+            "GreenQ picks a smarter place and time with quantum computing."
+          ],
+          "mood": "excited",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 1.8,
+              "do": "hero",
+              "hold": 3
+            },
+            {
+              "at": 2.6,
+              "do": "dewy",
+              "mood": "celebrate"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-1",
+          "chapter": "schedule",
+          "start": 15.0,
+          "duration": 5.0,
+          "narration": "Four jobs, two data centres, day and night slots.",
+          "captions": [
+            "Four jobs, two data centres, day and night slots."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=schedule]",
+          "align": "[data-widget=schedule]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 1
+            },
+            {
+              "at": 0,
+              "do": "state",
+              "view": "before",
+              "idx": 10,
+              "preset": "flexible"
+            },
+            {
+              "at": 0,
+              "do": "hero",
+              "hold": null
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-2",
+          "chapter": "schedule",
+          "start": 20.0,
+          "duration": 6.0,
+          "narration": "Run now: every job starts at home; Site A is crowded at night.",
+          "captions": [
+            "Run now: every job starts at home;",
+            "Site A is crowded at night."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": "[data-lane=\"1\"]",
+          "actions": [
+            {
+              "at": 1.0,
+              "do": "hover",
+              "target": "[data-lane=\"1\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-3",
+          "chapter": "schedule",
+          "start": 26.0,
+          "duration": 6.0,
+          "narration": "Run smart: jobs move to cleaner slots and drier cooling.",
+          "captions": [
+            "Run smart: jobs move to cleaner slots and drier cooling."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.3,
+              "do": "click",
+              "target": "[aria-label=\"Which schedule\"] [data-value=\"greenq\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "schedule-4",
+          "chapter": "schedule",
+          "start": 32.0,
+          "duration": 5.0,
+          "narration": "530 kilograms less CO2 and 1,798 litres less water.",
+          "captions": [
+            "530 kilograms less CO2 and 1,798 litres less water."
+          ],
+          "mood": "celebrate",
+          "spotlight": "[data-widget=schedule]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.4,
+              "do": "hover",
+              "target": "[data-widget=schedule] .grid-cols-2:last-child"
+            }
+          ],
+          "quotes": {
+            "saved_kg": {
+              "value": "530",
+              "from": "sweep[w=0.5].saved_kg_co2"
+            },
+            "saved_l": {
+              "value": "1,798",
+              "from": "sweep[w=0.5].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "schedule-5",
+          "chapter": "schedule",
+          "start": 37.0,
+          "duration": 3.0,
+          "narration": "Dewy explains each move.",
+          "captions": [
+            "Dewy explains each move."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=why]",
+          "align": "[data-widget=why]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0.4,
+              "do": "dewy",
+              "say": "ML model training: A night → B day, cleaner grid, air cooling saves water.",
+              "badge": "ai",
+              "ms": 2900
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "tradeoff-1",
+          "chapter": "tradeoff",
+          "start": 40.0,
+          "duration": 6.0,
+          "narration": "Carbon and water pull against each other. Watch the slider.",
+          "captions": [
+            "Carbon and water pull against each other.",
+            "Watch the slider."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=priority]",
+          "align": "[data-widget=priority]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "state",
+              "view": "greenq",
+              "idx": 10,
+              "screen": 1
+            },
+            {
+              "at": 0.6,
+              "do": "slide",
+              "to": 20,
+              "dur": 1.8
+            },
+            {
+              "at": 3.0,
+              "do": "slide",
+              "to": 0,
+              "dur": 2.6
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "tradeoff-2",
+          "chapter": "tradeoff",
+          "start": 46.0,
+          "duration": 6.5,
+          "narration": "Carbon only saves 593 kilograms; water only saves 2,134 litres.",
+          "captions": [
+            "Carbon only saves 593 kilograms; water only saves 2,134 litres."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=tradeoff]",
+          "align": null,
+          "look": "[data-widget=tradeoff]",
+          "actions": [
+            {
+              "at": 0.2,
+              "do": "slide",
+              "to": 20,
+              "dur": 1.8
+            },
+            {
+              "at": 3.6,
+              "do": "slide",
+              "to": 0,
+              "dur": 1.8
+            }
+          ],
+          "quotes": {
+            "carbon_only_kg": {
+              "value": "593",
+              "from": "sweep[w=1].saved_kg_co2"
+            },
+            "water_only_l": {
+              "value": "2,134",
+              "from": "sweep[w=0].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "tradeoff-3",
+          "chapter": "tradeoff",
+          "start": 52.5,
+          "duration": 5.5,
+          "narration": "The three IBM marks ran on a real quantum computer.",
+          "captions": [
+            "The three IBM marks ran on a real quantum computer."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=priority]",
+          "align": null,
+          "look": "#prio-slider",
+          "actions": [
+            {
+              "at": 0.3,
+              "do": "slide",
+              "to": 10,
+              "dur": 1.4
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "quantum-1",
+          "chapter": "quantum",
+          "start": 58.0,
+          "duration": 6.5,
+          "narration": "The real circuit: 8 qubits, a where and a when per job.",
+          "captions": [
+            "The real circuit: 8 qubits, a where and a when per job."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=circuit]",
+          "align": "[data-widget=circuit]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 2
+            },
+            {
+              "at": 0,
+              "do": "state",
+              "idx": 10
+            }
+          ],
+          "quotes": {
+            "qubits": {
+              "value": "8",
+              "from": "circuit.n_qubits"
+            }
+          }
+        },
+        {
+          "id": "quantum-2",
+          "chapter": "quantum",
+          "start": 64.5,
+          "duration": 5.5,
+          "narration": "Every answer is a valid schedule; the usual method needs 16.",
+          "captions": [
+            "Every answer is a valid schedule;",
+            "the usual method needs 16."
+          ],
+          "mood": "working",
+          "spotlight": "[data-widget=circuit]",
+          "align": null,
+          "look": null,
+          "actions": [],
+          "quotes": {
+            "onehot": {
+              "value": "16",
+              "from": "circuit.onehot_qubits"
+            }
+          }
+        },
+        {
+          "id": "quantum-3",
+          "chapter": "quantum",
+          "start": 70.0,
+          "duration": 6.0,
+          "narration": "It ran on IBM Marrakesh: 114 qubit links, 7 runs.",
+          "captions": [
+            "It ran on IBM Marrakesh: 114 qubit links, 7 runs."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=facts]",
+          "align": "[data-widget=facts]",
+          "look": null,
+          "actions": [],
+          "quotes": {
+            "gates": {
+              "value": "114",
+              "from": "proof[w=0.5].hardware[raw].two_qubit_gates"
+            },
+            "runs": {
+              "value": "7",
+              "from": "totals.hardware_jobs"
+            }
+          }
+        },
+        {
+          "id": "quantum-4",
+          "chapter": "quantum",
+          "start": 76.0,
+          "duration": 7.0,
+          "narration": "Random guessing puts 10 percent in the best tenth; IBM put 18 to 23.",
+          "captions": [
+            "Random guessing puts 10 percent in the best tenth;",
+            "IBM put 18 to 23."
+          ],
+          "mood": "proud",
+          "spotlight": "[data-widget=histogram]",
+          "align": null,
+          "look": "[data-widget=histogram]",
+          "actions": [],
+          "quotes": {
+            "random": {
+              "value": "10",
+              "from": "best tenth of schedules = 10% under random guessing"
+            },
+            "hw_lo": {
+              "value": "18",
+              "from": "min(proof[*].hardware[*].share_best10)"
+            },
+            "hw_hi": {
+              "value": "23",
+              "from": "max(proof[*].hardware[*].share_best10)"
+            }
+          }
+        },
+        {
+          "id": "quantum-5",
+          "chapter": "quantum",
+          "start": 83.0,
+          "duration": 5.0,
+          "narration": "Noise-reduction tricks did not help consistently.",
+          "captions": [
+            "Noise-reduction tricks did not help consistently."
+          ],
+          "mood": "idle",
+          "spotlight": "[data-widget=facts]",
+          "align": null,
+          "look": "[data-widget=facts]",
+          "actions": [],
+          "quotes": {}
+        },
+        {
+          "id": "ask-1",
+          "chapter": "ask",
+          "start": 88.0,
+          "duration": 2.5,
+          "narration": "We ask GreenQ.",
+          "captions": [
+            "We ask GreenQ."
+          ],
+          "mood": "excited",
+          "spotlight": "[data-widget=chat]",
+          "align": "input[aria-label=\"Your question\"]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 4
+            },
+            {
+              "at": 0.6,
+              "do": "type",
+              "target": "input[aria-label=\"Your question\"]",
+              "text": "What is GreenQ and what are its advantages?",
+              "cps": 42
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-2",
+          "chapter": "ask",
+          "start": 90.5,
+          "duration": 5.5,
+          "narration": "Answers come only from saved, fact-checked results.",
+          "captions": [
+            "Answers come only from saved, fact-checked results."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "enter",
+              "target": "input[aria-label=\"Your question\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-3",
+          "chapter": "ask",
+          "start": 96.0,
+          "duration": 2.5,
+          "narration": "Then the honest question.",
+          "captions": [
+            "Then the honest question."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0.1,
+              "do": "type",
+              "target": "input[aria-label=\"Your question\"]",
+              "text": "Is it better than a normal computer?",
+              "cps": 42
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "ask-4",
+          "chapter": "ask",
+          "start": 98.5,
+          "duration": 7.5,
+          "narration": "No, not at this size. A laptop is faster; it is our referee.",
+          "captions": [
+            "No, not at this size. A laptop is faster;",
+            "it is our referee."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=chat]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "enter",
+              "target": "input[aria-label=\"Your question\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "methods-1",
+          "chapter": "methods",
+          "start": 106.0,
+          "duration": 8.0,
+          "narration": "Simple methods also find the best plan here, and faster.",
+          "captions": [
+            "Simple methods also find the best plan here, and faster."
+          ],
+          "mood": "thinking",
+          "spotlight": "[data-widget=methods]",
+          "align": "[data-widget=methods]",
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 3
+            },
+            {
+              "at": 0.4,
+              "do": "click",
+              "target": "[aria-label=\"Comparison\"] [data-value=\"methods\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "scaling-1",
+          "chapter": "scaling",
+          "start": 114.0,
+          "duration": 6.0,
+          "narration": "Bigger problems need many more qubit links.",
+          "captions": [
+            "Bigger problems need many more qubit links."
+          ],
+          "mood": "curious",
+          "spotlight": "[data-widget=scaling]",
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 3
+            },
+            {
+              "at": 0.2,
+              "do": "click",
+              "target": "[aria-label=\"Comparison\"] [data-value=\"scaling\"]"
+            }
+          ],
+          "quotes": {}
+        },
+        {
+          "id": "closing-1",
+          "chapter": "closing",
+          "start": 120.0,
+          "duration": 4.5,
+          "narration": "530 kilograms less CO2, 1,798 litres less water.",
+          "captions": [
+            "530 kilograms less CO2, 1,798 litres less water."
+          ],
+          "mood": "celebrate",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 0,
+              "do": "screen",
+              "screen": 0
+            },
+            {
+              "at": 0,
+              "do": "hero",
+              "hold": 3
+            }
+          ],
+          "quotes": {
+            "saved_kg": {
+              "value": "530",
+              "from": "sweep[w=0.5].saved_kg_co2"
+            },
+            "saved_l": {
+              "value": "1,798",
+              "from": "sweep[w=0.5].saved_litres"
+            }
+          }
+        },
+        {
+          "id": "closing-2",
+          "chapter": "closing",
+          "start": 124.5,
+          "duration": 5.5,
+          "narration": "No quantum advantage claimed. Next: bigger problems and real data.",
+          "captions": [
+            "No quantum advantage claimed. Next: bigger problems and real data."
+          ],
+          "mood": "proud",
+          "spotlight": null,
+          "align": null,
+          "look": null,
+          "actions": [
+            {
+              "at": 4.2,
+              "do": "spot",
+              "target": null
+            }
+          ],
+          "quotes": {}
+        }
+      ]
+    }
+  }
+}

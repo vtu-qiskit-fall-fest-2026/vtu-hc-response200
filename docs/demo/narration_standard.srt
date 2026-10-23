@@ -1,0 +1,124 @@
+1
+00:00:00,000 --> 00:00:06,350
+Data centres burn electricity and evaporate water to keep servers cool.
+
+2
+00:00:06,500 --> 00:00:12,850
+Many jobs are flexible: they could run at another site, or later.
+
+3
+00:00:13,000 --> 00:00:19,850
+GreenQ picks a smarter place and time for each job, with a
+quantum algorithm.
+
+4
+00:00:20,000 --> 00:00:26,850
+Our example: four jobs, two data centres, a day slot and a
+night slot.
+
+5
+00:00:27,000 --> 00:00:34,850
+Run now: every job starts at home, the moment it arrives.
+Site A gets crowded at night.
+
+6
+00:00:35,000 --> 00:00:41,850
+Now we press run smart. The jobs move to cleaner time slots
+and drier cooling.
+
+7
+00:00:42,000 --> 00:00:47,850
+Same jobs: 530 kilograms less CO2 and 1,798 litres less water.
+
+8
+00:00:48,000 --> 00:00:52,850
+Dewy explains each move, for example the training job.
+
+9
+00:00:53,000 --> 00:01:00,850
+Carbon and water pull against each other.
+We drag from cutting carbon to saving water.
+
+10
+00:01:01,000 --> 00:01:08,850
+With carbon only we save 593 kilograms of CO2;
+with water only, 2,134 litres of water.
+
+11
+00:01:09,000 --> 00:01:15,850
+This curve shows every compromise. The three IBM marks ran on a
+real quantum computer.
+
+12
+00:01:16,000 --> 00:01:23,850
+Here is the real circuit: 8 qubits, one where and one when
+for each job.
+
+13
+00:01:24,000 --> 00:01:31,850
+Every measured answer is a valid schedule.
+The usual method needs 16 qubits.
+
+14
+00:01:32,000 --> 00:01:39,350
+It ran on IBM's Marrakesh computer:
+114 qubit links, 7 runs, every job ID saved.
+
+15
+00:01:39,500 --> 00:01:47,350
+Random guessing puts 10 percent of answers in the best tenth.
+IBM's computer put 18 to 23 percent.
+
+16
+00:01:47,500 --> 00:01:53,850
+A perfect simulator reaches 28 to 34 percent.
+Noise-reduction tricks did not help consistently.
+
+17
+00:01:54,000 --> 00:01:57,350
+Now we ask GreenQ a question.
+
+18
+00:01:57,500 --> 00:02:05,350
+The answer comes only from our saved results, and every number is
+checked against the data.
+
+19
+00:02:05,500 --> 00:02:08,850
+Then the honest question.
+
+20
+00:02:09,000 --> 00:02:18,850
+The answer is no, not at this size.
+A laptop is faster, so we use it as our referee.
+
+21
+00:02:19,000 --> 00:02:27,850
+Against simple methods like greedy and annealing, all find the best plan
+here, and faster.
+
+22
+00:02:28,000 --> 00:02:32,350
+Bigger problems: 114 to 1,010 qubit links.
+
+23
+00:02:32,500 --> 00:02:36,850
+With job rules, savings shrink but remain.
+
+24
+00:02:37,000 --> 00:02:41,850
+You can also describe your own jobs in plain English.
+
+25
+00:02:42,000 --> 00:02:49,850
+Built with Qiskit on IBM Quantum, Python, FastAPI and React.
+Groq writes explanations only.
+
+26
+00:02:50,000 --> 00:02:55,350
+Same jobs: 530 kilograms less CO2, 1,798 litres less water.
+
+27
+00:02:55,500 --> 00:03:01,850
+Sites are illustrative and we claim no quantum advantage.
+Next: bigger problems, real data.

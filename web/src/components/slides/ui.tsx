@@ -118,6 +118,7 @@ export function Segmented<T extends string | number>({ value, options, onChange,
         <button
           key={String(o.value)}
           role="tab"
+          data-value={String(o.value)}
           aria-selected={o.value === value}
           onClick={() => onChange(o.value)}
           className={`rounded-full font-semibold whitespace-nowrap transition-colors ${size === "lg" ? "px-5 py-2 text-[16px]" : "px-3.5 py-1.5 text-[13px]"} ${o.value === value ? "bg-white text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}

@@ -1,0 +1,41 @@
+GreenQ demo narration (short, 02:10)
+
+[00:00] Problem and idea
+  00:00  Data centres burn electricity and evaporate water to cool servers.
+  00:05  Many jobs could run at another site, or later.
+  00:10  GreenQ picks a smarter place and time with quantum computing.
+
+[00:15] The schedule
+  00:15  Four jobs, two data centres, day and night slots.
+  00:20  Run now: every job starts at home; Site A is crowded at night.
+  00:26  Run smart: jobs move to cleaner slots and drier cooling.
+  00:32  530 kilograms less CO2 and 1,798 litres less water.
+  00:37  Dewy explains each move.
+
+[00:40] Carbon vs water
+  00:40  Carbon and water pull against each other. Watch the slider.
+  00:46  Carbon only saves 593 kilograms; water only saves 2,134 litres.
+  00:52  The three IBM marks ran on a real quantum computer.
+
+[00:58] Quantum proof
+  00:58  The real circuit: 8 qubits, a where and a when per job.
+  01:04  Every answer is a valid schedule; the usual method needs 16.
+  01:10  It ran on IBM Marrakesh: 114 qubit links, 7 runs.
+  01:16  Random guessing puts 10 percent in the best tenth; IBM put 18 to 23.
+  01:23  Noise-reduction tricks did not help consistently.
+
+[01:28] Ask GreenQ
+  01:28  We ask GreenQ.
+  01:30  Answers come only from saved, fact-checked results.
+  01:36  Then the honest question.
+  01:38  No, not at this size. A laptop is faster; it is our referee.
+
+[01:46] Methods compared
+  01:46  Simple methods also find the best plan here, and faster.
+
+[01:54] Scaling and job rules
+  01:54  Bigger problems need many more qubit links.
+
+[02:00] Closing
+  02:00  530 kilograms less CO2, 1,798 litres less water.
+  02:04  No quantum advantage claimed. Next: bigger problems and real data.

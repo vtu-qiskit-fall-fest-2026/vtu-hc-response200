@@ -35,7 +35,23 @@ export function AboutScreen() {
               ))}
             </dl>
           </Card>
-          <Card id="sources" className="flex flex-col p-5">
+          <div className="flex min-h-0 flex-col gap-5">
+          <Card id="tech" className="p-5">
+            <h2 className="text-[18px] font-semibold">Built with</h2>
+            <ul className="mt-3 flex flex-wrap gap-2 text-[14px]">
+              {[
+                ["Qiskit 2.6", "circuits, QAOA"],
+                ["IBM Quantum", "ibm_marrakesh hardware"],
+                ["Python", "model, solvers, tests"],
+                ["FastAPI", "server"],
+                ["React + Motion", "this app"],
+                ["Groq", "explanations only"],
+              ].map(([name, what]) => (
+                <li key={name} className="rounded-full bg-muted px-3 py-1"><b className="font-semibold">{name}</b> <span className="text-muted-foreground">· {what}</span></li>
+              ))}
+            </ul>
+          </Card>
+          <Card id="sources" className="flex min-h-0 flex-1 flex-col p-5">
             <h2 className="flex items-center gap-1 text-[18px] font-semibold">
               Sources
               <Info>Full references and licences are in the README. Built with Qiskit; not affiliated with IBM.</Info>
@@ -60,6 +76,7 @@ export function AboutScreen() {
               </li>
             </ul>
           </Card>
+          </div>
         </div>
       </div>
     </Screen>

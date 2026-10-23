@@ -1,0 +1,48 @@
+GreenQ demo narration (standard, 03:02)
+
+[00:00] Problem and idea
+  00:00  Data centres burn electricity and evaporate water to keep servers cool.
+  00:06  Many jobs are flexible: they could run at another site, or later.
+  00:13  GreenQ picks a smarter place and time for each job, with a quantum algorithm.
+
+[00:20] The schedule
+  00:20  Our example: four jobs, two data centres, a day slot and a night slot.
+  00:27  Run now: every job starts at home, the moment it arrives. Site A gets crowded at night.
+  00:35  Now we press run smart. The jobs move to cleaner time slots and drier cooling.
+  00:42  Same jobs: 530 kilograms less CO2 and 1,798 litres less water.
+  00:48  Dewy explains each move, for example the training job.
+
+[00:53] Carbon vs water
+  00:53  Carbon and water pull against each other. We drag from cutting carbon to saving water.
+  01:01  With carbon only we save 593 kilograms of CO2; with water only, 2,134 litres of water.
+  01:09  This curve shows every compromise. The three IBM marks ran on a real quantum computer.
+
+[01:16] Quantum proof
+  01:16  Here is the real circuit: 8 qubits, one where and one when for each job.
+  01:24  Every measured answer is a valid schedule. The usual method needs 16 qubits.
+  01:32  It ran on IBM's Marrakesh computer: 114 qubit links, 7 runs, every job ID saved.
+  01:39  Random guessing puts 10 percent of answers in the best tenth. IBM's computer put 18 to 23 percent.
+  01:47  A perfect simulator reaches 28 to 34 percent. Noise-reduction tricks did not help consistently.
+
+[01:54] Ask GreenQ
+  01:54  Now we ask GreenQ a question.
+  01:57  The answer comes only from our saved results, and every number is checked against the data.
+  02:05  Then the honest question.
+  02:09  The answer is no, not at this size. A laptop is faster, so we use it as our referee.
+
+[02:19] Methods compared
+  02:19  Against simple methods like greedy and annealing, all find the best plan here, and faster.
+
+[02:28] Scaling and job rules
+  02:28  Bigger problems: 114 to 1,010 qubit links.
+  02:32  With job rules, savings shrink but remain.
+
+[02:37] Your own jobs
+  02:37  You can also describe your own jobs in plain English.
+
+[02:42] How it is built
+  02:42  Built with Qiskit on IBM Quantum, Python, FastAPI and React. Groq writes explanations only.
+
+[02:50] Closing
+  02:50  Same jobs: 530 kilograms less CO2, 1,798 litres less water.
+  02:55  Sites are illustrative and we claim no quantum advantage. Next: bigger problems, real data.
