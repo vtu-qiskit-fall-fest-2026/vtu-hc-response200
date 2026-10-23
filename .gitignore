@@ -71,3 +71,6 @@ web/dist/
 
 # demo recordings are large: made by scripts/record_demo.py, shared outside git
 results/demo/
+
+# Vercel deploy folder (built by scripts/build_vercel.py)
+deploy/vercel/

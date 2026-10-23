@@ -355,7 +355,8 @@ vtu-hc-response200/
 │   ├── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
 │   ├── ui_smoke.py           # optional browser checks (Playwright): no console errors, no overflow, numbers match data
 │   ├── build_demo.py         # Full demo timeline + narration/subtitles -> docs/demo/
-│   └── record_demo.py        # record the Full demo as video (Playwright + ffmpeg)
+│   ├── record_demo.py        # record the Full demo as video (Playwright + ffmpeg)
+│   └── build_vercel.py       # slim Vercel deploy (static app + one Python function)
 ├── server/                   # FastAPI: /api/data, /api/custom, serves web/dist
 │   └── llm.py                # grounded explanations: facts, number check, cache, templates
 ├── web/                      # React + Vite demo UI (source; built into web/dist)
@@ -420,6 +421,8 @@ python scripts/record_demo.py --preset short --no-captions
 ```
 
 The narration (`docs/demo/narration_*.txt`, `.srt`, `.vtt`) and the YouTube chapter lists are generated from the same timeline by `python scripts/build_demo.py`; see [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md).
+
+**Live demo (Vercel):** https://greenq-xi.vercel.app (the same app; press **D** for the Full demo). To redeploy after changes: `python scripts/build_vercel.py --deploy` (needs the Vercel CLI and `vercel login`). It builds a slim folder (`deploy/vercel/greenq`, not committed): the React app as static files plus one Python function for `/api/*` that installs only FastAPI, httpx, NumPy, SciPy and Qiskit. Your `.env` is never uploaded, so the live site uses the reviewed saved answers and templates; to enable live AI answers there, add `GROQ_API_KEY` in the Vercel project's settings.
 
 ### 4. Optional: AI explanations (Groq)
 
