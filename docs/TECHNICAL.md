@@ -310,7 +310,9 @@ vtu-hc-response200/
 ├── app/streamlit_app.py      # fallback demo (Streamlit)
 ├── results/                  # saved simulator and hardware results (JSON)
 ├── tests/                    # pytest suite
-└── docs/                     # EXPLAINER, DECISIONS, demo timeline, screenshots
+├── docs/                     # TECHNICAL (this page), EXPLAINER, DECISIONS, demo timeline, screenshots
+├── presentation/             # solution PPT
+└── DEMO_VIDEO.md             # YouTube demo video link
 ```
 
 ---
