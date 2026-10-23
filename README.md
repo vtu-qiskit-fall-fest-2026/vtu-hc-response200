@@ -354,8 +354,7 @@ vtu-hc-response200/
 │   ├── export_ui_data.py     # saved results -> results/ui_data.json for the UI
 │   ├── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
 │   ├── ui_smoke.py           # optional browser checks (Playwright): no console errors, no overflow, numbers match data
-│   ├── build_demo.py         # Full demo timeline + narration/subtitles -> docs/demo/
-│   ├── record_demo.py        # record the Full demo as video (Playwright + ffmpeg)
+│   ├── build_demo.py         # Full demo timeline -> docs/demo/timeline.json
 │   └── build_vercel.py       # slim Vercel deploy (static app + one Python function)
 ├── server/                   # FastAPI: /api/data, /api/custom, serves web/dist
 │   └── llm.py                # grounded explanations: facts, number check, cache, templates
@@ -363,7 +362,7 @@ vtu-hc-response200/
 ├── app/streamlit_app.py      # fallback demo (Streamlit)
 ├── results/                  # saved simulator and hardware results (JSON)
 ├── tests/                    # pytest suite
-└── docs/                     # EXPLAINER, DECISIONS, PPT content, screenshots
+└── docs/                     # EXPLAINER, DECISIONS, demo timeline, screenshots
 ```
 
 ---
@@ -412,15 +411,7 @@ The demo reads only saved results (`results/ui_data.json`, exported from `result
 
 **Frontend development:** run `python -m server` in one terminal and `cd web && npm run dev` in another (Vite proxies `/api` to the server).
 
-**Full demo (about 3 minutes, for recording):** press **D** (or *Full demo* on the Start screen or in the sidebar). Dewy presents every feature on the real app: the virtual cursor clicks, drags the slider and types into the chat. The chat uses reviewed, saved answers, so it runs offline and is identical every time. Two presets: Standard 3:02 and Short 2:10. While it plays: **Space** pause, **← →** chapters, **R** restart, **C** captions, **Esc** stop; move the mouse for the player bar (preset, speed, chapter list). To record it as a video with no sound, plus voice-over scripts and subtitles:
-
-```bash
-pip install playwright                              # once
-python scripts/record_demo.py --preset standard     # -> results/demo/greenq_demo_standard.webm / .mp4
-python scripts/record_demo.py --preset short --no-captions
-```
-
-The narration (`docs/demo/narration_*.txt`, `.srt`, `.vtt`) and the YouTube chapter lists are generated from the same timeline by `python scripts/build_demo.py`; see [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md).
+**Full demo (about 3 minutes, for recording):** press **D** (or *Full demo* on the Start screen or in the sidebar). Dewy presents every feature on the real app: the virtual cursor clicks, drags the slider and types into the chat. The chat uses reviewed, saved answers, so it runs offline and is identical every time. Two presets: Standard 3:02 and Short 2:10. While it plays: **Space** pause, **← →** chapters, **R** restart, **C** captions, **Esc** stop; move the mouse for the player bar (preset, speed, chapter list).
 
 **Live demo (Vercel):** https://greenq-xi.vercel.app (the same app; press **D** for the Full demo). To redeploy after changes: `python scripts/build_vercel.py --deploy` (needs the Vercel CLI and `vercel login`). It builds a slim folder (`deploy/vercel/greenq`, not committed): the React app as static files plus one Python function for `/api/*` that installs only FastAPI, httpx, NumPy, SciPy and Qiskit. Your `.env` is never uploaded, so the live site uses the reviewed saved answers and templates; to enable live AI answers there, add `GROQ_API_KEY` in the Vercel project's settings.
 
