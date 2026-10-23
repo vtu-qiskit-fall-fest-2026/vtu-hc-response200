@@ -6,7 +6,8 @@
 
 Checks: no console errors on first load; the hero's savings equal
 results/ui_data.json; no screen scrolls or overflows at 1920x1080 or 1366x768;
-under reduced motion the hero and Dewy hold still (two frames are identical).
+the Full demo (Short preset) plays to the end without console errors; under
+reduced motion the hero and Dewy hold still (two frames are identical).
 """
 from __future__ import annotations
 
@@ -56,6 +57,19 @@ def main() -> int:
                     bad.append(f"{w}x{h} screen {k}: {r}")
             bad += [f"{w}: console: {e}" for e in errs]
             pg.close()
+        # the Full demo (Short preset) plays through on the real app without errors
+        pg = b.new_page(viewport={"width": 1920, "height": 1080})
+        errs = []
+        pg.on("pageerror", lambda e: errs.append(str(e)))
+        pg.on("console", lambda m: errs.append(m.text) if m.type == "error" else None)
+        pg.goto(URL + "/?record=1&demo=short", wait_until="networkidle")
+        total = json.loads((ROOT / "docs" / "demo" / "timeline.json").read_text())["presets"]["short"]["total"]
+        try:
+            pg.wait_for_function("window.__greenqDemo && window.__greenqDemo.done === true", timeout=int((total + 30) * 1000), polling=1000)
+        except Exception:  # noqa: BLE001
+            bad.append("Full demo (short) did not finish")
+        bad += [f"demo: console: {e}" for e in errs]
+        pg.close()
         ctx = b.new_context(viewport={"width": 1920, "height": 1080}, reduced_motion="reduce")
         pg = ctx.new_page()
         pg.goto(URL, wait_until="networkidle")
