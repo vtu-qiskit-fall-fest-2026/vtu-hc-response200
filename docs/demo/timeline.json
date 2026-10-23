@@ -138,7 +138,7 @@
           "look": null,
           "actions": [
             {
-              "at": 3.6,
+              "at": 1.6,
               "do": "hero",
               "hold": 3
             },

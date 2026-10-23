@@ -97,7 +97,7 @@ def steps(v: dict) -> list[dict]:
         dict(chapter="problem", dur=S(7.0, 5.0),
              say=S("GreenQ picks a smarter place and time for each job, with a quantum algorithm.",
                    "GreenQ picks a smarter place and time with quantum computing."),
-             mood="excited", actions=[{"at": S(3.6, 1.8), "do": "hero", "hold": 3},
+             mood="excited", actions=[{"at": S(1.6, 1.8), "do": "hero", "hold": 3},
                                       {"at": S(4.4, 2.6), "do": "dewy", "mood": "celebrate"}]),
         # 2 The schedule ---------------------------------------------------------------
         dict(chapter="schedule", dur=S(7.0, 5.0),
