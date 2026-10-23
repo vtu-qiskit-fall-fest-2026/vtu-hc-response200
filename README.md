@@ -38,7 +38,7 @@
 
 - **Live app:** https://greenq-xi.vercel.app
 - **Demo video:** https://youtu.be/WW4myHQ4JOg (also in [DEMO_VIDEO.md](DEMO_VIDEO.md))
-- **Presentation (PPT):** [presentation/GreenQ_Response200_VTU-QFF-HC-0137.pptx](presentation/GreenQ_Response200_VTU-QFF-HC-0137.pptx)
+- **Presentation (PPT):** [presentation/GreenQ_Response200_VTU-QFF-HC-0137_1.pptx](presentation/GreenQ_Response200_VTU-QFF-HC-0137_1.pptx)
 - **Technical details:** [docs/TECHNICAL.md](docs/TECHNICAL.md). It covers the architecture, full results tables, Dewy the guide, the language model's role, tech stack, project structure, limitations, and credits and references.
 - **Plain-language explainer:** [docs/EXPLAINER.md](docs/EXPLAINER.md). **Design decisions:** [docs/DECISIONS.md](docs/DECISIONS.md).
 
