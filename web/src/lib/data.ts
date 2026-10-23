@@ -3,6 +3,8 @@ import type { FlexPreset, ProofEntry, SweepStop, UiData } from "../types";
 import type { CaptionId } from "./story";
 import type { TourState } from "./tour";
 
+export type DemoPreset = "standard" | "short";
+
 /** Loads results/ui_data.json through the FastAPI server. */
 export function useUiData() {
   const [data, setData] = useState<UiData | null>(null);
@@ -39,6 +41,13 @@ export interface AppState {
   flash: string | null;        // a widget id to highlight once (Ask -> "show me")
   show: (screen: number, widget: string) => void;
   tour: TourState;             // guided tour (lib/tour.ts)
+  demo: DemoPreset | null;     // the automated Full demo (components/demo), when running
+  startDemo: (p?: DemoPreset) => void;
+  stopDemo: () => void;
+  heroHold: number | null;     // hold the Start hero on one phase (demo closing)
+  setHeroHold: (p: number | null) => void;
+  heroRestart: number;         // bump to restart the hero loop from phase 0
+  restartHero: () => void;
   startTour: () => void;
   setTourStep: (i: number) => void;
   endTour: () => void;

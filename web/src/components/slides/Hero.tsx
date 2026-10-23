@@ -17,14 +17,18 @@ import type { UiData } from "@/types";
 export const PHASE_MS = [4000, 4000, 3000, 4000, 1000];
 export type Phase = 0 | 1 | 2 | 3 | 4;
 
-export function useHeroClock(paused: boolean) {
+export function useHeroClock(paused: boolean, hold: number | null = null, restart = 0) {
   const reduced = prefersReducedMotion();
   const [phase, setPhase] = useState<Phase>(reduced ? 3 : 0);
+  useEffect(() => { if (restart) setPhase(0); }, [restart]);
   useEffect(() => {
-    if (reduced || paused) return;
+    if (hold !== null) setPhase(hold as Phase);
+  }, [hold]);
+  useEffect(() => {
+    if (reduced || paused || hold !== null) return;
     const t = window.setTimeout(() => setPhase((p) => ((p + 1) % 5) as Phase), PHASE_MS[phase]);
     return () => window.clearTimeout(t);
-  }, [phase, paused, reduced]);
+  }, [phase, paused, reduced, hold]);
   return phase;
 }
 

@@ -7,20 +7,20 @@ import { Hero, useHeroClock } from "./Hero";
 
 /** Start: the wordless hero loop, one button, a key hint. Nothing else. */
 export function StartScreen() {
-  const { playing, togglePlay, startTour, tour } = useApp();
+  const { playing, togglePlay, startTour, tour, demo, startDemo, heroHold, heroRestart } = useApp();
   const mascot = useMascot();
   const celebrated = useRef(false);
   const onSaved = useCallback(() => {
-    if (tour || playing) return;
+    if (tour || playing || demo) return;
     // bounce along with the count-up, then celebrate
     void mascot.motion.bounce(3, 10).then(() => mascot.setMood("celebrate", { for: 2200 }));
     if (!celebrated.current) { celebrated.current = true; mascot.say("Same jobs, lighter footprint!", { ms: 2800 }); }
   }, [tour, playing]); // eslint-disable-line react-hooks/exhaustive-deps
-  const excite = () => !tour && mascot.setMood("excited");
-  const calm = () => !tour && mascot.setMood("idle");
+  const excite = () => !tour && !demo && mascot.setMood("excited");
+  const calm = () => !tour && !demo && mascot.setMood("idle");
   const compact = useCompact();
   const [hover, setHover] = useState(false);
-  const phase = useHeroClock(hover || playing);
+  const phase = useHeroClock((hover && !demo) || playing, heroHold, heroRestart);
   return (
     <div className="relative h-full">
       <div
@@ -46,9 +46,15 @@ export function StartScreen() {
           {playing ? "Pause" : "Play the story"}
           <kbd className="ml-1 rounded-md bg-white/15 px-2 py-0.5 font-mono text-[13px]">P</kbd>
         </button>
-        <button onClick={startTour} className="pointer-events-auto rounded-full px-3 py-1 text-[15px] font-medium text-foreground/70 hover:bg-white/70 hover:text-foreground">
-          or let Dewy show you around <kbd className="ml-1 font-mono text-[12px]">T</kbd>
-        </button>
+        <div className="pointer-events-auto flex items-center gap-1 text-[15px] font-medium text-foreground/70">
+          <button onClick={startTour} className="rounded-full px-3 py-1 hover:bg-white/70 hover:text-foreground">
+            or let Dewy show you around <kbd className="ml-1 font-mono text-[12px]">T</kbd>
+          </button>
+          <span aria-hidden="true">·</span>
+          <button onClick={() => startDemo("standard")} className="rounded-full px-3 py-1 hover:bg-white/70 hover:text-foreground">
+            Full demo <kbd className="ml-1 font-mono text-[12px]">D</kbd>
+          </button>
+        </div>
       </div>
     </div>
   );

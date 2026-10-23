@@ -41,9 +41,9 @@ export function useExplain(preset: string, w: number, fallback: string[]) {
 
 export interface AskReply { text: string; source: Source; focus: string | null; screen: number | null; failed?: boolean }
 
-export async function ask(question: string, preset: string, w: number): Promise<AskReply> {
+export async function ask(question: string, preset: string, w: number, demo = false): Promise<AskReply> {
   try {
-    return await post<AskReply>("/api/ask", { question, preset, w }, 12000);
+    return await post<AskReply>("/api/ask", { question, preset, w, demo }, 12000);
   } catch {
     return { text: "I can't reach the GreenQ server right now. Try one of the example questions.", source: "template", focus: null, screen: null, failed: true };
   }
@@ -64,9 +64,9 @@ export function useNarration() {
 export interface ParsedJob { name: string; kwh: number; home_site: "evap" | "air"; submitted_slot: "day" | "night"; deadline: boolean; residency: boolean }
 
 /** Plain-English job description -> validated job table (or null -> show the form). */
-export async function parseJobs(text: string): Promise<{ jobs: ParsedJob[] | null; note: string; source: Source }> {
+export async function parseJobs(text: string, demo = false): Promise<{ jobs: ParsedJob[] | null; note: string; source: Source }> {
   try {
-    return await post<{ jobs: ParsedJob[] | null; note: string; source: Source }>("/api/parse-jobs", { text }, 15000);
+    return await post<{ jobs: ParsedJob[] | null; note: string; source: Source }>("/api/parse-jobs", { text, demo }, 15000);
   } catch {
     return { jobs: null, note: "Couldn't read jobs from that text right now, so here is the form instead.", source: "template" };
   }

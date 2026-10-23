@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppContext, BALANCED, useUiData, type AppState, type View } from "@/lib/data";
+import { AppContext, BALANCED, useUiData, type AppState, type DemoPreset, type View } from "@/lib/data";
 import { useStory, type CaptionId } from "@/lib/story";
 import { isCompact, useCompact, useStageScale } from "@/lib/stage";
 import { SCREENS, loadScreen, saveScreen } from "@/lib/screens";
@@ -17,6 +17,7 @@ import { MoodGallery } from "@/components/mascot/MoodGallery";
 import { TourLayer } from "@/components/mascot/Tour";
 import { Reactions } from "@/components/mascot/Reactions";
 import { TOUR, type TourState } from "@/lib/tour";
+import { Director } from "@/components/demo/Director";
 import type { FlexPreset, UiData } from "@/types";
 
 const VIEWS = [StartScreen, ScheduleScreen, QuantumScreen, CompareScreen, AskScreen, AboutScreen];
@@ -53,6 +54,12 @@ function SlideApp({ data }: { data: UiData }) {
   const [caption, setCaption] = useState<CaptionId | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [tour, setTour] = useState<TourState>(null);
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
+  const autoDemo = params.get("demo");
+  const [demo, setDemo] = useState<DemoPreset | null>(autoDemo === "short" || autoDemo === "standard" ? autoDemo : null);
+  const [heroHold, setHeroHold] = useState<number | null>(null);
+  const [heroRestart, setHeroRestart] = useState(0);
+  const restartHero = useCallback(() => setHeroRestart((n) => n + 1), []);
   const [sideOpen, setSideOpen] = useState(() => !isCompact());
   const compact = useCompact();
   const narration = useNarration();
@@ -79,6 +86,12 @@ function SlideApp({ data }: { data: UiData }) {
   }, [go]);
   const startTour = useCallback(() => setTourStep(0), [setTourStep]);
   const endTour = useCallback(() => setTour(null), []);
+  const startDemo = useCallback((p: DemoPreset = "standard") => {
+    if (playingRef.current) stopStory();
+    setTour(null);
+    setDemo(p);
+  }, [stopStory]);
+  const stopDemo = useCallback(() => { setDemo(null); setHeroHold(null); }, []);
   const show = useCallback((s: number, widget: string) => {
     go(s);
     setFlash(null);
@@ -96,6 +109,8 @@ function SlideApp({ data }: { data: UiData }) {
     step: (d) => go(cur.current + d),
     togglePlay,
     tour: () => startTour(),
+    demo: () => startDemo("standard"),
+    disabled: demo !== null, // the demo player owns the keyboard while it runs
   });
 
   const value: AppState = useMemo(() => {
@@ -108,8 +123,10 @@ function SlideApp({ data }: { data: UiData }) {
       proof: hw ?? data.proof.find((p) => p.w === 0.5)!,
       onHardware: stop.hardware, playing, togglePlay,
       screen, go, caption, flash, show, tour, startTour, setTourStep, endTour,
+      demo, startDemo, stopDemo, heroHold, setHeroHold, heroRestart, restartHero,
     };
-  }, [data, idx, view, presetKey, playing, togglePlay, screen, go, caption, flash, show, tour, startTour, setTourStep, endTour]);
+  }, [data, idx, view, presetKey, playing, togglePlay, screen, go, caption, flash, show, tour, startTour, setTourStep, endTour,
+      demo, startDemo, stopDemo, heroHold, heroRestart, restartHero]);
 
   const Current = VIEWS[screen];
   return (
@@ -128,6 +145,7 @@ function SlideApp({ data }: { data: UiData }) {
       </div>
       <TourLayer />
       <Reactions />
+      {demo && <Director key={demo} preset={demo} record={params.has("record")} captions={params.get("captions") !== "0"} />}
       </MascotProvider>
     </AppContext.Provider>
   );

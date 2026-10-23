@@ -26,7 +26,7 @@ const firstSentence = (t: string) => {
 };
 
 function Chat() {
-  const { preset, stop, show } = useApp();
+  const { preset, stop, show, demo } = useApp();
   const mascot = useMascot();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [text, setText] = useState("");
@@ -38,7 +38,7 @@ function Chat() {
     setTurns((ts) => [...ts.slice(-2), { q: question, a: null }]);
     mascot.setMood("thinking");
     mascot.point("[data-widget=chat]");
-    const a = await ask(question, preset.key, stop.w);
+    const a = await ask(question, preset.key, stop.w, !!demo);
     if (a.failed) {
       mascot.setMood("confused", { for: 2200 });
       mascot.say("I'm offline, but the example questions still work.", { ms: 4000 });
@@ -105,6 +105,7 @@ function Chat() {
 
 /** Plain English -> validated jobs -> live simulator. Falls back to the form. */
 function Describe() {
+  const { demo } = useApp();
   const [text, setText] = useState("Train a 1000 kWh model at Site A, it can run any time. Nightly backup of 300 kWh at Site B that must stay there. A 700 kWh report at Site A due by end of day.");
   const [state, setState] = useState<"idle" | "busy" | "done" | "fallback">("idle");
   const [jobs, setJobs] = useState<JobIn[] | null>(null);
@@ -113,7 +114,7 @@ function Describe() {
   const run = useRef(0);
   const go = async () => {
     setState("busy");
-    const r = await parseJobs(text);
+    const r = await parseJobs(text, !!demo);
     run.current += 1;
     setJobs(r.jobs);
     setNote(r.note);

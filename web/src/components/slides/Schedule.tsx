@@ -92,12 +92,12 @@ function WhyCaption() {
   const { data, stop, view, preset } = useApp();
   const fallback = whyLines(data, data.naive.schedule, stop.best.schedule).map((l) => l.text);
   const { lines, source } = useExplain(preset.key, stop.w, fallback);
-  const { tour, playing } = useApp();
+  const { tour, playing, demo } = useApp();
   const mascot = useMascot();
   // When jobs have moved, Dewy reads out the first reason (not during the tour or story).
   const first = lines[0];
   useEffect(() => {
-    if (view !== "greenq" || !first || tour || playing) return;
+    if (view !== "greenq" || !first || tour || playing || demo) return;
     const t = window.setTimeout(() => mascot.say(first, { ms: 5000, badge: source === "template" ? "template" : "ai" }), 900);
     return () => window.clearTimeout(t);
   }, [first, view, source]); // eslint-disable-line react-hooks/exhaustive-deps

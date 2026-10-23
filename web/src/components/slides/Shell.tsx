@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronsLeft, ChevronsRight, CodeXml, Compass, Expand, Pause, Play } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Clapperboard, CodeXml, Compass, Expand, Pause, Play } from "lucide-react";
 import { useApp } from "@/lib/data";
 import { SCREENS } from "@/lib/screens";
 import { FALLBACK_CAPTIONS } from "@/lib/story";
@@ -11,7 +11,7 @@ import { Logo } from "@/components/site/Site";
 export const REPO = "https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-response200";
 
 export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean) => void }) {
-  const { screen, go, playing, togglePlay, startTour } = useApp();
+  const { screen, go, playing, togglePlay, startTour, startDemo } = useApp();
   return (
     <nav
       aria-label="Screens"
@@ -65,6 +65,14 @@ export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (o: boolean
           {playing ? <Pause className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
           {open && (playing ? "Pause story" : "Play story")}
           {open && <kbd className="ml-auto font-mono text-[11px] opacity-60">P</kbd>}
+        </button>
+        <button
+          onClick={() => startDemo("standard")}
+          className={`flex items-center gap-2 rounded-xl py-2 text-[14px] text-muted-foreground hover:bg-white hover:text-foreground ${open ? "px-3.5" : "justify-center"}`}
+          title="Full demo, about 3 minutes (D)"
+        >
+          <Clapperboard className="size-4" aria-hidden="true" /> {open && "Full demo"}
+          {open && <kbd className="ml-auto font-mono text-[11px]">D</kbd>}
         </button>
         <button
           onClick={startTour}
@@ -127,7 +135,7 @@ export function FooterBar({ captionText }: { captionText: string | null }) {
         </AnimatePresence>
       </div>
       <span className="shrink-0 rounded-full bg-rose-50 px-3 py-1 font-semibold text-rose-800 ring-1 ring-rose-200 max-sm:text-[11px]">Not quantum advantage<span className="max-sm:hidden"> · a laptop is the referee</span></span>
-      {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · T · F · H</span>}
+      {!caption && <span className="hidden shrink-0 font-mono text-[12px] xl:inline">← → · 1–6 · P · T · D · F · H</span>}
     </footer>
   );
 }

@@ -14,12 +14,12 @@ import { useMascot } from "./MascotProvider";
  * triggered where they happen. The tour and the Demo Director drive Dewy themselves.
  */
 export function Reactions() {
-  const { screen, idx, playing, tour } = useApp();
+  const { screen, idx, playing, tour, demo } = useApp();
   const mascot = useMascot();
   const m = useRef(mascot);
   m.current = mascot;
   const busy = useRef(false);
-  busy.current = !!tour || playing;
+  busy.current = !!tour || playing || !!demo;
 
   // sleepiness, and waking with a startled hop
   const wake = useRef<() => void>(() => {});
