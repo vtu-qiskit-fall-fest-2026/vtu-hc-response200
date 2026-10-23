@@ -309,6 +309,25 @@ Suggested length: 12 slides. Keep one idea per slide.
 
 ---
 
+## Where each PPT section appears in the demo video (Standard preset)
+
+The jury sees the PPT and the video together, so each official template section has a matching moment in the Full demo (`docs/demo/timeline.json`; times are from the start of the screen recording, before any intro you add).
+
+| Template section | Demo chapter(s) | Starts at |
+|---|---|---|
+| Team details | Closing slide + video outro | — |
+| Problem Statement | Problem and idea | 00:00 |
+| Objectives & Novelty | Problem and idea; Quantum proof (2 qubits per job, every answer valid) | 00:00, 01:16 |
+| Solution & Quantum Advantage | Quantum proof; Ask GreenQ (honest 'no'); Methods compared | 01:16, 01:54, 02:19 |
+| Algorithm & Circuit Design | Quantum proof (real 8-qubit circuit, links, runs) | 01:16 |
+| Implementation & Tech Stack | How it is built (tech strip) | 02:42 |
+| Results & Analysis | The schedule; Carbon vs water; Quantum proof; Methods; Scaling | 00:20–02:28 |
+| Impact & Real-World Applications | Closing (savings; fleet calculator on the Ask screen, assumptions labelled) | 02:50 |
+| Challenges & Future Scope | Scaling and job rules; Closing (no advantage; next: bigger problems, real data) | 02:28, 02:50 |
+| Closing (repo + video link) | Closing | 02:50 |
+
+---
+
 ## Backup slides (optional, for questions)
 - **B1: Why QAOA and not VQE / Grover / annealing?** QAOA is built for minimising a diagonal cost Hamiltonian, is shallow at p = 1, and runs natively on IBM gate-based hardware via Qiskit.
 - **B2: Deeper circuits (simulator only):** P(optimal) 1.5% (p = 1) → 2.8% (p = 2) → 4.1% (p = 3), but two-qubit gates roughly double per layer (114 → 256 on Marrakesh), so we kept p = 1 on hardware.

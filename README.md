@@ -289,7 +289,7 @@ Same objective, same instance, balanced setting (`python scripts/run_baselines.p
 
 ## 💧 Dewy, the guide
 
-The demo has a small original mascot, **Dewy**: a water drop with a leaf sprout (water and carbon), eyes only. It reacts to what happens (wakes up, gets excited on Play, celebrates when the savings appear, thinks while the quantum circuit runs, dozes after 30 seconds), gives a guided tour of one widget per screen (**T**, or "Show me around"), and on the Ask screen it speaks the grounded AI answers. Its own lines are under 10 words and never contain numbers; numbers it shows come from the data. **H** hides it; with reduced motion it holds still. All moods are at http://127.0.0.1:8000/#dewy-moods.
+The demo has a small original mascot, **Dewy**: a water drop with a leaf sprout (water and carbon), eyes only. It reacts to what happens (wakes up, gets excited on Play, celebrates when the savings appear, thinks while the quantum circuit runs, dozes after 30 seconds), gives a guided tour of one widget per screen (**T**, or "Show me around"), and on the Ask screen it speaks the grounded AI answers. Its own lines are under 10 words and never contain numbers; numbers it shows come from the data. It lives in its own lane on the right edge of the screen and hops, wanders, follows your cursor with its eyes and lines up with whatever is happening, but it never stands on a widget, button or chart. **H** hides it, **Shift+H** calms it, and with reduced motion it holds still. All moods are at http://127.0.0.1:8000/#dewy-moods.
 
 ---
 
@@ -353,7 +353,9 @@ vtu-hc-response200/
 │   ├── run_robustness.py     # forecast-error robustness -> results/robustness.json
 │   ├── export_ui_data.py     # saved results -> results/ui_data.json for the UI
 │   ├── build_llm_cache.py    # pre-generate AI explanations -> results/llm_cache.json
-│   └── ui_smoke.py           # optional browser checks (Playwright): no console errors, no overflow, numbers match data
+│   ├── ui_smoke.py           # optional browser checks (Playwright): no console errors, no overflow, numbers match data
+│   ├── build_demo.py         # Full demo timeline + narration/subtitles -> docs/demo/
+│   └── record_demo.py        # record the Full demo as video (Playwright + ffmpeg)
 ├── server/                   # FastAPI: /api/data, /api/custom, serves web/dist
 │   └── llm.py                # grounded explanations: facts, number check, cache, templates
 ├── web/                      # React + Vite demo UI (source; built into web/dist)
@@ -399,7 +401,7 @@ python -m server
 
 Then open **http://127.0.0.1:8000**. The first run builds the web UI automatically (`npm ci` + `npm run build` in `web/`, about a minute); later runs start in seconds. Use `python -m server --rebuild` after pulling new code or changing anything in `web/src`.
 
-**Using the demo:** six screens in the left sidebar. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 50-second story (all six screens, with Dewy's spotlights), **T** starts Dewy's tour (← → to step, **Esc** to stop), **H** hides Dewy, **F** full screen, **Esc** leaves it. The app is laid out for a 16:9 screen and scales to fit (tested at 1920×1080 and 1366×768); the last screen is remembered.
+**Using the demo:** six screens in the left sidebar. Keys: **← →** move, **1–6** jump, **P** plays or pauses the 50-second story (all six screens, with Dewy's spotlights), **T** starts Dewy's tour (← → to step, **Esc** to stop), **D** plays the Full demo, **H** hides Dewy, **F** full screen, **Esc** leaves it. The app is laid out for a 16:9 screen and scales to fit (tested at 1920×1080 and 1366×768); the last screen is remembered.
 
 The demo reads only saved results (`results/ui_data.json`, exported from `results/hardware/` and `results/sim/`), so it works offline and never waits for a quantum queue. The optional "Re-run this setting on the local simulator" button calls the local Qiskit simulator through the server; nothing depends on it.
 
@@ -408,6 +410,16 @@ The demo reads only saved results (`results/ui_data.json`, exported from `result
 **Fallback (no Node.js):** `streamlit run app/streamlit_app.py` starts the earlier Streamlit version of the demo.
 
 **Frontend development:** run `python -m server` in one terminal and `cd web && npm run dev` in another (Vite proxies `/api` to the server).
+
+**Full demo (about 3 minutes, for recording):** press **D** (or *Full demo* on the Start screen or in the sidebar). Dewy presents every feature on the real app: the virtual cursor clicks, drags the slider and types into the chat. The chat uses reviewed, saved answers, so it runs offline and is identical every time. Two presets: Standard 3:02 and Short 2:10. While it plays: **Space** pause, **← →** chapters, **R** restart, **C** captions, **Esc** stop; move the mouse for the player bar (preset, speed, chapter list). To record it as a video with no sound, plus voice-over scripts and subtitles:
+
+```bash
+pip install playwright                              # once
+python scripts/record_demo.py --preset standard     # -> results/demo/greenq_demo_standard.webm / .mp4
+python scripts/record_demo.py --preset short --no-captions
+```
+
+The narration (`docs/demo/narration_*.txt`, `.srt`, `.vtt`) and the YouTube chapter lists are generated from the same timeline by `python scripts/build_demo.py`; see [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md).
 
 ### 4. Optional: AI explanations (Groq)
 

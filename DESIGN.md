@@ -314,7 +314,26 @@ Hover holds the current phase; story mode holds it too. Reduced motion shows pha
 
 ## Dewy, the guide
 
-**Look.** An original water drop (blue gradient, white highlight) with an emerald leaf sprout: water and carbon in one shape. Eyes only, no mouth; a soft ground shadow. 88 px high on desktop, 64 px on phones. Home is the bottom-right corner, standing on the footer; the footer reserves 136 px on the right so nothing is covered. **H** or the small eye button hides it.
+**Look.** An original water drop (soft blue gradient, a fluffy white sheen) with an emerald leaf sprout: water and carbon in one shape. Eyes only, no mouth; rosy cheeks when happy; a ground shadow that shrinks while it is in the air. 130 px tall on desktop, 75 px on phones. **H** or the small eye button hides it; **Shift+H** calms it (blinking only).
+
+**Its lane (never on content).** The stage keeps a 140 px lane along its right edge (main's right padding is 150 px), and no widget, text, chart, slider or button ever enters it. Dewy stands only on four stops in that lane (`web/src/components/mascot/zones.ts`, one pure function tested in Node at four screen sizes). To point at a widget it hops up or down the lane to the widget's height and looks at it. On phones there is no lane: one fixed spot above the footer, and no wandering.
+
+**Movement** (`controller.ts`, Motion values only, no per-frame React renders):
+- **Hops** follow a curved arc that never leaves the screen: squash on take-off, stretch in flight, squash and a three-droplet splash on landing.
+- **Idle life:** every 3–6 s there's a small hop, a wiggle or (rarely) a spin. When it has been still for at least 6 s, there's a chance it wanders to another stop in the lane.
+- **Cursor:** the eyes follow the cursor. Dewy leans in when the cursor rests nearby and blinks at a fast sweep.
+- **When it stops:** pointer events are off while it moves (it can be clicked only when standing still). All motion pauses when the tab is hidden. Under reduced motion it holds still.
+- **No wandering** during the tour, the story, the Full demo or `?record=1`.
+
+| Moment | Movement |
+|---|---|
+| New screen | hops to that screen's stop and waves |
+| Hovering a button (0.45 s) | lines up with it and looks at it; a click gets a cheer |
+| Slider | lines up with the slider, tilts with the thumb, then looks at the curve |
+| Savings count up | bounces three times, then celebrates |
+| Quantum screen | small hops while the gates light up; calms down after 9 s without input |
+| Chat | lines up with the input, tilts its head while you type, thinks, then talks |
+| 30 s / 45 s idle | drowsy, then sleeping; any input wakes it with a startled hop |
 
 **Alive.** Random blinks every 3–6 s and a slow breath (scaleY 1 → 1.025). Moods change eye shape (open, wide, half, squint, closed ⌣, happy ∩), eye size, body tilt and bounce, and the leaf angle (perks up when happy, droops when sleepy), plus small effects:
 
@@ -331,7 +350,14 @@ Hover holds the current phase; story mode holds it too. Reduced motion shows pha
 
 **Speech bubble.** One line, white, appears and fades. Hand-written lines stay under 10 words and carry no numbers; any number in a bubble comes from the data (an AI answer that passed the number check, shown with its AI EXPLANATION or TEMPLATE badge).
 
-**Tour.** One step per screen. A dim layer (ink at 42%) covers the stage only, never the sidebar or the footer, with a rounded hole that springs to the target widget. Dewy stands beside the widget and says its line. In manual mode a pill shows step, Back, Next and ✕; ← → and Esc work.
+**Tour.** One step per screen. A dim layer (ink at 42%) covers the stage only, never the sidebar or the footer, with a rounded hole that springs to the target widget. Dewy lines up with the widget in its lane and says its line. In manual mode a pill shows step, Back, Next and ✕; ← → and Esc work.
+
+## The Full demo (Demo Director)
+- **What it plays:** `docs/demo/timeline.json`, written by `scripts/build_demo.py`. It drives the real app: screen changes, real clicks, the real slider, real typing into the chat.
+- **Virtual cursor:** a black arrow with a white outline. It travels curved, eased paths and leaves a ripple ring on every click.
+- **Spotlight:** the tour's dim layer, at 32%.
+- **Captions:** a dark pill above the footer, 22 px, 12 words or fewer per line. **C** hides them.
+- **Player bar:** a white pill at the top centre. It appears on mouse move and hides after 2.6 s. It is never shown in `?record=1`, which also hides the mouse pointer.
 
 **Reduced motion.** Dewy holds idle, with no blinking, breathing or reactions; bubbles still appear, without animation.
 

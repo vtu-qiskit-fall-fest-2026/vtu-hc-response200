@@ -151,3 +151,18 @@ Forecast error is modelled as a uniform independent error on each slot's grid ca
   - The five example questions never call the live model; they use the reviewed cache or the hand-written template. When we tested a dropped key, the live model had invented a move again.
   - A move check drops any sentence claiming a job moved, stayed or went somewhere that disagrees with the computed schedule. It applies to live why-lines and live answers, and a test re-checks every cached entry.
 
+### D28. Dewy gets its own lane (Oct 23)
+- **Why:** you asked for a lively Dewy that moves around but never covers content. The slides use nearly every pixel, so free space had to be made on purpose. The stage now keeps a 140 px lane along its right edge (main's right padding grew from 40 to 150 px; content is about 8% narrower).
+- **How it behaves:** Dewy hops, wanders and lines up with widgets only inside that lane. "Jump beside the button" and "slide under the slider" became "hop to the same height in the lane and look at it", which keeps the never-cover rule.
+- **Checks:** the zone rules are one pure function, checked in Node at 1920×1080, 1366×768, 1440×900 and 390×844. A browser check sampled Dewy every 1.5 s on all six screens and found no overlap with any widget, button or the slider.
+- **Engineering:** movement uses Motion values only, with no per-frame React renders. It pauses when the tab is hidden and holds still under reduced motion.
+
+### D29. A timeline-driven Demo Director on the real app (Oct 23)
+- **Why:** the video needs a calm, repeatable 3-minute walkthrough that can be voiced over later and cut by chapter. It must show the real product, not a mock-up.
+- **How:**
+  - `scripts/build_demo.py` writes one timeline with steps, actions, narration, Dewy moods and spotlights. Every number is filled in from `ui_data.json` and listed per step, and the same file generates the narration `.txt`, `.srt` and `.vtt` and the YouTube chapters.
+  - The app plays that file with its own clock. Screen changes, clicks, slider drags and typing all go through the same handlers a user triggers.
+  - Chat and job reading run in demo mode: the reviewed cache, templates or the rule reader, never a live call. So every run is identical and works offline.
+- **Presets:** Standard 3:02 and Short 2:10, from the same steps (the Short preset drops the minor chapters). Tests check that each step's narration fits its time at 2.4 words a second plus a 0.5 s pause, that every spoken number exists in the data, that jargon is explained the first time, and that the typed questions have reviewed answers.
+- **Not done:** no music and no generated speech; the audio track is left free for the team's AI voice.
+
